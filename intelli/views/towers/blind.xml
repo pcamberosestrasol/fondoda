@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_intelli_blind_search" model="ir.ui.view">
+        <field name="name">intelli.blind.search</field>
+        <field name="model">intelli.blind</field>
+        <field name="arch" type="xml">
+            <search string="Busqueda">
+                <filter string="Nombre" name="name" />
+                <separator/>
+                <field name="name"/>
+                <separator/>
+
+                <filter string="Torre" name="parent_tower" />
+                <separator/>
+                <field name="parent_tower"/>
+                <separator/>
+              
+                <filter string="Codigo" name="code" />
+                <separator/>
+                <field name="code"/>
+                <separator/>
+
+                <filter string="Estilo" name="style" />
+                <separator/>
+                <field name="style"/>
+                <separator/>
+                
+                <filter string="Ancho max" name="with_w" />
+                <separator/>
+                <field name="with_w"/>
+                <separator/>
+                 
+                <filter string="Alto max" name="heigth_h" />
+                <separator/>
+                <field name="with_w"/>
+                <separator/>
+                <filter string="M2 max" name="m2_max" />
+                <separator/>
+                <field name="m2_max"/>
+                <separator/>
+               
+                <filter string="Precio m2" name="price_size" />
+                <separator/>
+                <field name="price_size"/>
+                <separator/>
+                 
+                <filter string="Precio fijo" name="price" />
+                <separator/>
+                <field name="price"/>
+                <separator/>
+                
+                <filter string="Tela" name="cloth" />
+                <separator/>
+                <field name="cloth"/>
+                <separator/>
+
+                <filter string="Acccionamiento" name="actuation" />
+                <separator/>
+                <field name="actuation"/>
+                <separator/>
+
+                <filter string="Electrónica" name="electronic" />
+                <separator/>
+                <field name="electronic"/>
+                <separator/>
+                               
+               
+                
+  
+            </search>
+        </field>
+    </record> 
+
+
+      <record id="view_images_form" model="ir.ui.view">
+        <field name="name">images.view.form</field>
+        <field name="model">intelli.images</field>
+        <field name="arch" type="xml">
+            <form string="Product Images">
+               
+                <div class="row o_website_sale_image_modal">
+                    
+                    <div class="col-md-6 col-xl-7 text-center o_website_sale_image_modal_container">
+                        <div class="row">
+                            <div class="col">
+                                <field name="image" widget="image"/>
+                                 <field name="name" invisible="1"/>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </field>
+    </record>
+   <record id="images_view_kanban" model="ir.ui.view">
+        <field name="name">images.view.kanban</field>
+        <field name="model">intelli.images</field>
+        <field name="arch" type="xml">
+             <kanban string="Product Images" default_order="sequence">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="image"/>
+                <field name="sequence" widget="handle"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="card oe_kanban_global_click p-0" style="width:200px; height:200px;"> 
+                            <div class="o_squared_image" style="width:200px; height:200px;">
+                                <img class="card-img-top" t-att-src="kanban_image('intelli.images', 'image', record.id.value)" t-att-alt="imagen" style="width:200px; height:200px;"/>
+                            </div>
+                            <div class="card-body p-0">
+                                <h4 class="card-title p-2 m-0 bg-200">
+                                    <small></small>
+                                </h4>
+                            </div>
+                            <!-- below 100 Kb: good -->
+                            <t t-if="record.image.raw_value.length &lt; 100*1000">
+                                <t t-set="size_status" t-value="'badge-success'"/>
+                                <t t-set="message">Acceptable file size</t>
+                            </t>
+                            <!-- below 1000 Kb: decent -->
+                            <t t-elif="record.image.raw_value.length &lt; 1000*1000">
+                                <t t-set="size_status" t-value="'badge-warning'" />
+                                <t t-set="message">Huge file size. The image should be optimized/reduced.</t>
+                            </t>
+                            <!-- above 1000 Kb: bad -->
+                            <t t-else="1">
+                                <t t-set="size_status" t-value="'badge-danger'"/>
+                                <t t-set="message">Optimization required! Reduce the image size or increase your compression settings.</t>
+                            </t>
+                            <span t-attf-class="badge #{size_status} o_product_image_size" t-esc="record.image.value" t-att-title="message"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+     <record id="blind_view_tree_many" model="ir.ui.view">
+          <field name="name">tree.blind</field>
+          <field name="model">intelli.blind</field>
+      
+          <field name="arch" type="xml" >
+              <tree string="Contacts" class="custom_img"  delete="0">
+                 <field name="parent_tower" />
+                 <field name="blind" widget='image' />
+                 <field name="name" />
+                 <field name="code" />
+                 <field name="style" />
+                 <field name="with_w" />
+                 <field name="heigth_h" />
+                  <field name="m2_max" />
+                 <field name="price_size" />
+                 <field name="price" />
+                 <field name="cloth" />                
+                 <field name="actuation" />
+                 <field name="electronic" />
+              </tree>
+          </field>
+      </record>
+      <record id="blind_view_tree" model="ir.ui.view">
+          <field name="name">tree.blind</field>
+          <field name="model">intelli.blind</field>
+          <field name="priority">1</field>
+          <field name="arch" type="xml" >
+              <tree string="Contacts" class="custom_img" >
+                 <field name="parent_tower"  />
+                 <field name="blind" widget='image' />
+                 <field name="name" />
+                 <field name="code" />
+                 <field name="style" />
+                 <field name="with_w" />
+                 <field name="heigth_h" />
+                  <field name="m2_max" />
+                 <field name="price_size" />
+                 <field name="price" />
+                 <field name="cloth" />                
+                 <field name="actuation" />
+                 <field name="electronic" />
+                     <button name="button_duplicate_no_open" string="Duplicar" type="object"/>
+                     
+              </tree>
+          </field>
+      </record>
+      
+
+       <record id="blind_view_form_hide" model="ir.ui.view">
+          <field name="name">intelli.form</field>
+          <field name="model">intelli.blind</field>
+           
+          <field name="arch" type="xml" >
+            <form>
+              <sheet>
+                <div class="oe_button_box" name="button_box">
+                  <button name="toggle_active" type="object" class="oe_stat_button" style="text-align:center; font-weight:bold;" string="Activo">
+                    <field name="active" string="Archivado" widget="boolean_toggle" style=" text-decoration: none;  pointer-events: none;"/>
+                  </button>
+                </div>
+                   <div class="row">
+                     <div class="col-2" >
+                        <field name="blind" widget='image'  style="width:150px;"/>
+                       </div>   
+                       <div class="col-sm-10"> 
+                           <group>
+                                 <field name="parent_tower" readonly="1" />
+                                <field name="name" />
+                                <field name="code" />
+                                <field name="style" readonly="1" />
+                                <field name="with_w" />
+                                <field name="heigth_h" />
+                                 <field name="m2_max" />
+                                <field name="price_size" />
+                                <field name="price" />
+                                <field name="cloth" />                
+                                <field name="actuation" />
+                                <field name="electronic" />
+                                <label for="images" string="Imagenes"/>
+                                <field name="images" class="o_website_sale_image_list" context="{'default_name': 'hola'}" mode="kanban" options="{'create_text':'Añadir imagen'}" nolabel="1"/>
+                            </group>
+                         
+                    </div>
+                       
+                   </div>        
+                
+                        
+                       
+                       
+              </sheet>
+              <div class="oe_chatter" modifiers="{}">
+                <field name="message_follower_ids" widget="mail_followers" modifiers="{}"/>
+                <field name="activity_ids" widget="mail_activity" modifiers="{}"/>
+                <field name="message_ids" widget="mail_thread" modifiers="{}" options="{'display_log_button': True}"/>
+              </div>
+            </form>
+          </field>
+      </record>
+
+      <record id="blind_view_form" model="ir.ui.view">
+          <field name="name">intelli.form</field>
+          <field name="model">intelli.blind</field>
+           <field name="priority">1</field>
+          <field name="arch" type="xml" >
+            <form >
+              <sheet>
+               <div class="oe_button_box" name="button_box">
+                  <button name="toggle_active" type="object" class="oe_stat_button" style="text-align:center; font-weight:bold;" string="Activo">
+                    <field name="active" string="Archivado" widget="boolean_toggle" style=" text-decoration: none;  pointer-events: none;"/>
+                  </button>
+                </div>
+                   <div class="row">
+                     <div class="col-2" >
+                        <field name="blind" widget='image'  style="width:150px;"/>
+                       </div>   
+                       <div class="col-sm-10"> 
+                           <group>
+                                 <field name="parent_tower" readonly="1" />
+                                <field name="name" />
+                                <field name="code" />
+                                <field name="style" />
+                                <field name="with_w" />
+                                <field name="heigth_h" />
+                                 <field name="m2_max" />
+                                <field name="price_size" />
+                                <field name="price" />
+                                <field name="cloth" />                
+                                <field name="actuation" />
+                                <field name="electronic" />
+                                <label for="images" string="Imagenes"/>
+                                <field name="images" class="o_website_sale_image_list" context="{'default_name': 'hola'}" mode="kanban" options="{'create_text':'Añadir imagen'}" nolabel="1"/>
+                            </group>
+                         
+                    </div>
+                       
+                   </div>        
+                
+                        
+                       
+                       
+              </sheet>
+              <div class="oe_chatter" modifiers="{}">
+                <field name="message_follower_ids" widget="mail_followers" modifiers="{}"/>
+                <field name="activity_ids" widget="mail_activity" modifiers="{}"/>
+                <field name="message_ids" widget="mail_thread" modifiers="{}" options="{'display_log_button': True}"/>
+              </div>
+            </form>
+          </field>
+      </record>
+
+
+      <record id="action_intelli_blind" model="ir.actions.act_window">
+           <field name="name">Productos</field>
+           <field name="type">ir.actions.act_window</field>
+           <field name="res_model">intelli.blind</field>
+            <field name="context">{'create':False}</field>
+           <field name="view_mode">tree,form</field>
+           <field name="help" type="html">
+               <p class="o_view_nocontent_smiling_face">
+                  Create a contact in your address book
+               </p>
+               <p>
+                Odoo helps you to easily track all activities related to a customer.
+               </p>
+           </field>
+       </record>
+
+       <record id="action_blind_tree" model="ir.actions.act_window.view">
+         <field eval="1" name="sequence"/>
+         <field name="view_mode">tree</field>
+         <field name="view_id" ref="blind_view_tree"/>
+         <field name="act_window_id" ref="action_intelli_blind"/>
+       </record>
+
+
+      <record id="action_blind_form" model="ir.actions.act_window.view">
+          <field eval="2" name="sequence"/>
+          <field name="view_mode">form</field>
+          <field name="view_id" ref="blind_view_form"/>
+          <field name="act_window_id" ref="action_intelli_blind"/>
+        </record>
+
+
+        </data>
+    </odoo>

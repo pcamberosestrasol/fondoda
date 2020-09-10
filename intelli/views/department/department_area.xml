@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+   
+        <record id="view_intelli_department_area_search" model="ir.ui.view">
+        <field name="name">intelli.department.area.search</field>
+        <field name="model">intelli.department.area</field>
+        <field name="arch" type="xml">
+            <search string="Busqueda">
+                <filter string="Nombre" name="name" />
+                <separator/>
+                <field name="name"/>
+                <separator/>
+
+                <filter string="Departamento" name="parent_department" />
+                <separator/>
+                <field name="parent_department"/>
+                <separator/>
+
+                <filter string="Torre" name="parent_tower" />
+                <separator/>
+                <field name="parent_tower"/>
+                <separator/>
+              
+                <filter string="Area" name="area" />
+                <separator/>
+                <field name="area"/>
+                <separator/>
+              
+                <filter string="Ancho" name="with_w" />
+                <separator/>
+                <field name="with_w"/>
+                <separator/>
+
+                <filter string="Largo" name="heigth_h" />
+                <separator/>
+                <field name="heigth_h"/>
+                <separator/>
+
+                <filter string="Caida" name="fall" />
+                <separator/>
+                <field name="fall"/>
+                <separator/>
+
+                <filter string="Control" name="control" />
+                <separator/>
+                <field name="control"/>
+                <separator/>
+                
+               
+                
+  
+            </search>
+        </field>
+    </record> 
+
+
+      <record id="department_area_view_tree" model="ir.ui.view">
+          <field name="name">tree.department_area</field>
+          <field name="model">intelli.department.area</field>
+          <field name="arch" type="xml" >
+              <tree string="Areas">
+               <field name="parent_tower" />
+                <field name="parent_department" />
+                <field name="area" />   
+                 <field name="name" />
+                 <field name="with_w" />                
+                 <field name="heigth_h" />
+                 <field name="style" />
+                 <field name="fall" />
+                 <field name="control" />
+                 <button name="button_duplicate_no_open" string="Duplicar" type="object"/>  
+                  <field name="products_ids"  string="Productos disponibles"    /> 
+              </tree>
+          </field>
+      </record>
+      
+
+      <record id="department_area_view_form" model="ir.ui.view">
+          <field name="name">intelli.form</field>
+          <field name="model">intelli.department.area</field>
+          <field name="arch" type="xml" >
+            <form>
+              <sheet>
+                <div class="oe_button_box" name="button_box">
+                  <button name="toggle_active" type="object" class="oe_stat_button" style="text-align:center; font-weight:bold;" string="Activo">
+                    <field name="active" string="Archivado" widget="boolean_toggle" style=" text-decoration: none;  pointer-events: none;"/>
+                  </button>
+                </div>
+                   <div class="row">
+                  
+                       <div class="col-sm-10"> 
+                           <group>
+                                    <field name="parent_department" />
+                                    <field name="parent_tower" invisible="1" />
+                                    <field name="area" />   
+                                    <field name="name" />
+                                  
+                                                                 
+                                    <field name="with_w"   />                
+                                    <field name="heigth_h"   />
+                                    <field name="fall" />
+                                    <field name="control" />
+                                     <field name="parent_available" invisible="1" />
+                                    <field name="style"  options="{'no_create_edit': True ,'no_open': True}"  domain="[('id', 'in', parent_available)]" />  
+                                     <field name="flag"  invisible="1" />
+                            </group>
+                         
+                    </div>
+                    <div class="row ml-1 mr-1">
+                    <label for="products_ids" string="Productos disponibles">Productos disponibles</label>
+                           <field name="products_ids" class="mt-1" string="Productos disponibles"    options="{'no_create_edit': True,'no_create': True}"    context="{'tree_view_ref': 'intelli.blind_view_tree_many'}" required="1" >
+                                          <tree string="Products" class="custom_img" edit="false"  >
+                                              
+                                              <field name="blind" widget='image' />
+                                            
+                                              <field name="name" />
+                                         
+                                              <field name="with_w" />
+                                              <field name="heigth_h" />
+                                              <field name="m2_max" />
+                                              <field name="price" />
+                                              <field name="cloth" />                
+                                              <field name="actuation" />
+                                              <field name="electronic" />
+                                              <field name="style"  invisible="1" />
+                                              
+                                              
+                                            </tree>
+
+                                             <form edit="0">
+                                                      <sheet>
+                                                  
+                                                          <div class="row">
+                                                            <div class="col-2" >
+                                                                <field name="blind" widget='image'  style="width:150px;"/>
+                                                              </div>   
+                                                              <div class="col-sm-10"> 
+                                                                  <group>
+                                                                        <field name="parent_tower" readonly="1" />
+                                                                        <field name="name" />
+                                                                        <field name="code" />
+                                                                        <field name="style"  readonly="1" />
+                                                                        <field name="with_w"  readonly="1" />
+                                                                        <field name="heigth_h"  readonly="1" />
+                                                                        <field name="m2_max"  readonly="1" />
+                                                                        <field name="price_size" readonly="1" />
+                                                                        <field name="price" />
+                                                                        <field name="cloth" />                
+                                                                        <field name="actuation" />
+                                                                        <field name="electronic" />
+                                                                        <label for="images" string="Imagenes"/>
+                                                                        <field name="images" class="o_website_sale_image_list" context="{'default_name': 'hola'}" mode="kanban" options="{'create_text':'Añadir imagen'}" nolabel="1"/>
+                                                                    </group>
+                                                                
+                                                            </div>
+                                                              
+                                                          </div>        
+                                                        
+                                                                
+                                                              
+                                                              
+                                                      </sheet>
+                                                    
+                                                    </form>
+                                     </field>
+                    </div>
+                       
+                   </div>        
+             
+              </sheet>
+              <div class="oe_chatter" modifiers="{}">
+                <field name="message_follower_ids" widget="mail_followers" modifiers="{}"/>
+                <field name="activity_ids" widget="mail_activity" modifiers="{}"/>
+                <field name="message_ids" widget="mail_thread" modifiers="{}" options="{'display_log_button': True}"/>
+              </div>
+            </form>
+          </field>
+      </record>
+
+
+      <record id="action_intelli_department_area" model="ir.actions.act_window">
+           <field name="name">Areas</field>
+           <field name="type">ir.actions.act_window</field>
+           <field name="res_model">intelli.department.area</field>
+            <field name="context">{'create':False}</field>
+           <field name="view_mode">tree,form</field>
+           <field name="help" type="html">
+               <p class="o_view_nocontent_smiling_face">
+                  Create a contact in your address book
+               </p>
+               <p>
+                Odoo helps you to easily track all activities related to a customer.
+               </p>
+           </field>
+       </record>
+
+       <record id="action_department_area_tree" model="ir.actions.act_window.view">
+         <field eval="1" name="sequence"/>
+         <field name="view_mode">tree</field>
+         <field name="view_id" ref="department_area_view_tree"/>
+         <field name="act_window_id" ref="action_intelli_department_area"/>
+       </record>
+
+
+      <record id="action_department_area_form" model="ir.actions.act_window.view">
+          <field eval="2" name="sequence"/>
+          <field name="view_mode">form</field>
+          <field name="view_id" ref="department_area_view_form"/>
+          <field name="act_window_id" ref="action_intelli_department_area"/>
+        </record>
+
+
+        </data>
+    </odoo>

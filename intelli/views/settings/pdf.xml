@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+      <record id="Pdf_view_form" model="ir.ui.view">
+          <field name="name">intelli.form</field>
+          <field name="model">intelli.pdf</field>
+          <field name="arch" type="xml" >
+            <form>
+              <sheet>
+                
+                  <group>
+                  
+                
+                    <field name="name" string="Nombre"  required="1"/>
+                  
+                  </group>
+                  <group>
+                    <field name="pdf" string="PDF"  widget="pdf_viewer" required="1"/>
+                  </group>
+               
+              </sheet>
+             
+            </form>
+          </field>
+      </record>
+
+
+      <record id="action_intelli_Pdf" model="ir.actions.act_window">
+           <field name="name">Pdf</field>
+           <field name="type">ir.actions.act_window</field>
+           <field name="res_model">intelli.pdf</field>
+           <field name="view_mode">tree,form</field>
+           <field name="help" type="html">
+               <p class="o_view_nocontent_smiling_face">
+                  Create a contact in your address book
+               </p>
+               <p>
+                Odoo helps you to easily track all activities related to a customer.
+               </p>
+           </field>
+       </record>
+         </data>
+    </odoo>

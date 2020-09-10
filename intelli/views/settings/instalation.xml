@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+      
+      <record id="instalation_view_tree" model="ir.ui.view">
+          <field name="name">tree.instalation</field>
+          <field name="model">intelli.instalation</field>
+          <field name="arch" type="xml" >
+              <tree string="Contacts" >
+                <field name="id" />
+                <field name="name"/>
+              </tree>
+          </field>
+      </record>
+      
+
+      <record id="instalation_view_form" model="ir.ui.view">
+          <field name="name">intelli.form</field>
+          <field name="model">intelli.instalation</field>
+          <field name="arch" type="xml" >
+            <form>
+              <sheet>
+                <div class="oe_button_box" name="button_box">
+                  <button name="toggle_active" type="object" class="oe_stat_button" style="text-align:center; font-weight:bold;" string="Activo">
+                    <field name="active" string="Archivado" widget="boolean_toggle" style=" text-decoration: none;  pointer-events: none;"/>
+                  </button>
+                </div>      
+                <group>
+                  <group>
+                    <field name="id" />
+                
+                    <field name="name" string="Nombre"  required="1"/>
+                  
+                  </group>
+                  <group>
+                   
+                  </group>
+                </group>
+              </sheet>
+              <div class="oe_chatter" modifiers="{}">
+                <field name="message_follower_ids" widget="mail_followers" modifiers="{}"/>
+                <field name="activity_ids" widget="mail_activity" modifiers="{}"/>
+                <field name="message_ids" widget="mail_thread" modifiers="{}" options="{'display_log_button': True}"/>
+              </div>
+            </form>
+          </field>
+      </record>
+
+
+      <record id="action_intelli_instalation" model="ir.actions.act_window">
+           <field name="name">Instalación</field>
+           <field name="type">ir.actions.act_window</field>
+           <field name="res_model">intelli.instalation</field>
+           <field name="view_mode">tree,form</field>
+           <field name="help" type="html">
+               <p class="o_view_nocontent_smiling_face">
+                  Create a contact in your address book
+               </p>
+               <p>
+                Odoo helps you to easily track all activities related to a customer.
+               </p>
+           </field>
+       </record>
+
+       <record id="action_intelli_instalation_tree" model="ir.actions.act_window.view">
+         <field eval="1" name="sequence"/>
+         <field name="view_mode">tree</field>
+         <field name="view_id" ref="instalation_view_tree"/>
+         <field name="act_window_id" ref="action_intelli_instalation"/>
+       </record>
+
+
+      <record id="action_intelli_instalation_form" model="ir.actions.act_window.view">
+          <field eval="2" name="sequence"/>
+          <field name="view_mode">form</field>
+          <field name="view_id" ref="instalation_view_form"/>
+          <field name="act_window_id" ref="action_intelli_instalation"/>
+        </record>
+
+
+        </data>
+    </odoo>
