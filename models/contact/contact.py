@@ -15,8 +15,5 @@ class FondoContact(models.Model):
     benef_fathername = fields.Char('Apellido paterno del beneficiario',tracking=True)
     benef_mothername = fields.Char('Apellido materno del beneficiario',tracking=True)
     benef_relation = fields.Char('Parentesco del beneficiario',tracking=True)
-
-    benef_relation = fields.Char('Parentesco del beneficiario',tracking=True)
-    benef_relation = fields.Char('Parentesco del beneficiario',tracking=True)
     benef_birth = fields.Date('Fecha de nacimiento del beneficiario',tracking=True)
     benef_phone = fields.Char('Número telefónico del beneficiario',tracking=True)
