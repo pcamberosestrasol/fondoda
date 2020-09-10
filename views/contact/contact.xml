@@ -7,16 +7,15 @@
       <field name="inherit_id" ref="base.view_partner_form"/>
       <field name="arch" type="xml">
           <xpath expr="//field[@name='type']" position="before">
-                <field name="father_name"  options="{'no_create_edit': True, 'no_quick_create': True,'no_open': True}"/>
-                <field name="mother_name"  options="{'no_create_edit': True, 'no_quick_create': True,'no_open': True}"/>
+                <field name="father_name"  />
+                <field name="mother_name"  />
           </xpath>
           <xpath expr="//field[@name='type']" position="after">
-                <field name="num_colab"  options="{'no_create_edit': True, 'no_quick_create': True,'no_open': True}"/>
-                <field name="date"  options="{'no_create_edit': True, 'no_quick_create': True,'no_open': True}"/>
-
-                <field name="payroll"  options="{'no_create_edit': True, 'no_quick_create': True,'no_open': True}"/>
-                <field name="phone"  options="{'no_create_edit': True, 'no_quick_create': True,'no_open': True}"/>
-                <field name="email"  options="{'no_create_edit': True, 'no_quick_create': True,'no_open': True}"/>
+                <field name="num_colab"/>
+                <field name="date"/>
+                <field name="payroll"/>
+                <field name="phone"/>
+                <field name="email"/>
           </xpath>
       </field>
     </record>
