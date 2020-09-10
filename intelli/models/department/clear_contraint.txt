@@ -1,4 +1,0 @@
-self._cr.execute("""SELECT *
-FROM information_schema.constraint_table_usage
-WHERE table_name = 'intelli_department';""")
-self._cr.execute("""ALTER TABLE intelli_department DROP CONSTRAINT intelli_department_unique_name_;""")
