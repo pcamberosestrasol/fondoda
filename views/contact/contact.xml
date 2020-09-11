@@ -49,10 +49,32 @@
           <xpath expr="//button[@name='55']" position="attributes">
                 <attribute name="invisible">1</attribute>
           </xpath>
+          <xpath expr="//field[@name='street']" position="attributes">
+                <attribute name="invisible">1</attribute>
+          </xpath>
+          <xpath expr="//field[@name='street2']" position="attributes">
+                <attribute name="invisible">1</attribute>
+          </xpath>
+          <xpath expr="//field[@name='city']" position="attributes">
+                <attribute name="invisible">1</attribute>
+          </xpath>
+          <xpath expr="//field[@name='state_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+          </xpath>
+          <xpath expr="//field[@name='zip']" position="attributes">
+                <attribute name="invisible">1</attribute>
+          </xpath>
+          <xpath expr="//field[@name='country_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+          </xpath>
 
 
           <xpath expr="//page[@name='sales_purchases']" position="attributes">
               <attribute name="invisible">1</attribute>
+          </xpath>
+
+          <xpath expr="//page[@name='internal_notes']" position="attributes">
+                <attribute name="invisible">1</attribute>
           </xpath>
 
           <xpath expr="//page[@name='sales_purchases']" position="after">
