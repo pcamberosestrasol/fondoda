@@ -38,7 +38,7 @@ class FondoContact(models.Model):
             if age < 18:
                 self.benef_birth = False
                 return {'warning': {
-                    'title': "Error Edad",
-                    'message': "La fecha de nacimiento no es valida",
+                    'title': "Error",
+                    'message': "La fecha de nacimiento no es válida",
                     }
                 }

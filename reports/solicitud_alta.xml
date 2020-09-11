@@ -14,6 +14,8 @@
                     <h3>1. Datos Generales</h3>
                   </section>
                   <t t-set="name_complete" t-value="c.father_name+' #'+c.mother_name+' #'+c.name"/>
+                </div>
+                <div>
                   <table class="table table-sm" id="table_datos_generales">
                     <thead class="bg-100">
                       <tr>
@@ -30,12 +32,16 @@
                       </tr>
                     </tbody>
                   </table>
-                  <div class="row">
+                </div>
+                <div class="row">
                     <span t-field="c.date" />
-                    <span t-field="o.payroll" />
-                    <p>En caso de fallecimiento asigno como beneficiario a (Debe ser mayor de edad):</p>
-                  </div>
-                  <t t-set="name_beneficio" t-value="benef_firstname+' #'+benef_fathername+' #'+benef_mothername"/>
+                    <span t-field="c.payroll" />
+                </div>
+                <div class="row">
+                  <p>En caso de fallecimiento asigno como beneficiario a (Debe ser mayor de edad):</p>
+                </div>
+                <div class="row">
+                  <t t-set="name_beneficio" t-value="c.benef_firstname+' #'+c.benef_fathername+' #'+c.benef_mothername"/>
                   <table class="table table-sm" id="table_datos_generales">
                     <thead class="bg-100">
                       <tr>
@@ -45,24 +51,23 @@
                       </tr>
                     </thead>
                     <tbody>
-                      
                       <tr>
                         <td><span t-field="c.num_colab"/></td>
                         <td class="text-center"><span t-esc="name_beneficio"/></td>
                         <td><span t-field="c.benef_phone"/></td>
                       </tr>
                     </tbody>
-                  </table>
-                  <div class="row">
-                    <p>
-                      Expresamente autorizo a ESTRATEGIAS Y SOLUCIONES EN IT S.A.DE C.V. para que retenga las aportaciones de acuerdo al tipo de mi nómina;
-                      así mismo acepto y esto conciente que en caso de retirarme de la compañia, calquier adeudo de préstamos e interes que tenga 
-                      pendiente copn el Fonde de Ahorro de los empleados sea descontado de mi finiquito
-                    </p>
-                  </div>
-                  <div class="row">
-                    <p>Firma Empleado</p>
-                  </div>
+                  </table>}
+                </div>
+                <div class="row">
+                  <p>
+                    Expresamente autorizo a ESTRATEGIAS Y SOLUCIONES EN IT S.A.DE C.V. para que retenga las aportaciones de acuerdo al tipo de mi nómina;
+                    así mismo acepto y esto conciente que en caso de retirarme de la compañia, calquier adeudo de préstamos e interes que tenga 
+                    pendiente copn el Fonde de Ahorro de los empleados sea descontado de mi finiquito
+                  </p>
+                </div>
+                <div class="row">
+                  <p>Firma Empleado</p>
                 </div>
               </div>
             </div>
