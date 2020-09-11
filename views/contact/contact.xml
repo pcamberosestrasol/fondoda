@@ -6,17 +6,78 @@
       <field name="model">res.partner</field>
       <field name="inherit_id" ref="base.view_partner_form"/>
       <field name="arch" type="xml">
-          <xpath expr="//field[@name='type']" position="before">
-                <field name="father_name"  />
-                <field name="mother_name"  />
+          <xpath expr="//field[@name='type']" position="replace">
+                <field name="type" invisible="1" />
           </xpath>
+          <xpath expr="//field[@name='vat']" position="replace">
+                <field name="vat" invisible="1" />
+          </xpath>
+          <xpath expr="//field[@name='function']" position="replace">
+                <field name="function" invisible="1" />
+          </xpath>
+          <xpath expr="//field[@name='mobile']" position="replace">
+                <field name="mobile" invisible="1" />
+          </xpath>
+          <xpath expr="//field[@name='website']" position="replace">
+                <field name="website" invisible="1" />
+          </xpath>
+          <xpath expr="//field[@name='title']" position="replace">
+                <field name="title" invisible="1" />
+          </xpath>
+          <xpath expr="//field[@name='category_id']" position="replace">
+                <field name="category_id" invisible="1" />
+          </xpath>
+          
           <xpath expr="//field[@name='type']" position="after">
+<<<<<<< HEAD
                 <field name="num_colab"/>
                 <field name="date"/>
                 <field name="payroll"/>
                 <field name="phone"/>
                 <field name="email"/>
+=======
+                <field name="father_name" required="1" />
+                <field name="mother_name" />
+                <field name="num_colab"  />
+                <field name="payroll" required="1" />
           </xpath>
+          <xpath expr="//field[@name='function']" position="after">
+                <field name="date"  />
+          </xpath>
+
+          
+          <xpath expr="//field[@name='lang']" position="attributes">
+                <attribute name="invisible">1</attribute>
+          </xpath>
+
+          <xpath expr="//label[@for='lang']" position="attributes">
+                <attribute name="invisible">1</attribute>
+          </xpath>
+          <xpath expr="//button[@name='55']" position="attributes">
+                <attribute name="invisible">1</attribute>
+          </xpath>
+
+
+          <xpath expr="//page[@name='sales_purchases']" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </xpath>
+
+          <xpath expr="//page[@name='sales_purchases']" position="after">
+          <page name="infoben" string="Información del Beneficiario"> 
+            <group>
+                  <group>
+                    <field name="benef_firstname" string="Nombre" required="1"/>
+                    <field name="benef_fathername" string="Apellido paterno" required="1"/>
+                    <field name="benef_mothername" string="Apellido materno" />
+                    <field name="benef_relation" string="Parentesco" required="1"/>
+                    <field name="benef_birth" string="Fecha de cumpleaños" required="1"/>
+                    <field name="benef_phone" string="Número telefónico" required="1"/>
+                  </group>
+              </group>
+          </page>
+>>>>>>> 34ddc2a2be15fad8136ea6083ea0a104f590e766
+          </xpath>
+                
       </field>
     </record>
 
