@@ -68,10 +68,6 @@
                 <attribute name="invisible">1</attribute>
           </xpath>
 
-            <xpath expr="//page[@string='contact']" position="attributes">
-              <attribute name="invisible">1</attribute>
-          </xpath>
-
           <xpath expr="//page[@name='sales_purchases']" position="attributes">
               <attribute name="invisible">1</attribute>
           </xpath>
@@ -80,21 +76,22 @@
                 <attribute name="invisible">1</attribute>
           </xpath>
 
-          <xpath expr="//page[@name='sales_purchases']" position="after">
-          <page name="infoben" string="Información del Beneficiario"> 
-            <group>
-                  <group>
-                    <field name="benef_firstname" string="Nombre" required="1"/>
-                    <field name="benef_fathername" string="Apellido paterno" required="1"/>
-                    <field name="benef_mothername" string="Apellido materno" />
-                    <field name="benef_relation" string="Parentesco" required="1"/>
-                    <field name="benef_birth" string="Fecha de cumpleaños" required="1"/>
-                    <field name="benef_phone" string="Número telefónico" required="1"/>
-                  </group>
-              </group>
-          </page>
+          <xpath expr="//notebook" position="replace">
+            <notebook>
+                  <page name="infoben" string="Información del Beneficiario"> 
+                        <group>
+                              <group>
+                                    <field name="benef_firstname" string="Nombre" required="1"/>
+                                    <field name="benef_fathername" string="Apellido paterno" required="1"/>
+                                    <field name="benef_mothername" string="Apellido materno" />
+                                    <field name="benef_relation" string="Parentesco" required="1"/>
+                                    <field name="benef_birth" string="Fecha de cumpleaños" required="1"/>
+                                    <field name="benef_phone" string="Número telefónico" required="1"/>
+                              </group>
+                        </group>
+                  </page>
+            </notebook>
           </xpath>
-                
       </field>
     </record>
 
