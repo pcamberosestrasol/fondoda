@@ -2,10 +2,68 @@
 <odoo>
   <template id="fda_solicitud_alta" name="Formato de solicitud de Alta">
     <t t-call="web.html_container">
-      <t t-foreach="docs" t-as="doc">
+      <t t-foreach="docs" t-as="c">
         <t t-call="web.external_layout">
             <div class="page">
-              
+              <div class="Container">
+                <div class="row">
+                  <h2>Formato de Solicitud de alta</h2>
+                </div>
+                <div class="row">
+                  <section id="datos_generales">
+                    <h3>1. Datos Generales</h3>
+                  </section>
+                  <table class="table table-sm" id="table_datos_generales">
+                    <thead class="bg-100">
+                      <tr>
+                        <th>No. de Empleado</th>
+                        <th>Nombre</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <t t-set="name_complete" t-value="c.father_name+' #'+c.mother_name+' #'+c.name"/>
+                      <tr>
+                        <td><span t-field="c.num_colab"/></td>
+                        <td class="text-center">
+                         <span t-esc="name_complete"/>
+                        </td>
+                      </tr>
+                    <tbody>
+                  </table>
+                  <div class="row">
+                    <span t-field="c.date" />
+                    <span t-field="o.payroll" />
+                    <p>En caso de fallecimiento asigno como beneficiario a (Debe ser mayor de edad):</p>
+                  </div>
+                  <table class="table table-sm" id="table_datos_generales">
+                    <thead class="bg-100">
+                      <tr>
+                        <th>Parentecos</th>
+                        <th>Nombre</th>
+                        <th>Telefono de contacto</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <t t-set="name_beneficio" t-value="benef_firstname+' #'+benef_fathername+' #'+benef_mothername"/>
+                      <tr>
+                        <td><span t-field="c.num_colab"/></td>
+                        <td class="text-center"><span t-esc="name_beneficio"/></td>
+                        <td><span t-field="c.benef_phone"/></td>
+                      </tr>
+                    <tbody>
+                  </table>
+                  <div class="row">
+                    <p>
+                      Expresamente autorizo a ESTRATEGIAS Y SOLUCIONES EN IT S.A.DE C.V. para que retenga las aportaciones de acuerdo al tipo de mi nómina;
+                      así mismo acepto y esto conciente que en caso de retirarme de la compañia, calquier adeudo de préstamos e interes que tenga 
+                      pendiente copn el Fonde de Ahorro de los empleados sea descontado de mi finiquito
+                    </p>
+                  </div>
+                  <div class="row">
+                    Firma del empleado
+                  </div>
+                </div>
+              <div>
             </div>
         </t>
       </t>

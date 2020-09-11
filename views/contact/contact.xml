@@ -29,13 +29,6 @@
           </xpath>
           
           <xpath expr="//field[@name='type']" position="after">
-<<<<<<< HEAD
-                <field name="num_colab"/>
-                <field name="date"/>
-                <field name="payroll"/>
-                <field name="phone"/>
-                <field name="email"/>
-=======
                 <field name="father_name" required="1" />
                 <field name="mother_name" />
                 <field name="num_colab"  />
@@ -97,7 +90,6 @@
                   </group>
               </group>
           </page>
->>>>>>> 34ddc2a2be15fad8136ea6083ea0a104f590e766
           </xpath>
                 
       </field>
