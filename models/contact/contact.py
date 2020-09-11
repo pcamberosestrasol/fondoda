@@ -33,11 +33,10 @@ class FondoContact(models.Model):
     def calculate_age(self):
         if self.benef_birth:
             today = date.today()
-            born = self.benef_birtdate
+            born = self.benef_birth
             age = today.year - born.year-((today.month,today.day) < (born.month,born.day))
             if age < 18:
                 self.benef_birth = False
-            else:
                 return {'warning': {
                     'title': "Error Edad",
                     'message': "La fecha de nacimiento no es valida",

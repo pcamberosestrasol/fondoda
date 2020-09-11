@@ -13,6 +13,7 @@
                   <section id="datos_generales">
                     <h3>1. Datos Generales</h3>
                   </section>
+                  <t t-set="name_complete" t-value="c.father_name+' #'+c.mother_name+' #'+c.name"/>
                   <table class="table table-sm" id="table_datos_generales">
                     <thead class="bg-100">
                       <tr>
@@ -21,20 +22,20 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <t t-set="name_complete" t-value="c.father_name+' #'+c.mother_name+' #'+c.name"/>
                       <tr>
                         <td><span t-field="c.num_colab"/></td>
                         <td class="text-center">
                          <span t-esc="name_complete"/>
                         </td>
                       </tr>
-                    <tbody>
+                    </tbody>
                   </table>
                   <div class="row">
                     <span t-field="c.date" />
                     <span t-field="o.payroll" />
                     <p>En caso de fallecimiento asigno como beneficiario a (Debe ser mayor de edad):</p>
                   </div>
+                  <t t-set="name_beneficio" t-value="benef_firstname+' #'+benef_fathername+' #'+benef_mothername"/>
                   <table class="table table-sm" id="table_datos_generales">
                     <thead class="bg-100">
                       <tr>
@@ -44,13 +45,13 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <t t-set="name_beneficio" t-value="benef_firstname+' #'+benef_fathername+' #'+benef_mothername"/>
+                      
                       <tr>
                         <td><span t-field="c.num_colab"/></td>
                         <td class="text-center"><span t-esc="name_beneficio"/></td>
                         <td><span t-field="c.benef_phone"/></td>
                       </tr>
-                    <tbody>
+                    </tbody>
                   </table>
                   <div class="row">
                     <p>
@@ -60,10 +61,10 @@
                     </p>
                   </div>
                   <div class="row">
-                    Firma del empleado
+                    <p>Firma Empleado</p>
                   </div>
                 </div>
-              <div>
+              </div>
             </div>
         </t>
       </t>
