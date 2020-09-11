@@ -24,6 +24,9 @@
     # always loaded
     'data': [
       'views/contact/contact.xml',
+      'reports/reports.xml',
+      'reports/solicitud_alta.xml',
+      
       #'security/security.xml',
       #'security/ir.model.access.csv', 
     ],  
