@@ -21,6 +21,6 @@ class ResPartner(models.Model):
                 self.login = False
                 return {'warning': {
                     'title': "Error Correo Electrónico",
-                    'message': "Correo electrónico invalido",
+                    'message': "El correo electrónico no pertenece a estrasol",
                     }
                 }
