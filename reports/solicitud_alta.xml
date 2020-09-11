@@ -6,68 +6,94 @@
         <t t-call="web.external_layout">
             <div class="page">
               <div class="Container">
+                <div class="row mb32 mt32">
+                  <div class="col-10">
+                    <p style="font-weight: bold; font-size:20px;">Fondo de Ahorro de los empleados de <strong style="color:#f49444;">ESTRATEGIAS Y SOLUCIONES EN TI SA DE CV</strong></p>
+                  </div>
+                  <!--<div class="col-"/>-->
+                  <div class="col-2">
+                    <p class="text-right" style="color:#f49444;font-size:20px;">ESTRA-F1</p>
+                  </div>
+                </div>
+                <!--<div class="row" style="border:1px solid black"/>-->
                 <div class="row">
                   <h2>Formato de Solicitud de alta</h2>
                 </div>
-                <div class="row">
+                <div class="row mb32">
                   <section id="datos_generales">
                     <h3>1. Datos Generales</h3>
                   </section>
-                  <t t-set="name_complete" t-value="c.father_name+' #'+c.mother_name+' #'+c.name"/>
+                  <t t-set="name_complete" t-value="c.father_name+' '+c.mother_name+' '+c.name"/>
                 </div>
-                <div>
-                  <table class="table table-sm" id="table_datos_generales">
+                <div class="row mb32">
+                  <table class="table table-sm" id="table_datos_generales" 
+                  style="font-size:20px;border-collapse:collapse;border: 2px solid #000;">
                     <thead class="bg-100">
                       <tr>
-                        <th>No. de Empleado</th>
-                        <th>Nombre</th>
+                        <th style="background-color:#f49444;border: 2px solid #000;">No. de Empleado</th>
+                        <th style="background-color:#f49444;border: 2px solid #000;">Nombre</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td><span t-field="c.num_colab"/></td>
-                        <td class="text-center">
+                        <td style="border: 2px solid #000;">
+                          <span class="text-center" t-field="c.num_colab"/>
+                        </td>
+                        <td class="text-center" style="border: 2px solid #000;">
                          <span t-esc="name_complete"/>
                         </td>
+                      </tr>
+                      <tr>
+                        <td style="background-color:#f49444;border: 2px solid #000;"></td>
+                        <td style="background-color:#f49444;border: 2px solid #000;"></td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-                <div class="row">
-                    <span t-field="c.date" />
-                    <span t-field="c.payroll" />
+                <div class="row mb32" style="font-size:20px;">
+                    <div class="col-6 text-center">
+                      <p>Fecha:</p><span t-field="c.date" />
+                    </div>
+                    <div class="col-6 text-center">
+                      <p >Tipo de nómina:</p><span t-field="c.payroll" />
+                    </div>
                 </div>
-                <div class="row">
-                  <p>En caso de fallecimiento asigno como beneficiario a (Debe ser mayor de edad):</p>
+                <div class="row" style="font-size:20px;">
+                  <p >En caso de fallecimiento asigno como beneficiario a (Debe ser mayor de edad):</p>
                 </div>
-                <div class="row">
-                  <t t-set="name_beneficio" t-value="c.benef_firstname+' #'+c.benef_fathername+' #'+c.benef_mothername"/>
-                  <table class="table table-sm" id="table_datos_generales">
+                <div class="row mb32">
+                  <t t-set="name_beneficio" t-value="c.benef_firstname+' '+c.benef_fathername+' '+c.benef_mothername"/>
+                  <table class="table table-sm" id="table_datos_generales" 
+                    style="font-size:20px;border-collapse:collapse;border: 2px solid #000;">
                     <thead class="bg-100">
                       <tr>
-                        <th>Parentecos</th>
-                        <th>Nombre</th>
-                        <th>Telefono de contacto</th>
+                        <th style="background-color:#f49444;border: 2px solid #000;">Parenteco</th>
+                        <th style="background-color:#f49444;border: 2px solid #000;">Nombre</th>
+                        <th style="background-color:#f49444;border: 2px solid #000;">Telefono de contacto</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td><span t-field="c.num_colab"/></td>
-                        <td class="text-center"><span t-esc="name_beneficio"/></td>
-                        <td><span t-field="c.benef_phone"/></td>
+                        <td class="text-center" style="border: 2px solid #000;"><span t-field="c.benef_relation"/></td>
+                        <td class="text-center" style="border: 2px solid #000;"><span t-esc="name_beneficio"/></td>
+                        <td class="text-center" style="border: 2px solid #000;"><span t-field="c.benef_phone"/></td>
                       </tr>
                     </tbody>
-                  </table>}
+                  </table>
                 </div>
-                <div class="row">
-                  <p>
-                    Expresamente autorizo a ESTRATEGIAS Y SOLUCIONES EN IT S.A.DE C.V. para que retenga las aportaciones de acuerdo al tipo de mi nómina;
-                    así mismo acepto y esto conciente que en caso de retirarme de la compañia, calquier adeudo de préstamos e interes que tenga 
-                    pendiente copn el Fonde de Ahorro de los empleados sea descontado de mi finiquito
+                <div class="row mb32">
+                  <p class="text-center" style="font-size:20px;">
+                    Expresamente autorizo a <strong style="color:#f49444;">ESTRATEGIAS Y SOLUCIONES EN IT S.A.DE C.V.</strong> para que retenga las aportaciones de acuerdo al tipo de mi nómina;
+                    así mismo acepto y estoy conciente que en caso de retirarme de la compañía, cualquier adeudo de préstamos e interes que tenga 
+                    pendiente con el Fondo de Ahorro de los empleados sea descontado de mi finiquito
                   </p>
                 </div>
-                <div class="row">
-                  <p>Firma Empleado</p>
+                <div class="row mt-5 pt-5" style="height:200px;">
+                  <div class="col-2"></div>
+                  <div class="col-8 mr-4 mt-5 pb-2" style="border-top:1px solid black;">
+                    <h4 class="text-center">Firma Empleado</h4>
+                  </div>
+                  <div class="col-2"></div>
                 </div>
               </div>
             </div>

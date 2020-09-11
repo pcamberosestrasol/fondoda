@@ -18,7 +18,7 @@ class FondoContact(models.Model):
         ('semanal', 'Semanal'),
         ('quincena', 'Quincenal'),
         ('mensual','Mensual')],
-        'Tipo de nómina',tracking=True)
+        'Tipo de nómina',tracking=True,default='quincena')
 
     benef_firstname = fields.Char('Nombre del beneficiario',tracking=True)
     benef_fathername = fields.Char('Apellido paterno del beneficiario',tracking=True)
