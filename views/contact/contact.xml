@@ -6,6 +6,12 @@
       <field name="model">res.partner</field>
       <field name="inherit_id" ref="base.view_partner_form"/>
       <field name="arch" type="xml">
+          <xpath expr="//field[@name='company_type']" position="attributes">
+                <attribute name="invisible">1</attribute>
+          </xpath>
+           <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+          </xpath>
           <xpath expr="//field[@name='type']" position="replace">
                 <field name="type" invisible="1" />
           </xpath>
@@ -15,9 +21,8 @@
           <xpath expr="//field[@name='function']" position="replace">
                 <field name="function" invisible="1" />
           </xpath>
-          <xpath expr="//field[@name='mobile']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
+
+
           <xpath expr="//field[@name='website']" position="replace">
                 <field name="website" invisible="1" />
           </xpath>
@@ -35,9 +40,16 @@
                 <field name="payroll" required="1" />
           </xpath>
           <xpath expr="//field[@name='function']" position="after">
+                <field name="date" string="Fecha de alta" />
+          </xpath>
+
+          <xpath expr="//field[@name='date']" position="attributes">
                 <field name="date"  />
           </xpath>
 
+          <xpath expr="//label[@name='address_name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+          </xpath>
           
           <xpath expr="//field[@name='lang']" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -52,6 +64,7 @@
           <xpath expr="//field[@name='street']" position="attributes">
                 <attribute name="invisible">1</attribute>
           </xpath>
+          
           <xpath expr="//field[@name='street2']" position="attributes">
                 <attribute name="invisible">1</attribute>
           </xpath>
@@ -66,10 +79,6 @@
           </xpath>
           <xpath expr="//field[@name='country_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
-          </xpath>
-
-            <xpath expr="//page[@string='contact']" position="attributes">
-              <attribute name="invisible">1</attribute>
           </xpath>
 
           <xpath expr="//page[@name='sales_purchases']" position="attributes">
@@ -94,9 +103,32 @@
               </group>
           </page>
           </xpath>
+
+          <xpath expr="//field[@name='child_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+          </xpath>
                 
       </field>
     </record>
+
+    <record id="view_contact_tree_inherit" model="ir.ui.view">
+      <field name="name">res.partner.tree.external</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_partner_tree"/>
+      <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_name']" position="before">
+                  <field name="num_colab"/>
+            </xpath>
+            <xpath expr="//field[@name='phone']" position="replace">
+                  <field name="date"/>
+            </xpath>
+            <xpath expr="//field[@name='email']" position="replace">
+                  <field name="colab_status"/>
+            </xpath>
+      </field>
+      </record>
+
+
 
   </data>
 </odoo>
