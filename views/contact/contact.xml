@@ -1,100 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
   <data>
-    <record id="view_contact_form_inherit" model="ir.ui.view">
-      <field name="name">res.partner.external</field>
-      <field name="model">res.partner</field>
-      <field name="inherit_id" ref="base.view_partner_form"/>
-      <field name="arch" type="xml">
-          <xpath expr="//field[@name='type']" position="replace">
-                <field name="type" invisible="1" />
-          </xpath>
-          <xpath expr="//field[@name='vat']" position="replace">
-                <field name="vat" invisible="1" />
-          </xpath>
-          <xpath expr="//field[@name='function']" position="replace">
-                <field name="function" invisible="1" />
-          </xpath>
-          <xpath expr="//field[@name='mobile']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
-          <xpath expr="//field[@name='website']" position="replace">
-                <field name="website" invisible="1" />
-          </xpath>
-          <xpath expr="//field[@name='title']" position="replace">
-                <field name="title" invisible="1" />
-          </xpath>
-          <xpath expr="//field[@name='category_id']" position="replace">
-                <field name="category_id" invisible="1" />
-          </xpath>
-          
-          <xpath expr="//field[@name='type']" position="after">
-                <field name="father_name" required="1" />
-                <field name="mother_name" />
-                <field name="num_colab"  />
-                <field name="payroll" required="1" />
-          </xpath>
-          <xpath expr="//field[@name='function']" position="after">
-                <field name="date"  />
-          </xpath>
 
-          
-          <xpath expr="//field[@name='lang']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
+      <record id="view_contact_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.external</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+              <xpath expr="//field[@name='type']" position="replace">
+                    <field name="type" invisible="1" />
+              </xpath>
+              <xpath expr="//field[@name='vat']" position="replace">
+                    <field name="vat" invisible="1" />
+              </xpath>
+              <xpath expr="//field[@name='function']" position="replace">
+                    <field name="function" invisible="1" />
+              </xpath>
+              <xpath expr="//field[@name='mobile']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+              </xpath>
+              <xpath expr="//field[@name='website']" position="replace">
+                    <field name="website" invisible="1" />
+              </xpath>
+              <xpath expr="//field[@name='title']" position="replace">
+                    <field name="title" invisible="1" />
+              </xpath>
+              <xpath expr="//field[@name='category_id']" position="replace">
+                    <field name="category_id" invisible="1" />
+              </xpath>
 
-          <xpath expr="//label[@for='lang']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
-          <xpath expr="//button[@name='55']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
-          <xpath expr="//field[@name='street']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
-          <xpath expr="//field[@name='street2']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
-          <xpath expr="//field[@name='city']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
-          <xpath expr="//field[@name='state_id']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
-          <xpath expr="//field[@name='zip']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
-          <xpath expr="//field[@name='country_id']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
+              <xpath expr="//field[@name='type']" position="after">
+                    <field name="father_name" required="1" />
+                    <field name="mother_name" />
+                    <field name="num_colab"  />
+                    <field name="payroll" required="1" />
+              </xpath>
+              <xpath expr="//field[@name='function']" position="after">
+                    <field name="date"  />
+              </xpath>
 
-          <xpath expr="//page[@name='sales_purchases']" position="attributes">
-              <attribute name="invisible">1</attribute>
-          </xpath>
 
-          <xpath expr="//page[@name='internal_notes']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
+              <xpath expr="//field[@name='lang']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+              </xpath>
 
-          <xpath expr="//notebook" position="replace">
-            <notebook>
-                  <page name="infoben" string="Información del Beneficiario"> 
-                        <group>
-                              <group>
-                                    <field name="benef_firstname" string="Nombre" required="1"/>
-                                    <field name="benef_fathername" string="Apellido paterno" required="1"/>
-                                    <field name="benef_mothername" string="Apellido materno" />
-                                    <field name="benef_relation" string="Parentesco" required="1"/>
-                                    <field name="benef_birth" string="Fecha de cumpleaños" required="1"/>
-                                    <field name="benef_phone" string="Número telefónico" required="1"/>
-                              </group>
-                        </group>
-                  </page>
-            </notebook>
-          </xpath>
-      </field>
-    </record>
+              <xpath expr="//label[@for='lang']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+              </xpath>
+              <xpath expr="//button[@name='55']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+              </xpath>
+              <xpath expr="//field[@name='street']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+              </xpath>
+              <xpath expr="//field[@name='street2']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+              </xpath>
+              <xpath expr="//field[@name='city']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+              </xpath>
+              <xpath expr="//field[@name='state_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+              </xpath>
+              <xpath expr="//field[@name='zip']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+              </xpath>
+              <xpath expr="//field[@name='country_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+              </xpath>
+              <xpath expr="//label[@name='address_name']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+              </xpath>
+              <xpath expr="//notebook" position="replace">
+                    <notebook>
+                          <page name="infoben" string="Información del Beneficiario"> 
+                                <group>
+                                      <group>
+                                            <field name="benef_firstname" string="Nombre" required="1"/>
+                                            <field name="benef_fathername" string="Apellido paterno" required="1"/>
+                                            <field name="benef_mothername" string="Apellido materno" />
+                                            <field name="benef_relation" string="Parentesco" required="1"/>
+                                            <field name="benef_birth" string="Fecha de cumpleaños" required="1"/>
+                                            <field name="benef_phone" string="Número telefónico" required="1"/>
+                                      </group>
+                                </group>
+                          </page>
+                    </notebook>
+              </xpath>
+        </field>
+      </record>
 
+      <record id="contacts.action_contacts_view_kanban" model="ir.actions.act_window.view">
+            <field name="sequence">1</field>
+      </record>
+      <record id="contacts.action_contacts_view_form" model="ir.actions.act_window.view">
+            <field name="sequence">2</field>
+      </record>
+      <record id="contacts.action_contacts_view_tree" model="ir.actions.act_window.view">
+            <field name="sequence">0</field>
+      </record>
   </data>
 </odoo>
  

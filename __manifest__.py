@@ -26,7 +26,7 @@
       'views/contact/contact.xml',
       'reports/reports.xml',
       'reports/solicitud_alta.xml',
-      
+      'mail/mail_colab.xml',
       #'security/security.xml',
       #'security/ir.model.access.csv', 
     ],  
