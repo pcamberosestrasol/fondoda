@@ -128,6 +128,15 @@
       </field>
       </record>
 
+      <record id="contacts.action_contacts_view_kanban" model="ir.actions.act_window.view">
+            <field name="sequence">1</field>
+      </record>
+      <record id="contacts.action_contacts_view_form" model="ir.actions.act_window.view">
+            <field name="sequence">2</field>
+      </record>
+      <record id="contacts.action_contacts_view_tree" model="ir.actions.act_window.view">
+            <field name="sequence">0</field>
+      </record>
 
 
   </data>

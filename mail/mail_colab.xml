@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <data>
+        <record id="auth_signup.set_password_email" model="mail.template">
+            <field name="report_template" ref="fondoda.reporte_solicitud_alta"/>
+            <field name="report_name">Alta del colaborador ${object.name}</field>
+        </record>
+     </data>
+</odoo>

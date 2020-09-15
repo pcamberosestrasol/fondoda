@@ -18,7 +18,7 @@ class FondoContact(models.Model):
         ('semanal', 'Semanal'),
         ('quincena', 'Quincenal'),
         ('mensual','Mensual')],
-        'Tipo de nómina',tracking=True)
+        'Tipo de nómina',tracking=True,default='quincena')
 
     colab_status = fields.Selection([('activo', 'Activo'),('inactivo', 'Inactivo')], 'Estatus',tracking=True)
 
@@ -40,8 +40,8 @@ class FondoContact(models.Model):
             if age < 18:
                 self.benef_birth = False
                 return {'warning': {
-                    'title': "Error Edad",
-                    'message': "La fecha de nacimiento no es valida",
+                    'title': "Error",
+                    'message': "La fecha de nacimiento no es válida",
                     }
                 }
 
