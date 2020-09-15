@@ -34,7 +34,8 @@
                     <field name="mother_name" />
                     <field name="num_colab"  />
                     <field name="payroll" required="1" />
-                    <field name="is_colaborator" invisible="0"/>
+                    <field name="is_colaborator" invisible="1"/>
+                    <field name="active" invisible="1"/>
               </xpath>
               <xpath expr="//field[@name='function']" position="after">
                     <field name="date"  />
@@ -73,16 +74,16 @@
                     <attribute name="invisible">1</attribute>
               </xpath>
               <xpath expr="//notebook" position="replace">
-                    <notebook attrs="{'invisible':[('is_colaborator', '=', False)]}">
+                    <notebook>
                           <page name="infoben" string="Información del Beneficiario"> 
                                 <group>
                                       <group>
-                                            <field name="benef_firstname" string="Nombre" attrs="{'required': [('is_colaborator', '=', True)]}"/>
-                                            <field name="benef_fathername" string="Apellido paterno" attrs="{'required': [('is_colaborator', '=', True)]}"/>
+                                            <field name="benef_firstname" string="Nombre" required="1"/>
+                                            <field name="benef_fathername" string="Apellido paterno" required="1"/>
                                             <field name="benef_mothername" string="Apellido materno" />
-                                            <field name="benef_relation" string="Parentesco" attrs="{'required': [('is_colaborator', '=', True)]}"/>
-                                            <field name="benef_birth" string="Fecha de cumpleaños" attrs="{'required': [('is_colaborator', '=', True)]}"/>
-                                            <field name="benef_phone" string="Número telefónico" attrs="{'required': [('is_colaborator', '=', True)]}"/>
+                                            <field name="benef_relation" string="Parentesco" required="1"/>
+                                            <field name="benef_birth" string="Fecha de cumpleaños" required="1"/>
+                                            <field name="benef_phone" string="Número telefónico" required="1"/>
                                       </group>
                                 </group>
                           </page>
