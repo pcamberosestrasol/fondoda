@@ -14,9 +14,7 @@ class ResPartner(models.Model):
     def method_validete_mail(self):
         if self.login:
             mail = self.login
-            _logger.info('metodo entra')
             match = re.match('^[_A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*@estrasol.com.mx$', mail)
-            _logger.info('Result match = '+str(match))
             if match == None:
                 self.login = False
                 return {'warning': {

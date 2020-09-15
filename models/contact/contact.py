@@ -3,15 +3,14 @@ from odoo import models, fields, api
 import logging
 from datetime import datetime,date,time
 _logger = logging.getLogger(__name__)
-
-
-
+import re
+from odoo.exceptions import UserError,ValidationError
 
 class FondoContact(models.Model):
     
     _inherit = 'res.partner'
 
-    num_colab = fields.Integer('Número de colaborador',tracking=True,default=0 )
+    num_colab = fields.Char('Número de colaborador',tracking=True,default='0' )
     father_name = fields.Char('Apellido paterno',tracking=True)
     mother_name = fields.Char('Apellido materno',tracking=True)
     payroll = fields.Selection([
@@ -26,7 +25,7 @@ class FondoContact(models.Model):
     benef_relation = fields.Char('Parentesco del beneficiario',tracking=True)
     benef_birth = fields.Date('Fecha de nacimiento del beneficiario',tracking=True)
     benef_phone = fields.Char('Número telefónico del beneficiario',tracking=True)
-
+    is_colaborator = fields.Boolean('Colaborador',compute='define_type_of_user',store=True,)
 
 
     @api.onchange('benef_birth')
@@ -42,3 +41,65 @@ class FondoContact(models.Model):
                     'message': "La fecha de nacimiento no es válida",
                     }
                 }
+
+    @api.onchange('phone')
+    def onchange_phone_verification(self):
+        if self.phone:
+            telefono = str(self.phone)
+            telefono.replace(" ","")
+            temp=list(filter(lambda numero: numero in '0123456789',telefono) )
+            tam_telefono = len(temp)
+            caracteres = [numero for numero in str(telefono) if not numero in '+-(0123456789)']
+            if caracteres:
+                self.phone=False
+                return {'warning': {
+                    'title': "Error Teléfono",
+                    'message': "No se permite el uso de letras",
+                    }
+                }
+            if tam_telefono >= 10 and tam_telefono <= 13:
+                pass
+            else:
+                return {'warning': {
+                    'title': "Error Teléfono",
+                    'message': "Favor de introducir un numero con al menos 10 caracteres",
+                    }
+                }
+
+
+    @api.onchange('email')
+    def method_validete_mail(self):
+        if self.email:
+            mail = self.email
+            match = re.match('^[_A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*@estrasol.com.mx$', mail)
+            if match == None:
+                self.email = False
+                return {'warning': {
+                    'title': "Error Correo Electrónico",
+                    'message': "El correo electrónico no pertenece a estrasol",
+                    }
+                }
+
+    @api.onchange('num_colab')
+    def onchange_colab_verification(self):
+        if self.num_colab:
+            colab = str(self.num_colab)
+            colab.replace(" ","")
+            temp=list(filter(lambda numero: numero in '0123456789',colab) )
+            caracteres = [numero for numero in str(colab) if not numero in '(0123456789)']
+            colaboradores = self.env['res.partner'].search([('num_colab','=',self.num_colab)])
+            if caracteres and len(colaboradores) > 1:
+                self.colab=False
+                return {'warning': {
+                    'title': "Error Colaborador",
+                    'message': "Puede que contenga letras, o el colaborador ya exista",
+                    }
+                }
+    
+    @api.depends('user_ids','active')
+    def define_type_of_user(self):
+        for res in self:
+            if res.active == True and res.user_ids:
+                res.is_colaborator = True
+            else:
+                res.is_colaborator = False
