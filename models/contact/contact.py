@@ -88,9 +88,9 @@ class FondoContact(models.Model):
             colab = str(self.num_colab)
             colab.replace(" ","")
             temp=list(filter(lambda numero: numero in '0123456789',colab) )
-            caracteres = [numero for numero in str(colab) if not numero in '(0123456789)']
+            caracteres = [numero for numero in str(colab) if not numero in '0123456789']
             colaboradores = self.env['res.partner'].search([('num_colab','=',self.num_colab)])
-            if caracteres and len(colaboradores) > 1:
+            if caracteres or len(colaboradores) > 1:
                 self.colab=False
                 return {'warning': {
                     'title': "Error Colaborador",

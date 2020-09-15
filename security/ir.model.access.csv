@@ -1,1 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fondoda_prestamo,access.fondoda.prestamo,model_fondoda_prestamo,global_permission,1,1,1,1
+access_fondoda_prestamo_colab,access.fondoda.prestamo,model_fondoda_prestamo,colab_permission,1,1,1,0

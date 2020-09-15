@@ -27,8 +27,8 @@
       'reports/reports.xml',
       'reports/solicitud_alta.xml',
       'mail/mail_colab.xml',
-      #'security/security.xml',
-      #'security/ir.model.access.csv', 
+      'security/security.xml',
+      'security/ir.model.access.csv', 
     ],  
      'qweb': [
            #'qweb/replace_menu_base.xml',
