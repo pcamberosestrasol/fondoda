@@ -19,6 +19,8 @@ class FondoContact(models.Model):
         ('mensual','Mensual')],
         'Tipo de nómina',tracking=True,default='quincena')
 
+    colab_status = fields.Selection([('activo', 'Activo'),('inactivo', 'Inactivo')], 'Estatus',tracking=True)
+
     benef_firstname = fields.Char('Nombre del beneficiario',tracking=True)
     benef_fathername = fields.Char('Apellido paterno del beneficiario',tracking=True)
     benef_mothername = fields.Char('Apellido materno del beneficiario',tracking=True)
@@ -92,7 +94,7 @@ class FondoContact(models.Model):
                 self.colab=False
                 return {'warning': {
                     'title': "Error Colaborador",
-                    'message': "Puede que contenga letras, o el colaborador ya exista",
+                    'message': "Puede que contenga letras, o el colaborador ya existe",
                     }
                 }
     
