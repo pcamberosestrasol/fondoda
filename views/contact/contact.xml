@@ -34,7 +34,7 @@
             </xpath>
 
           <xpath expr="//field[@name='date']" position="attributes">
-                <field name="date"  />
+                <field name="date"/>
           </xpath>
 
           <xpath expr="//label[@name='address_name']" position="attributes">
