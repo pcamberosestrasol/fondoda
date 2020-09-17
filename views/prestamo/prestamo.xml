@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+       <record id="prestamo_view_form" model="ir.ui.view">
+           <field name="name">fondoda.prestamo.form</field>
+           <field name="model">fondoda.prestamo</field>
+           <field name="arch" type="xml">
+               <form>
+                   <sheet>
+                       <group>
+                           <group>
+                                <field name="name"/>
+                                <field name="partner_id"/>
+                                <field name="prestamos_activos"/>
+                                <field name="cantidad"/>
+                                <field name="cantidad_letra"/>
+                           </group>
+                           <group>
+                                <field name="descuento"/>
+                                <field name="monto"/>
+                                <field name="interes"/>
+                                <field name="estatus"/>
+                                <field name="num_colab"/>
+                                <field name="fecha"/>
+                           </group>
+                       </group>
+                   </sheet>
+               </form>
+           </field>
+       </record>
+
+        <record id="prestamo_view_tree" model="ir.ui.view">
+            <field name="name">fondoda.prestamo.tree</field>
+            <field name="model">fondoda.prestamo</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="num_colab"/>
+                    <field name="partner_id"/>
+                    <field name="fecha"/>
+                    <field name="estatus"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_prestamo_window" model="ir.actions.act_window">
+            <field name="name">Solicitud de Prestamo</field>
+            <field name="res_model">fondoda.prestamo</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="help" type="html">
+                <p class = "o_view_nocontent_smiling_face">
+                    Crea tu nueva solicitud de prestamo
+                </p>
+            </field>
+        </record>
+    
+    </data>
+</odoo>

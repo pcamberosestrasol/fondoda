@@ -108,18 +108,22 @@ class FondoContact(models.Model):
     @api.onchange('num_colab')
     def onchange_colab_verification(self):
         if self.num_colab:
-            colab = self.num_colab
-            colab.replace(" ","")
-            temp=list(filter(lambda numero: numero in '0123456789',colab) )
-            colab = len(temp)
-            caracteres = [numero for numero in str(colab) if not numero in '(0123456789)']
-            if caracteres:
+            colab = self.convert_int(self.num_colab)
+            if colab == True:
+                pass
+            else:
                 self.num_colab = False
                 return {'warning': {
                     'title': "Error Colaborador",
                     'message': "El número colaborador contiene caracteres",
                     }
                 }
+    def convert_int(self,texto):
+        try:
+            int(texto)
+            return True
+        except ValueError:
+            return False
             #colab = str(self.num_colab)
             #colab.replace(" ","")
             #temp=list(filter(lambda numero: numero in '0123456789',colab) )
@@ -156,6 +160,22 @@ class FondoContact(models.Model):
         res = super(FondoContact, self).write(vals)
         colab = self.env['res.partner'].search([('num_colab','=',self.num_colab)])
         if len(colab) > 1:
-            raise ValidationError(('El número de colaborador que intenta agregar ya existe'))
+            raise ValidationError(('El número de colaborador que intenta utilizar ya existe'))
         else:
             return res
+    
+
+    def name_get(self):
+        result = []
+        for record in self:
+            if record.father_name and record.mother_name:
+                name = '%s %s %s' % (record.name, record.father_name, record.mother_name)
+                result.append((record.id, name))
+            elif not record.mother_name:
+                name = '%s %s' % (record.name, record.father_name)
+                result.append((record.id, name))
+            else:
+                result.append((record.id, record.name))
+        return result
+    
+    

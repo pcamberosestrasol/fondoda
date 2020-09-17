@@ -3,7 +3,8 @@ from odoo.exceptions import UserError,ValidationError
 
 class FondodaPrestamo(models.Model):
     _name = 'fondoda.prestamo'
-
+    _rec_name = 'name'
+    
     name = fields.Char('Nombre')
     partner_id = fields.Many2one('res.partner','Colaborador',default=lambda self: self.env.user.partner_id)
     prestamos_activos = fields.Boolean('¿Tienes prestamos activos?')
@@ -18,11 +19,13 @@ class FondodaPrestamo(models.Model):
     monto = fields.Float('Monto de los descuentos',digits=(32, 2))
     interes = fields.Float('Interés(%)')
     estatus = fields.Selection([
-        ('solicitud', 'Solicitud'),
-        ('aceptada', 'Aceptada'),
-        ('rechazada','Rechazada'),
-        ('pagado','Pagado')],
+        ('1', 'Pendiente'),
+        ('2', 'Activo'),
+        ('3', 'Pagado'),
+        ('4', 'Rechazada'),],
         string='Estatus')
+    num_colab = fields.Char(related='partner_id.num_colab',string='Número empleado')
+    fecha = fields.Date('fecha',default=fields.Date.today())
 
     @api.depends('cantidad','prestamos','pagos','interes')
     def compute_total_descuento(self):
@@ -36,7 +39,7 @@ class FondodaPrestamo(models.Model):
     def verify_prestamos(self):
         for p in self:
             if p.partner_id and p.partner_id.prestamos_id:
-                p_value = p.partner_id.prestamos_id.filtered(lambda x: x.estatus == 'aceptada')
+                p_value = p.partner_id.prestamos_id.filtered(lambda x: x.estatus == '2')
                 if p_value:
                     p.prestamos_activos = True
                 else:
@@ -56,7 +59,7 @@ class FondodaPrestamo(models.Model):
     def write(self, vals):
         res = super(FondodaPrestamo, self).write(vals)
         if 'estatus' in vals:
-            if self.estatus == 'aceptada' and self.prestamos_activos == True:
+            if self.estatus == '2' and self.prestamos_activos == True:
                 raise ValidationError(('Error!! No se puede aceptar la solicitud, debido a que tiene un prestamo activo'))
             else:
                 return res

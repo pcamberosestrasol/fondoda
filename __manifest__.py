@@ -28,7 +28,9 @@
       'reports/solicitud_alta.xml',
       'mail/mail_colab.xml',
       'security/security.xml',
-      'security/ir.model.access.csv', 
+      'security/ir.model.access.csv',
+      'views/prestamo/prestamo.xml',
+      'views/menu.xml', 
     ],  
      'qweb': [
            #'qweb/replace_menu_base.xml',
