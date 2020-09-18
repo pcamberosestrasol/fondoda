@@ -28,15 +28,17 @@
       'reports/solicitud_alta.xml',
       'mail/mail_colab.xml',
       'security/security.xml',
+      'static/src/xml/theme.xml',
       'security/ir.model.access.csv', 
     ],  
      'qweb': [
-           #'qweb/replace_menu_base.xml',
+           "qweb/*.xml",
          ]
         ,
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
+    # "qweb": ["static/src/xml/*.xml"],
     'application': True,
 }

@@ -3,7 +3,12 @@
 
 
 .o_form_view .oe_button_box .oe_stat_button .o_button_icon {
-            color: #E95A0C;
+            color: #e38411;
+        }
+        .o_required_modifier {
+            &.o_input, .o_input {
+                background-color: #E3EFFF!important;
+            }
         }
         
         .o_required_modifier {
@@ -11,4 +16,15 @@
                 background-color: #E3EFFF!important;
             }
         }
-        
+        /*
+        html {
+            height: 100%;
+            .o_web_client{
+            > .o_action_manager {
+                padding-left:150px;
+                }
+            }
+        }
+        */
+
+    
