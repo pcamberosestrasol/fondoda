@@ -30,6 +30,8 @@
       'security/security.xml',
       'static/src/xml/theme.xml',
       'security/ir.model.access.csv', 
+      'views/prestamo/prestamo.xml',
+      'views/menu.xml', 
     ],  
      'qweb': [
            "qweb/*.xml",

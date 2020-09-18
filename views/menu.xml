@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <menuitem id="res_partner_contacts_fondoda"
+            name="Colaboradores"
+            action="contacts.action_contacts"
+            parent="contacts.res_partner_menu_contacts"
+           />
+
+        <menuitem id="prestamo_menu_view" name="Prestamos" action="fondoda.action_prestamo_window" parent="contacts.res_partner_menu_contacts" />
+    </data>
+</odoo>
