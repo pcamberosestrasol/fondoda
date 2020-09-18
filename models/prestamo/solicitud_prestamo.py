@@ -29,6 +29,7 @@ class FondodaPrestamo(models.Model):
         string='Estatus')
     num_colab = fields.Char(related='partner_id.num_colab',string='Número empleado')
     fecha = fields.Date('Fecha',default=fields.Date.today())
+    aceptar = fields.Boolean('Aceptar terminos y condiciones')
 
 
     def _expand_states(self, states, domain, order):
@@ -83,3 +84,20 @@ class FondodaPrestamo(models.Model):
     
     def pagado(self):
         self.estatus = '3'
+
+
+    def open_wizard_terms(self):
+        information = self.env['ir.config_parameter'].sudo().get_param('fondoda.description')
+        view = {
+            'name': ('Terminos y Condiciones'),
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'fondoda.terms.conditions',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'context': {
+                'default_presupuesto_id':self.id,
+                'default_description': information
+            }
+        }
+        return view

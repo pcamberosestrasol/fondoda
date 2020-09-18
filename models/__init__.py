@@ -2,4 +2,5 @@
 from .contact import contact
 from .users import res_user
 from .prestamo import solicitud_prestamo
+from . import res_config_settings
 #from .users import res_user

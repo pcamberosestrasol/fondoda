@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="terms_view_form" model="ir.ui.view">
+            <field name="name">fondoda.terms.conditions.form.wizzard</field>
+            <field name="model">fondoda.terms.conditions</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="prestamo_id"/>
+                            <field name="description" readonly="1" widget="html"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="aceptar_terminos_condicones" type="object" string="Aceptar terminos y condiciones" class="oe_highlight"/>
+                        <button name="cancelar" type="object" string="Rechazar" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

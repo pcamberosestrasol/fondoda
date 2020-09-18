@@ -23,6 +23,7 @@
     #.
     # always loaded
     'data': [
+        #views
       'views/contact/contact.xml',
       'reports/reports.xml',
       'reports/solicitud_alta.xml',
@@ -31,6 +32,10 @@
       'static/src/xml/theme.xml',
       'security/ir.model.access.csv', 
       'views/prestamo/prestamo.xml',
+      'views/settings.xml',
+      #wizard
+      'wizard/terminos.xml',
+      #menu
       'views/menu.xml', 
     ],  
      'qweb': [
