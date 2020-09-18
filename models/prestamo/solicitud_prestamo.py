@@ -4,8 +4,9 @@ from odoo.exceptions import UserError,ValidationError
 class FondodaPrestamo(models.Model):
     _name = 'fondoda.prestamo'
     _rec_name = 'name'
-    
-    name = fields.Char('Nombre')
+    _inherit = ['mail.thread','mail.activity.mixin']
+
+    name = fields.Char('Folio')
     partner_id = fields.Many2one('res.partner','Colaborador',default=lambda self: self.env.user.partner_id)
     prestamos_activos = fields.Boolean('¿Tienes prestamos activos?')
     cantidad = fields.Float('Cantidad solicitada',digits=(32, 2))
@@ -22,12 +23,18 @@ class FondodaPrestamo(models.Model):
         ('1', 'Pendiente'),
         ('2', 'Activo'),
         ('3', 'Pagado'),
-        ('4', 'Rechazada'),],
+        ('4', 'Rechazado')],
+        group_expand='_expand_states', index=True,
+        default='1',
         string='Estatus')
     num_colab = fields.Char(related='partner_id.num_colab',string='Número empleado')
-    fecha = fields.Date('fecha',default=fields.Date.today())
+    fecha = fields.Date('Fecha',default=fields.Date.today())
 
-    @api.depends('cantidad','prestamos','pagos','interes')
+
+    def _expand_states(self, states, domain, order):
+        return [key for key, val in type(self).estatus.selection]
+
+    @api.depends('cantidad','prestamos_activos','pagos','interes')
     def compute_total_descuento(self):
         for sp in self:
             if sp.prestamos_activos == False:
@@ -57,6 +64,7 @@ class FondodaPrestamo(models.Model):
             return res
     
     def write(self, vals):
+        previos_estatus = self.estatus
         res = super(FondodaPrestamo, self).write(vals)
         if 'estatus' in vals:
             if self.estatus == '2' and self.prestamos_activos == True:
@@ -65,4 +73,13 @@ class FondodaPrestamo(models.Model):
                 return res
         else:
             return res
-                
+    
+
+    def autorizar(self):
+        self.estatus = '2'
+
+    def rechazar(self):
+        self.estatus = '4'
+    
+    def pagado(self):
+        self.estatus = '3'

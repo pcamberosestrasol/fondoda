@@ -179,3 +179,5 @@ class FondoContact(models.Model):
         return result
     
     
+
+   

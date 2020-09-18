@@ -1,33 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-       <record id="prestamo_view_form" model="ir.ui.view">
-           <field name="name">fondoda.prestamo.form</field>
-           <field name="model">fondoda.prestamo</field>
-           <field name="arch" type="xml">
-               <form>
-                   <sheet>
-                       <group>
-                           <group>
-                                <field name="name"/>
-                                <field name="partner_id"/>
-                                <field name="prestamos_activos"/>
-                                <field name="cantidad"/>
-                                <field name="cantidad_letra"/>
-                           </group>
-                           <group>
-                                <field name="descuento"/>
-                                <field name="monto"/>
-                                <field name="interes"/>
-                                <field name="estatus"/>
-                                <field name="num_colab"/>
-                                <field name="fecha"/>
-                           </group>
-                       </group>
-                   </sheet>
-               </form>
-           </field>
-       </record>
+        <record id="prestamo_view_kanban" model="ir.ui.view">
+            <field name="name">fondoda.prestamo.kanban</field>
+            <field name="model">fondoda.prestamo</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="estatus" class="o_kanban_small_column">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="prestamos_activos"/>
+                    <field name="cantidad"/>
+                    <field name="cantidad_letra"/>
+                    <field name="pagos"/>
+                    <field name="descuento"/>
+                    <field name="monto"/>
+                    <field name="interes"/>
+                    <field name="estatus"/>
+                    <field name="num_colab"/>
+                    <field name="fecha"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <h4>Folio:  <field name="name"/></h4>
+                                <div class="o_kanban_record_body">
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <strong>Colaborador:</strong>
+                                            <span><field name="num_colab"/></span>
+                                            -
+                                            <span><field name="partner_id"/></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <strong>Cantidad:  </strong><span>$<field name="cantidad"/></span>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_left">
+                                            <field name="fecha"/>
+                                        </div>
+                                        <div class="oe_kanban_bottom_right">
+                                            <field name="estatus"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <record id="prestamo_view_form" model="ir.ui.view">
+            <field name="name">fondoda.prestamo.form</field>
+            <field name="model">fondoda.prestamo</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="autorizar" string="Aprobar" type="object" class="oe_highlight" attrs="{'invisible':[('estatus', '!=', '1')]}"/>
+                        <button name="rechazar" string="Rechazar" type="object" class="oe_highlight" attrs="{'invisible':[('estatus', '!=', '1')]}"/>
+                        <button name="pagado" string="Pagar" type="object" class="oe_highlight" attrs="{'invisible':[('estatus', '!=', '2')]}"/>
+                    </header>
+                    <sheet >
+                        <group>
+                            <group>
+                                <field name="name" attrs="{'readonly':[('estatus', '=', '3')]}"/>
+                                <field name="partner_id" attrs="{'readonly':[('estatus', '=', '3')]}"/>
+                                <field name="prestamos_activos" attrs="{'readonly':[('estatus', '=', '3')]}"/>
+                                <field name="cantidad" attrs="{'readonly':[('estatus', '=', '3')]}"/>
+                                <field name="cantidad_letra" attrs="{'readonly':[('estatus', '=', '3')]}"/>
+                                <field name="pagos" attrs="{'readonly':[('estatus', '=', '3')]}"/>
+                            </group>
+                            <group>
+                                <field name="descuento" attrs="{'readonly':[('estatus', '=', '3')]}"/>
+                                <field name="monto" attrs="{'readonly':[('estatus', '=', '3')]}"/>
+                                <field name="interes" attrs="{'readonly':[('estatus', '=', '3')]}"/>
+                                <field name="estatus" attrs="{'readonly':[('estatus', '=', '3')]}"/>
+                                <field name="num_colab" attrs="{'readonly':[('estatus', '=', '3')]}"/>
+                                <field name="fecha" attrs="{'readonly':[('estatus', '=', '3')]}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
         <record id="prestamo_view_tree" model="ir.ui.view">
             <field name="name">fondoda.prestamo.tree</field>
@@ -37,9 +93,28 @@
                     <field name="name"/>
                     <field name="num_colab"/>
                     <field name="partner_id"/>
+                    <field name="cantidad"/>
                     <field name="fecha"/>
                     <field name="estatus"/>
                 </tree>
+            </field>
+        </record>
+
+
+        <record id="prestamos_view_search" model="ir.ui.view">
+            <field name="name">fondoda.prestamo.search</field>
+            <field name="model">fondoda.prestamo</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Folio"/>
+                    <filter string="Pendiente" name="pendiente" domain="[('estatus','=','1')]"/>
+                    <filter string="Activo" name="activo" domain="[('estatus','=','2')]"/>
+                    <filter string="Pagado" name="pagadp" domain="[('estatus','=','3')]"/>
+                    <filter string="Rechazado" name="rechazado" domain="[('estatus','=','4')]"/>
+                    <group expand="0" name="group_by" string="Group By">
+                        <filter name="group_estatus" string="Estatus" context="{'group_by':'estatus'}"/>
+                    </group>
+                </search>
             </field>
         </record>
 
