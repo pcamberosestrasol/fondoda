@@ -22,5 +22,5 @@ class ResConfigSettings(models.TransientModel):
         super(ResConfigSettings, self).set_values()
         param = self.env['ir.config_parameter'].sudo()
         description = self.description or False
-        param.set_param('intelli.description', description)
+        param.set_param('fondoda.description', description)
    

@@ -33,6 +33,8 @@
       'security/ir.model.access.csv', 
       'views/prestamo/prestamo.xml',
       'views/settings.xml',
+      #sequence
+      'data/prestamo_folio.xml',
       #wizard
       'wizard/terminos.xml',
       #menu

@@ -6,21 +6,29 @@
       <field name="model">res.partner</field>
       <field name="inherit_id" ref="base.view_partner_form"/>
       <field name="arch" type="xml">
-          <xpath expr="//field[@name='company_type']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
-           <xpath expr="//field[@name='parent_id']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
-          <xpath expr="//field[@name='type']" position="replace">
-                <field name="type" invisible="1" />
-          </xpath>
-          <xpath expr="//field[@name='vat']" position="replace">
-                <field name="vat" invisible="1" />
-          </xpath>
-          <xpath expr="//field[@name='function']" position="replace">
-                <field name="function" invisible="1" />
-          </xpath>
+            <div name="button_box" position="inside">
+                  <button name="send_solicitud_alta" 
+                  type="object" 
+                  string="Enviar Alta" 
+                  class="oe_stat_button" 
+                  icon="fa-envelope" 
+                  groups="fondoda.global_permission"/>
+            </div>
+            <xpath expr="//field[@name='company_type']" position="attributes">
+                  <attribute name="invisible">1</attribute>
+            </xpath>
+             <xpath expr="//field[@name='parent_id']" position="attributes">
+                  <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='type']" position="replace">
+                  <field name="type" invisible="1" />
+            </xpath>
+            <xpath expr="//field[@name='vat']" position="replace">
+                  <field name="vat" invisible="1" />
+            </xpath>
+            <xpath expr="//field[@name='function']" position="replace">
+                  <field name="function" invisible="1" />
+            </xpath>
             <xpath expr="//field[@name='type']" position="after">
                   <field name="father_name" required="1" />
                   <field name="mother_name" />
@@ -28,32 +36,30 @@
                   <field name="payroll" required="1" />
                   <field name="is_colaborator" invisible="1"/>
                   <field name="active" invisible="1"/>
+                  <field name="doc" widget="pdf_viewer" style="max-height:50px;"/>
+                 
             </xpath>
             <xpath expr="//field[@name='function']" position="after">
-                  <field name="date"  />
+                  <field name="date"/>
+                  <field name="fecha_alta"/>
+            </xpath>
+            <xpath expr="//label[@name='address_name']" position="attributes">
+                  <attribute name="invisible">1</attribute>
             </xpath>
 
-          <xpath expr="//field[@name='date']" position="attributes">
-                <field name="date"/>
-          </xpath>
+            <xpath expr="//field[@name='lang']" position="attributes">
+                  <attribute name="invisible">1</attribute>
+            </xpath>
 
-          <xpath expr="//label[@name='address_name']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
-          
-          <xpath expr="//field[@name='lang']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
-
-          <xpath expr="//label[@for='lang']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
-          <xpath expr="//button[@name='55']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
-          <xpath expr="//field[@name='street']" position="attributes">
-                <attribute name="invisible">1</attribute>
-          </xpath>
+            <xpath expr="//label[@for='lang']" position="attributes">
+                  <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='55']" position="attributes">
+                  <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='street']" position="attributes">
+                  <attribute name="invisible">1</attribute>
+            </xpath>
           
           <xpath expr="//field[@name='street2']" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -71,11 +77,11 @@
                 <attribute name="invisible">1</attribute>
           </xpath>
 
-          <xpath expr="//page[@name='sales_purchases']" position="attributes">
+          <xpath expr="//field[@name='website']" position="attributes">
               <attribute name="invisible">1</attribute>
           </xpath>
 
-          <xpath expr="//page[@name='internal_notes']" position="attributes">
+          <xpath expr="//field[@name='category_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
           </xpath>
 
@@ -94,10 +100,7 @@
                         </group>
                   </page>
             </notebook>
-          
-          </xpath>
-
-                
+          </xpath>     
       </field>
     </record>
 
@@ -111,9 +114,10 @@
             </xpath>
             <xpath expr="//field[@name='phone']" position="replace">
                   <field name="date"/>
+                  <field name="fecha_alta"/>
             </xpath>
             <xpath expr="//field[@name='email']" position="replace">
-                  <field name="colab_status"/>
+                  <field name="is_colaborator" widget="toggle_button"/>
             </xpath>
       </field>
       </record>
@@ -127,8 +131,6 @@
       <record id="contacts.action_contacts_view_tree" model="ir.actions.act_window.view">
             <field name="sequence">0</field>
       </record>
-
-
   </data>
 </odoo>
  

@@ -29,6 +29,8 @@ class FondoContact(models.Model):
     benef_phone = fields.Char('Número telefónico del beneficiario',tracking=True)
     is_colaborator = fields.Boolean('Colaborador',compute='define_type_of_user',store=True,)
     prestamos_id = fields.One2many('fondoda.prestamo','partner_id',string='Prestamos',readonly=True)
+    doc = fields.Binary('Solicitud de alta')
+    fecha_alta = fields.Date('Fecha de alta del IMSS',default=fields.Date.today())
 
     @api.onchange('benef_birth')
     def calculate_age(self):
@@ -179,5 +181,11 @@ class FondoContact(models.Model):
         return result
     
     
-
+    def send_solicitud_alta(self):
+        if self.email:
+            mail_search = self.env.ref('fondoda.mail_solicitud_colab').id
+            template = self.env['mail.template'].browse(mail_search)
+            template.send_mail(self.id,force_send=True)
+        else:
+            raise ValidationError(('Error!! El usuario no cuenta con correo electronico, favor de agregar uno'))
    

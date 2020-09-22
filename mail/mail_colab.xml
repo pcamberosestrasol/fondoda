@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
      <data>
-        <record id="auth_signup.set_password_email" model="mail.template">
+         <record id="mail_solicitud_colab" model="mail.template">
+            <field name="name">Solicitud de alta</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="subject">Solicitud de alta</field>
+            <field name="email_from">${(object.user_id.email_formatted}</field>
+            <field name="email_to">${object.email}</field>
+            <field name="body_html" type="html">
+                <p>Estimado(a) ${object.name} ${object.father_name} ${object.mother_name}</p>
+                <p>Por este medio se le hace llegar la solicitud de alta, la cual deberá firmar y enviar a Introducir correo de claudia macedo
+                    para poder darse de alta en el sistema del fondo de ahorro
+                </p>
+                <p>
+                    Sin más por el momento
+                    <br/><br/>
+                    Saludos
+                </p>
+
+            </field>
             <field name="report_template" ref="fondoda.reporte_solicitud_alta"/>
-            <field name="report_name">Alta del colaborador ${object.name}</field>
+            <field name="report_name">Solicitud de alta de ${object.name} ${object.father_name} ${object.mother_name}</field>
         </record>
      </data>
 </odoo>

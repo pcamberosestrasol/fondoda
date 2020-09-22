@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="fda_solicitud_alta" name="Formato de solicitud de Alta">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="p">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <t t-foreach="p.pagos_ids" t-as="pago">
+                            
+                    </t>
+                </div>
+            </t>
+        </t>
+    </t>
+    
+  </template>
+</odoo>

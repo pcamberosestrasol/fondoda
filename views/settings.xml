@@ -9,14 +9,13 @@
             <field name="arch" type="xml">
                 <xpath expr="//div[@id='invite_users']" position="after">
                     <div id="fondo_ahorro">
-                        <h2>Politicas y condiciones</h2>
+                        <h2>Reglamento de Fondo de Ahorro</h2>
                         <div class="row mt16 o_settings_container">
                             <div class="col-12 col-lg-12 o_setting_box">
                                 <div class="o_setting_right_pane"> 
                                     <field name="description" widget="html" style="width:700px;"/>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </xpath>

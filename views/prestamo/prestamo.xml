@@ -51,35 +51,72 @@
                 </kanban>
             </field>
         </record>
+
+        <record id="prestamo_view_form2" model="ir.ui.view">
+            <field name="name">fondoda.prestamo.form2</field>
+            <field name="model">fondoda.prestamo</field>
+            <field name="priority" eval="2"/>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet >
+                        <field name="comentario"/>
+                    </sheet>
+                    <footer>
+                        <button name="guardar_cambios" string="Guardar cambios" type="object" class="btn-primary"/>
+                        <button name="cancelar_cambios" string="Cancelar" type="object" class="btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
         <record id="prestamo_view_form" model="ir.ui.view">
             <field name="name">fondoda.prestamo.form</field>
             <field name="model">fondoda.prestamo</field>
+            <field name="priority" eval="1"/>
             <field name="arch" type="xml">
                 <form>
-                    <header>
+                    <header groups="fondoda.global_permission">
                         <button name="autorizar" string="Aprobar" type="object" class="oe_highlight" attrs="{'invisible':[('estatus', '!=', '1')]}"/>
                         <button name="rechazar" string="Rechazar" type="object" class="oe_highlight" attrs="{'invisible':[('estatus', '!=', '1')]}"/>
                         <button name="pagado" string="Pagar" type="object" class="oe_highlight" attrs="{'invisible':[('estatus', '!=', '2')]}"/>
                     </header>
                     <sheet >
+                        <h2><field name="name" readonly="1"/></h2>
                         <group>
                             <group>
-                                <field name="name" attrs="{'readonly':[('estatus', '=', '3')]}"/>
-                                <field name="partner_id" attrs="{'readonly':[('estatus', '=', '3')]}"/>
-                                <field name="prestamos_activos" attrs="{'readonly':[('estatus', '=', '3')]}"/>
+                                <field name="fecha" attrs="{'readonly':[('estatus', '=', '3')]}" force_save="1" readonly="1"/>
+                                <field name="prestamos_activos" attrs="{'readonly':[('estatus', '=', '3')]}" widget="toggle_button" />
                                 <field name="cantidad" attrs="{'readonly':[('estatus', '=', '3')]}"/>
                                 <field name="cantidad_letra" attrs="{'readonly':[('estatus', '=', '3')]}"/>
                                 <field name="pagos" attrs="{'readonly':[('estatus', '=', '3')]}"/>
+                                <button name="open_wizard_terms" type="object" string="Reglamento de Fondo de Ahorro" class="oe_highlight"/>
+                                <field name="aceptar"/>
                             </group>
                             <group>
-                                <field name="descuento" attrs="{'readonly':[('estatus', '=', '3')]}"/>
+                                <field name="num_colab" attrs="{'readonly':[('estatus', '=', '3')]}" />
+                                <field name="descuento" attrs="{'readonly':[('estatus', '=', '3')]}" />
                                 <field name="monto" attrs="{'readonly':[('estatus', '=', '3')]}"/>
-                                <field name="interes" attrs="{'readonly':[('estatus', '=', '3')]}"/>
-                                <field name="estatus" attrs="{'readonly':[('estatus', '=', '3')]}"/>
-                                <field name="num_colab" attrs="{'readonly':[('estatus', '=', '3')]}"/>
-                                <field name="fecha" attrs="{'readonly':[('estatus', '=', '3')]}"/>
+                                <field name="partner_id" attrs="{'readonly':[('estatus', '=', '3')]}" />
+                                <field name="interes" attrs="{'readonly':[('estatus', '=', '3')]}" />
+                                <field name="estatus" attrs="{'readonly':[('estatus', '=', '3')]}" />
+                                <field name="total_pago"/>
+                                
                             </group>
                         </group>
+                        <notebook>
+                            <page string="Pagos">
+                                <group>
+                                    <field name="pagos_ids">
+                                        <tree editable="bottom">
+                                            <field name="prestamo_id"/>
+                                            <field name="fecha_pago"/>
+                                            <field name="num_pago"/>
+                                            <field name="cantidad_pagada"/>
+                                        </tree>
+                                    <field>
+                                </group>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
@@ -129,5 +166,16 @@
             </field>
         </record>
     
+        
+        <record id="rechazar_prestamo" model="ir.actions.server">
+            <field name="name">Rechazar</field>
+            <field name="model_id" ref="fondoda.model_fondoda_prestamo"/>
+            <field name="binding_model_id" ref="fondoda.model_fondoda_prestamo"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = records.rechazo_comentario()
+            </field>
+        </record>
+        
     </data>
 </odoo>

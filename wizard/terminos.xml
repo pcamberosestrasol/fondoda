@@ -7,14 +7,12 @@
             <field name="arch" type="xml">
                 <form string="">
                     <sheet>
-                        <group>
-                            <field name="prestamo_id"/>
-                            <field name="description" readonly="1" widget="html"/>
-                        </group>
+                        <field name="prestamo_id" invisible="1"/>
+                        <field name="description" readonly="1" widget="html"/>
                     </sheet>
                     <footer>
-                        <button name="aceptar_terminos_condicones" type="object" string="Aceptar terminos y condiciones" class="oe_highlight"/>
-                        <button name="cancelar" type="object" string="Rechazar" class="oe_highlight"/>
+                        <button name="aceptar_terminos_condicones" type="object" string="Aceptar Reglamento de Fondo de Ahorro" class="oe_highlight"/>
+                        <button name="cancelar" type="object" string="Cancelar" class="oe_highlight"/>
                     </footer>
                 </form>
             </field>
