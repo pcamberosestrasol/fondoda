@@ -105,16 +105,15 @@
                         </group>
                         <notebook>
                             <page string="Pagos">
-                                <group>
-                                    <field name="pagos_ids">
-                                        <tree editable="bottom">
-                                            <field name="prestamo_id"/>
-                                            <field name="fecha_pago"/>
-                                            <field name="num_pago"/>
-                                            <field name="cantidad_pagada"/>
-                                        </tree>
-                                    <field>
-                                </group>
+                                <field name="pagos_ids">
+                                    <tree editable="bottom">
+                                        <field name="prestamo_id"/>
+                                        <field name="fecha_pago"/>
+                                        <field name="num_pago"/>
+                                        <field name="cantidad_pagada"/>
+                                        <field name="cantidad_pagar"/>
+                                    </tree>
+                                </field>
                             </page>
                         </notebook>
                     </sheet>

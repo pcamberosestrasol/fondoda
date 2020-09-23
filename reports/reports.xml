@@ -16,6 +16,14 @@
         name = "fondoda.fda_solicitud_alta"
         file = "fondoda.fda_solicitud_alta"/>
 
+        <report
+        id = "reporte_pagares"
+        string = "Generar pagaré"
+        model = "fondoda.prestamo"
+        report_type = "qweb-pdf"
+        name = "fondoda.fda_pagare"
+        file = "fondoda.fda_pagare" 
+        />
 
 
     </data>

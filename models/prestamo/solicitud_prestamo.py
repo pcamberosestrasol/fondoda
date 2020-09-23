@@ -1,5 +1,11 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError,ValidationError
+from datetime import datetime, date, time, timedelta
+
+import logging
+_logger = logging.getLogger(__name__)
+
+
 
 class FondodaPrestamo(models.Model):
     _name = 'fondoda.prestamo'
@@ -32,21 +38,29 @@ class FondodaPrestamo(models.Model):
     aceptar = fields.Boolean('Aceptar terminos y condiciones')
     comentario = fields.Text('Comentario')
     pagos_ids = fields.One2many('fondoda.pagos','prestamo_id',string='Pagos')
-    total_pago = fields.Float('Total',compute='compute_total_pay',digits=(32, 2))
+    total_pago = fields.Float('Total',compute='compute_total_pay')
 
 
     def _expand_states(self, states, domain, order):
         return [key for key, val in type(self).estatus.selection]
 
-    @api.depends('cantidad','interes')
+    @api.depends('cantidad','interes','pagos_ids')
     def compute_total_pay(self):
         for p in self:
-            p.total_pago = p.cantidad + (p.cantidad * (p.interes/100))
+            pagado = 0
+            if p.pagos_ids:
+                for pagos in p.pagos_ids:
+                    pagado+=pagos.cantidad_pagada
+            p.total_pago = p.cantidad + (p.cantidad * (p.interes/100)) - pagado
 
-    @api.depends('total_pago','pagos')
+    @api.depends('total_pago','pagos','cantidad','interes')
     def compute_total_monto(self):
-        for p in self:
-            p.monto = p.total_pago / p.pagos
+        for prestamo in self:
+            total = prestamo.cantidad + (prestamo.cantidad * (prestamo.interes/100))
+            if prestamo.pagos > 0:
+                prestamo.monto = total/prestamo.pagos
+            else:
+                prestamo.monto = total
 
 
     @api.depends('partner_id','estatus')
@@ -139,16 +153,24 @@ class FondodaPrestamo(models.Model):
         return {'type': 'ir.actions.act_window_close'}
 
     def create_pagos(self):
+        meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+        lista = []
         for p in range(self.pagos):
-            self.pagos_ids[(0,0,{
+            lista.append((0,0,{
                 'fecha_pago': self.fecha,
-                'num_pago': p,
+                'num_pago': p+1,
                 'prestamo_id': self.id,
-                'cantidad_pagar': self.monto
-            })]
+                'cantidad_pagar': self.monto,
+                'day': self.fecha.day,
+                'month': meses[self.fecha.month-1],
+                'year': str(self.fecha.year)
+            }))
+        _logger.info('Resultado = '+str(lista))
+        self.pagos_ids = lista
         
     
     
+        
 
 
     

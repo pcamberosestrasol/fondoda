@@ -23,22 +23,25 @@
     #.
     # always loaded
     'data': [
+        'security/security.xml',
+        'static/src/xml/theme.xml',
+        'security/ir.model.access.csv',
         #views
-      'views/contact/contact.xml',
-      'reports/reports.xml',
-      'reports/solicitud_alta.xml',
-      'mail/mail_colab.xml',
-      'security/security.xml',
-      'static/src/xml/theme.xml',
-      'security/ir.model.access.csv', 
-      'views/prestamo/prestamo.xml',
-      'views/settings.xml',
-      #sequence
-      'data/prestamo_folio.xml',
-      #wizard
-      'wizard/terminos.xml',
-      #menu
-      'views/menu.xml', 
+        'views/contact/contact.xml', 
+        'views/prestamo/prestamo.xml',
+        'views/settings.xml',
+        #reports
+        'reports/reports.xml',
+        'reports/solicitud_alta.xml',
+        'reports/pagare.xml',
+        #mail
+        'mail/mail_colab.xml',
+        #sequence
+        'data/prestamo_folio.xml',
+        #wizard
+        'wizard/terminos.xml',
+        #menu
+        'views/menu.xml', 
     ],  
      'qweb': [
            "qweb/*.xml",
