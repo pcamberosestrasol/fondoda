@@ -9,8 +9,8 @@
             <field name="email_to">${object.email}</field>
             <field name="body_html" type="html">
                 <p>Estimado(a) ${object.name} ${object.father_name} ${object.mother_name}</p>
-                <p>Por este medio se le hace llegar la solicitud de alta, la cual deberá firmar y enviar a Introducir correo de claudia macedo
-                    para poder darse de alta en el sistema del fondo de ahorro
+                <p>Por este medio se le hace llegar la solicitud de alta, la cual deberá firmar y enviar a cmacedo@estrasol.com.mx
+                    para poder darse de alta en el sistema de Fondo de Ahorro
                 </p>
                 <p>
                     Sin más por el momento

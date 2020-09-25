@@ -78,11 +78,27 @@
                                           <field name="benef_relation" string="Parentesco" required="1"/>
                                           <field name="benef_birth" string="Fecha de cumpleaños" required="1"/>
                                           <field name="benef_phone" string="Número telefónico" required="1"/>
+                                          <field name="prestamos_id" invisible="1"/>
                                     </group>
                               </group>
                         </page>
                   </notebook>
-            </xpath>     
+            </xpath> 
+            <xpath expr="//field[@name='street']" position="attributes">
+                  <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='city']" position="attributes">
+                  <attribute name="required">1</attribute>
+            </xpath> 
+            <xpath expr="//field[@name='state_id']" position="attributes">
+                  <attribute name="required">1</attribute>
+            </xpath> 
+            <xpath expr="//field[@name='country_id']" position="attributes">
+                  <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='phone']" position="attributes">
+                  <attribute name="required">1</attribute>
+            </xpath> 
       </field>
     </record>
 
@@ -96,7 +112,6 @@
             </xpath>
             <xpath expr="//field[@name='phone']" position="replace">
                   <field name="date"/>
-                  <field name="fecha_alta"/>
             </xpath>
             <xpath expr="//field[@name='email']" position="replace">
                   <field name="is_colaborator" widget="toggle_button"/>
@@ -113,6 +128,7 @@
       <record id="contacts.action_contacts_view_tree" model="ir.actions.act_window.view">
             <field name="sequence">0</field>
       </record>
+
   </data>
 </odoo>
  

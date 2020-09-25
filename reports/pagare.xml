@@ -6,7 +6,7 @@
             <t t-call="web.external_layout">
                 <div class="page">
                     <t t-foreach="p.pagos_ids" t-as="pago">
-                        <div class="container mb32 mt32" style="font-size:18px;border: 2px solid black;border-radius: 5px;">
+                        <div t-attf-class="#{'container mb32' if pago_index%2==0 else 'container mb32'}" style="font-size:19px;border: 2px solid black;border-radius: 5px;">
                             <div class="row">
                                 <div class="col-4 text-center">
                                     <h2>Pagaré</h2>
@@ -14,20 +14,16 @@
                                 <div class="col-1 text-center">
                                     <h3>No.</h3>
                                 </div>
-                                <div class="col-1 textcenter">
+                                <div class="col-1 text-center">
                                     <h3><span t-field="pago.num_pago" /></h3>
                                 </div>
-                                <div class="col-3 text-center">
+                                <div class="col-3 text-right">
                                     <h3>BUENO POR $</h3>
                                 </div>
-                                <div class="col-3 text-center">
+                                <div class="col-3 text-left">
                                     <h3><span t-field="pago.cantidad_pagar" /></h3>
                                 </div>
                                     
-    
-                                <div class="col-4 text-right">
-                                    <h3>BUENO POR $ <span t-field="pago.cantidad_pagar" /></h3>
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-3"/>
@@ -55,14 +51,14 @@
                             <div class="row">
                                 <div class="col-1"/>
                                 <div class="col-10">
-                                    <p>La cantidad de</p>
+                                    <p>La cantidad de:</p>
                                 </div>
                                 <div class="col-1"/>
                             </div>
                             <div class="row">
                                 <div class="col-1"/>
-                                <div class="col-10" style="border: 1px solid black;border-radius: 5px;">
-                                    <span  t-field="p.cantidad_letra" />
+                                <div class="col-10" style="border: 1px solid black;border-radius: 7px;">
+                                    <span  t-field="pago.cantidad_letra" />
                                 </div>
                                 <div class="col-1"/>
                             </div>
@@ -72,65 +68,68 @@
                                     <p style="text-align: justify;">
                                         Valor recibido a mi(nuestra) entera satisfacción. Este pagaré forma parte de una serie numerada del <span t-field="pago.num_pago"/> al <span t-field="p.pagos"/> y
                                         todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número,
-                                        además de los ya vencidos, desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará interes moratorios al 5% mensual,
+                                        además de los ya vencidos, desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará interes moratorios al 0% mensual,
                                         pagadero en esta ciudad juntamente con el principal. 
                                     </p>
                                 </div>
                                 <div class="col-1"/>
                             </div>
-                            <div class="row mb16">
+                            <div class="row mb16 ">
                                 <t t-set="name_complete" t-value="p.partner_id.name+' '+p.partner_id.father_name+' '+p.partner_id.mother_name"/>
-                                <t t-set="state_and_city" t-value="p.partner_id.state_id.name"/>
+                                <t t-set="state_and_city" t-value="p.partner_id.city+','+p.partner_id.state_id.name"/>
                                 <div class="col-1"/>
-                                <div class="col-5" style="font-size:15px;border: 1px solid black;">
+                                <div class="col-6" style="font-size:15px;border: 1px solid black;">
                                     <div class="row">
                                         <div class="col-12 text-center">
-                                            <span>Nombre y datos del deudor</span>
+                                            <strongo>Nombre y datos del deudor</strongo>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-3 text-right">
                                             <span>Nombre:</span>
                                         </div>                                        
-                                        <div class="col-9 text-left">
-                                            <span style="text-decoration:underline;" t-esc="name_complete"/>
+                                        <div class="col-9 text-left" style="text-decoration:underline;">
+                                            <span style="" t-esc="name_complete"/>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-3 text-right">
                                             <span>Dirección:</span>
                                         </div>
-                                        <div class="col-3 text-left">
-                                            <span style="text-decoration:underline;" t-field="p.partner_id.street"/>
+                                        <div class="col-9 text-left" style="text-decoration:underline;">
+                                            <span style="" t-field="p.partner_id.street"/>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-3 text-right">
                                             <span>Teléfono:</span>
                                         </div>
-                                        <div class="col-3 text-left">
-                                            <span style="text-decoration:underline;" t-field="p.partner_id.phone"/>
+                                        <div class="col-9 text-left" style="text-decoration:underline;">
+                                            <span t-field="p.partner_id.phone"/>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-3 text-right">
                                             <span>Población:</span>
                                         </div>                                        
-                                        <div class="col-9 text-left">
-                                            <span style="text-decoration:underline;" t-esc="state_and_city"/>
+                                        <div class="col-9 text-left" style="text-decoration:underline;">
+                                            <span t-esc="state_and_city"/>
                                         </div>
 
                                     </div>
                                 </div>
-                                <div class="col-5">
+                                <div class="col-4">
                                     <div class="row">
                                         <div class="col-12 text-center">
-                                            <span>Acepto(amos)</span>
+                                            <strong>Acepto(amos)</strong>
                                         </div>
                                     </div>
-                                    <div class="row mt16">
+                                    <div class="row mt64">
                                         <div class="col-6 text-right">
                                             <span>Firma:</span>
                                         </div>                                        
-                                        <div class="col-6 text-left" style="border-bottom:1px sold black">
+                                        <div class="col-6 text-left" style="border-bottom:1px solid black;">
+            
                                         </div>
                             
                                     </div>
