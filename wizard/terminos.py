@@ -6,9 +6,13 @@ from odoo.exceptions import UserError
 class fondodaTerms(models.TransientModel):
     _name = 'fondoda.terms.conditions'
 
-    prestamo_id = fields.Many2one('fondoda.prestamo')
-    description = fields.Html('Description')
+    reglamento = fields.Many2one('ir.attachment')
+    document = fields.Binary('Reglamento')
 
+    @api.depends('reglamento')
+    def show_binary_filed(self):
+        for val in self:
+            self.document = self.reglamento.datas
 
 
     def aceptar_terminos_condicones(self):

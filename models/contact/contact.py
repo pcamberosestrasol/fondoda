@@ -126,18 +126,6 @@ class FondoContact(models.Model):
             return True
         except ValueError:
             return False
-            #colab = str(self.num_colab)
-            #colab.replace(" ","")
-            #temp=list(filter(lambda numero: numero in '0123456789',colab) )
-            #caracteres = [numero for numero in str(colab) if not numero in '0123456789']
-            #colaboradores = self.env['res.partner'].search([('num_colab','=',self.num_colab)])
-            #if caracteres or len(colaboradores) > 1:
-            #    self.colab=''
-            #    return {'warning': {
-            #        'title': "Error Colaborador",
-            #        'message': "Puede que contenga letras, o el colaborador ya existe",
-            #        }
-            #    }
     
     @api.depends('user_ids','active')
     def define_type_of_user(self):
@@ -173,6 +161,8 @@ class FondoContact(models.Model):
             if record.father_name and record.mother_name:
                 name = '%s %s %s' % (record.name, record.father_name, record.mother_name)
                 result.append((record.id, name))
+            elif not record.father_name and not record.mother_name:
+                result.append((record.id, record.name))
             elif not record.mother_name:
                 name = '%s %s' % (record.name, record.father_name)
                 result.append((record.id, name))

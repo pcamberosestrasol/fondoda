@@ -9,11 +9,11 @@ class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
     
-    description = fields.Html('Description')
+    reglamento = fields.Many2one('fondoda.document')
     def get_values(self):
         res = super(ResConfigSettings, self).get_values()
         res.update(
-            description = (self.env['ir.config_parameter'].sudo().get_param('fondoda.description'))
+            reglamento = (self.env['ir.config_parameter'].sudo().get_param('fondoda.reglamento'))
         )
         return res
 
@@ -21,6 +21,6 @@ class ResConfigSettings(models.TransientModel):
     def set_values(self):
         super(ResConfigSettings, self).set_values()
         param = self.env['ir.config_parameter'].sudo()
-        description = self.description or False
-        param.set_param('fondoda.description', description)
+        reglamento = self.reglamento or False
+        param.set_param('fondoda.reglamento', reglamento)
    

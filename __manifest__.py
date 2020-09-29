@@ -29,6 +29,7 @@
         #views
         'views/contact/contact.xml', 
         'views/prestamo/prestamo.xml',
+        'views/document/document.xml',
         'views/settings.xml',
         #reports
         'reports/reports.xml',

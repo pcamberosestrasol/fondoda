@@ -6,13 +6,11 @@
             <field name="model">fondoda.terms.conditions</field>
             <field name="arch" type="xml">
                 <form string="">
-                    <sheet>
-                        <field name="prestamo_id" invisible="1"/>
-                        <field name="description" readonly="1" widget="html"/>
-                    </sheet>
+                    <field name="reglamento"/>
+                    <field name="document" widget="pdf_viewer"/>
+                  
                     <footer>
-                        <button name="aceptar_terminos_condicones" type="object" string="Aceptar Reglamento de Fondo de Ahorro" class="oe_highlight"/>
-                        <button name="cancelar" type="object" string="Cancelar" class="oe_highlight"/>
+                        <button name="cerrar" type="object" string="Cancelar" class="oe_highlight"/>
                     </footer>
                 </form>
             </field>

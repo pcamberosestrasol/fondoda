@@ -8,7 +8,7 @@
               <div class="Container">
                 <div class="row mb32 mt32">
                   <div class="col-10">
-                    <p style="font-weight: bold; font-size:20px;">Fondo de Ahorro de los empleados de <strong style="color:#f49444;">ESTRATEGIAS Y SOLUCIONES EN TI SA DE CV</strong></p>
+                    <p style="font-weight: bold; font-size:20px;">Fondo de Ahorro de los empleados de <strong style="color:#f49444;">ESTRATEGIAS Y SOLUCIONES EN IT SA DE CV</strong></p>
                   </div>
                   <!--<div class="col-"/>-->
                   <div class="col-2">
@@ -23,7 +23,13 @@
                   <section id="datos_generales">
                     <h3>1. Datos Generales</h3>
                   </section>
-                  <t t-set="name_complete" t-value="c.father_name+' '+c.mother_name+' '+c.name"/>
+                <t t-set="name_complete" t-value="c.name"/>
+                <t t-if="c.father_name &amp; c.mother_name">
+                    <t t-set="name_complete" t-value="c.father_name+' '+c.mother_name+' '+c.name"/>
+                </t>
+                 <t t-elif="c.father_name &amp; not c.mother_name">
+                    <t t-set="name_complete" t-value="c.father_name+' '+c.name"/>
+                </t>
                 </div>
                 <div class="row mb32">
                   <table class="table table-sm" id="table_datos_generales" 

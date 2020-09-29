@@ -18,14 +18,14 @@ class FondodaPrestamo(models.Model):
     prestamos_activos = fields.Boolean('¿Tienes prestamos activos?',compute="verify_prestamos" )
     cantidad = fields.Float('Cantidad solicitada',digits=(32, 2),default=1000)
     cantidad_letra = fields.Char('Cantidad solicitada',default='Mil pesos')
-    pagos = fields.Integer('Número de pagos')
+    pagos = fields.Integer('Número de pagos', default=1)
     descuento = fields.Selection([
         ('semanal', 'Semanal'),
         ('quincena', 'Quincenal'),
         ('mensual','Mensual')],
         'Tipo descuento',related='partner_id.payroll',)
     monto = fields.Float('Monto de los descuentos',compute='compute_total_monto',digits=(32, 2))
-    interes = fields.Float('Interés(%)',default=12.00)
+    interes = fields.Float('Interés(%)',default=12.00,digits=(32, 2))
     estatus = fields.Selection([
         ('1', 'Pendiente'),
         ('2', 'Activo'),
@@ -36,41 +36,40 @@ class FondodaPrestamo(models.Model):
         string='Estatus')
     num_colab = fields.Char(related='partner_id.num_colab',string='Número empleado')
     fecha = fields.Date('Fecha',default=fields.Date.today())
-    aceptar = fields.Boolean('Aceptar terminos y condiciones')
+
     comentario = fields.Text('Comentario')
     pagos_ids = fields.One2many('fondoda.pagos','prestamo_id',string='Pagos')
-    total_pago = fields.Float('Total',compute='compute_total_pay')
+    total_pago = fields.Float('Total',compute='compute_total_pay',digits=(32, 2))
     tipo = fields.Selection([('ordinario', 'Ordinario'),('extra', 'Extraordinario')])
-    interes_generado = fields.Float('Interes generado',compute="compute_total_interes")
-    motivo = fields.Selection([('muerte', 'Muerde de Familiar Directo'),('accidente','Accidente')])
+    motivo = fields.Selection([('muerte', 'Muerte de Familiar Directo'),('accidente','Accidente')])
 
 
     def _expand_states(self, states, domain, order):
         return [key for key, val in type(self).estatus.selection]
 
-    @api.depends('cantidad','interes')
-    def compute_total_interes(self):
-        for p in self:
-            p.interes_generado = p.cantidad * (p.interes/100)
-            
-
-    @api.depends('cantidad','interes','pagos_ids')
+    
+    @api.depends('cantidad','pagos_ids')
     def compute_total_pay(self):
         for p in self:
             pagado = 0
             if p.pagos_ids:
                 for pagos in p.pagos_ids:
                     pagado+=pagos.cantidad_pagada
-            p.total_pago = p.cantidad + (p.cantidad * (p.interes/100)) - pagado
+                    p.total_pago+=pagos.cantidad_pagar
+                p.total_pago = p.total_pago - pagado 
+            else:
+                p.total_pago = p.cantidad
 
-    @api.depends('total_pago','pagos','cantidad','interes')
+    @api.depends('pagos_ids')
     def compute_total_monto(self):
         for prestamo in self:
-            total = prestamo.cantidad + (prestamo.cantidad * (prestamo.interes/100))
-            if prestamo.pagos > 0:
-                prestamo.monto = total/prestamo.pagos
+            if prestamo.pago_ids:
+                pagar = 0
+                for pago in prestamo.pago_ids:
+                    pagar+= pago.cantidad_pagar
+                prestamo.monto = (pagar/prestamo.pagos)
             else:
-                prestamo.monto = total
+                prestamo.monto = 0
 
 
     @api.depends('partner_id','estatus')
@@ -112,16 +111,20 @@ class FondodaPrestamo(models.Model):
     
 
     def autorizar(self):
-        self.estatus = '2'
-        self.create_pagos()
-        self.send_mail_aprobado()
+        if self.pagos > 0:
+            self.estatus = '2'
+            self.create_pagos()
+            self.send_mail_aprobado()
+        else:
+            raise ValidationError(('No se puede aprobar, no cuenta con algún número de pagos'))
+        
     
     def pagado(self):
         self.estatus = '3'
         self.pagar_todo()
 
     def open_wizard_terms(self):
-        information = self.env['ir.config_parameter'].sudo().get_param('fondoda.description')
+        information = self.env['ir.config_parameter'].sudo().get_param('fondoda.reglamento')
         view = {
             'name': ('Terminos y Condiciones'),
             'view_type': 'form',
@@ -130,8 +133,7 @@ class FondodaPrestamo(models.Model):
             'type': 'ir.actions.act_window',
             'target': 'new',
             'context': {
-                'default_prestamo_id':self.id,
-                'default_description': information
+                'default_document': information
             }
         }
         return view
@@ -169,7 +171,6 @@ class FondodaPrestamo(models.Model):
         meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
         lista = []
         total = self.total_pago
-        interes = self.interes_generado
         capital = self.cantidad
         fecha = fields.Date.today()
         for p in range(self.pagos):
@@ -210,38 +211,24 @@ class FondodaPrestamo(models.Model):
                     else:
                         pass
             
-            if p == self.pagos-1:
-                lista.append((0,0,{
-                    'fecha_pago': fecha,
-                    'num_pago': p+1,
-                    'prestamo_id': self.id,
-                    'cantidad_pagar': total,
-                    'day': fecha.day,
-                    'month': meses[fecha.month-1],
-                    'year': str(fecha.year),
-                    'num_tipo': str(p+1)+'-'+self.descuento,
-                    'capital': capital,
-                    'interes': interes,
-                }))
-            else:
-                lista.append((0,0,{
-                    'fecha_pago': fecha,
-                    'num_pago': p+1,
-                    'prestamo_id': self.id,
-                    'cantidad_pagar': self.monto,
-                    'day': fecha.day,
-                    'month': meses[fecha.month-1],
-                    'year': str(fecha.year),
-                    'num_tipo': str(p+1)+'-'+self.descuento,
-                    'capital': self.cantidad/self.pagos,
-                    'interes': self.interes_generado/self.pagos,
-                }))
+            lista.append((0,0,{
+                'fecha_pago': fecha,
+                'num_pago': p+1,
+                'prestamo_id': self.id,
+                'cantidad_pagar': capital+capital*(1/100),
+                'day': fecha.day,
+                'month': meses[fecha.month-1],
+                'year': str(fecha.year),
+                'num_tipo': str(p+1)+'-'+self.descuento,
+                'capital': capital,
+                'interes': capital*(1/100),
+            }))
+           
             if fecha.day >15:
                 while fecha.day != 1:
                     fecha = fecha+timedelta(days=1)
             total = total - self.monto
             capital = capital - (self.cantidad/self.pagos)
-            interes = interes - self.interes_generado/self.pagos
         _logger.info('Resultado = '+str(lista))
         self.pagos_ids = lista
         
@@ -279,3 +266,9 @@ class FondodaPrestamo(models.Model):
         mail_search = self.env.ref('fondoda.mail_prestamo_rechazado').id
         template = self.env['mail.template'].browse(mail_search)
         template.send_mail(self.id,force_send=True)
+
+
+    @api.onchange('cantidad')
+    def validasi_form(self):
+        self.cantidad_letra = ''
+    

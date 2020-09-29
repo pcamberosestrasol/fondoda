@@ -21,7 +21,7 @@
                                     <h3>BUENO POR $</h3>
                                 </div>
                                 <div class="col-3 text-left">
-                                    <h3><span t-field="pago.cantidad_pagar" /></h3>
+                                    <h3><span t-field="pago.cantidad_pagar" /> MXN </h3>
                                 </div>
                                     
                             </div>
@@ -42,7 +42,7 @@
                             <div class="row">
                                 <div class="col-1"/>
                                 <div class="col-10" >
-                                    <p style="text-align: justify;">Debe(mos) y pagaré(mos) incondicionalmente este Pagaré a la orden de <span style="text-decoration:underline;">ESTRATEGIAS Y SOLUCIONES EN TI SA DE CV</span>
+                                    <p style="text-align: justify;">Debe(mos) y pagaré(mos) incondicionalmente este Pagaré a la orden de <span style="text-decoration:underline;">ESTRATEGIAS Y SOLUCIONES EN IT SA DE CV</span>
                                         en <span style="text-decoration:underline;">Guadalajara, Jalisco</span> el <span style="text-decoration:underline;"><span t-field="pago.day"/> de <span t-field="pago.month" /> de <span t-field="pago.year" /></span>
                                     </p>
                                 </div>
@@ -58,7 +58,7 @@
                             <div class="row">
                                 <div class="col-1"/>
                                 <div class="col-10" style="border: 1px solid black;border-radius: 7px;">
-                                    <span  t-field="pago.cantidad_letra" />
+                                    <span  t-field="pago.cantidad_letra" /> MXN
                                 </div>
                                 <div class="col-1"/>
                             </div>

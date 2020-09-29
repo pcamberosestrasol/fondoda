@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="prestamo_view_kanban" model="ir.ui.view">
+        <!--<record id="prestamo_view_kanban" model="ir.ui.view">
             <field name="name">fondoda.prestamo.kanban</field>
             <field name="model">fondoda.prestamo</field>
             <field name="arch" type="xml">
                 <kanban default_group_by="estatus" class="o_kanban_small_column">
                     <field name="name"/>
                     <field name="partner_id"/>
-                    <field name="prestamos_activos"/>
+                    <field name="prestamos_activos" force_save="1" readonly="1"/>
                     <field name="cantidad"/>
                     <field name="cantidad_letra"/>
                     <field name="pagos"/>
@@ -50,7 +50,7 @@
                     </templates>
                 </kanban>
             </field>
-        </record>
+        </record>-->
 
         <record id="prestamo_view_form2" model="ir.ui.view">
             <field name="name">fondoda.prestamo.form2</field>
@@ -81,42 +81,45 @@
                         <button name="pagado" string="Pagar" type="object" class="oe_highlight" attrs="{'invisible':[('estatus', '!=', '2')]}"/>
                     </header>
                     <sheet >
+                        <div class="oe_button_box" name="button_box">
+                            <button name="open_wizard_terms" type="object" string="Reglamento de Fondo de Ahorro" class="oe_stat_button" icon="fa-file-text"/>
+                        </div>
                         <h2><field name="name" readonly="1"/></h2>
                         <group>
                             <group>
+                                 <field name="tipo" invisible="1"/>
                                 <field name="fecha" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" force_save="1" readonly="1"/>
-                                <field name="prestamos_activos" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" widget="toggle_button" />
+                                <field name="prestamos_activos" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
                                 <field name="cantidad" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}"/>
                                 <field name="cantidad_letra" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}"/>
                                 <field name="pagos" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}"/>
-                                <button name="open_wizard_terms" type="object" string="Reglamento de Fondo de Ahorro" class="oe_highlight"/>
-                                <field name="aceptar"/>
+                                
+                                
+                                <field name="monto" force_save="1" readonly="1"/>
+                                <field name="total_pago"/>
+                                <field name="motivo" attrs="{'invisible':[('tipo', '=', 'ordinario')]}"/>                           
+
                             </group>
-                            <group>
-                                <field name="num_colab" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
-                                <field name="descuento" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
-                                <field name="monto" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}"/>
+                            <group groups="fondoda.global_permission">
+                                <field name="num_colab" force_save="1" readonly="1"/>
+                                <field name="descuento" />
                                 <field name="partner_id" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
                                 <field name="interes" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
                                 <field name="estatus" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
-                                <field name="tipo"/>
-                                <field name="interes_generado"/>
-                                <field name="total_pago"/>
-                                <field name="motivo" attrs="{'invisible':[('tipo', '=', 'ordinario')]}"/>
                             </group>
                         </group>
-                        <notebook>
+                        <notebook groups="fondoda.global_permission">
                             <page string="Pagos">
                                 <field name="pagos_ids">
                                     <tree editable="bottom">
                                         <field name="prestamo_id" invisible="1"/>
-                                        <field name="num_tipo"/>
-                                        <field name="fecha_pago"/>
-                                        <field name="cantidad_letra"/>
-                                        <field name="cantidad_pagada"/>
-                                        <field name="cantidad_pagar"/>
-                                        <field name="capital"/>
-                                        <field name="interes"/>
+                                        <field name="num_tipo" readonly="1"/>
+                                        <field name="fecha_pago" readonly="1"/>
+                                        <field name="cantidad_letra" required="1"/>
+                                        <field name="cantidad_pagada" />
+                                        <field name="cantidad_pagar"  readonly="1"/>
+                                        <field name="capital" readonly="1"/>
+                                        <field name="interes" readonly="1"/>
                                     </tree>
                                 </field>
                             </page>
@@ -162,7 +165,7 @@
         <record id="action_prestamo_window" model="ir.actions.act_window">
             <field name="name">Solicitud de Préstamo</field>
             <field name="res_model">fondoda.prestamo</field>
-            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_mode">tree,form</field>
             <field name="context">{'default_tipo':'ordinario'}</field>
             <field name="domain">[('tipo','=','ordinario')]</field>
             <field name="help" type="html">

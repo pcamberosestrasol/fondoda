@@ -13,7 +13,7 @@
         </record>
 
 
-        <!--<record id="only_see_your_own_values" model="ir.rule">
+        <record id="only_see_your_own_values" model="ir.rule">
             <field name="name">Ver mis datos</field>
             <field name="model_id" ref="base.model_res_partner"/>
             <field name="groups" eval="[(4, ref('fondoda.colab_permission'))]"/>
@@ -22,21 +22,21 @@
             <field name="perm_create" eval="0"/>
             <field name="perm_unlink" eval="0"/>
             <field name="domain_force">
-                [('id','=',user.partner_id.id)]
+                [('user_ids','in',user.id)]
             </field>
-        </record>-->
+        </record>
 
-        <!--<record id="no_see_module_After_months" model="ir.rule">
-            <field name="name">Ocultar modulo hasta despues de 3 meses</field>
+        <record id="solo_ver_prestamos" model="ir.rule">
+            <field name="name">filtrar mis prestamos</field>
             <field name="model_id" ref="fondoda.model_fondoda_prestamo"/>
             <field name="groups" eval="[(4, ref('fondoda.colab_permission'))]"/>
-            <field name="perm_read" eval="0"/>
-            <field name="perm_write" eval="0"/>
-            <field name="perm_create" eval="0"/>
-            <field name="perm_unlink" eval="0"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
             <field name="domain_force">
-        
+                [('partner_id','=',user.partner_id.id)]
             </field>
-        </record>-->
+        </record>
     </data>
 </odoo>
