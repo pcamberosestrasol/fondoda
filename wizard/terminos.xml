@@ -7,10 +7,10 @@
             <field name="arch" type="xml">
                 <form string="">
                     <field name="reglamento"/>
-                    <field name="document" widget="pdf_viewer"/>
+                    <field name="document"/>
                   
                     <footer>
-                        <button name="cerrar" type="object" string="Cancelar" class="oe_highlight"/>
+                        <button name="cancelar" type="object" string="Cancelar" class="oe_highlight"/>
                     </footer>
                 </form>
             </field>

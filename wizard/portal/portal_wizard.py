@@ -21,6 +21,7 @@ class fondodaWizard(models.TransientModel):
             for wizard_user in self.sudo().with_context(active_test=False):
 
                 group_portal = self.env.ref('base.group_user')
+                group_colab = self.env.ref('fondoda.colab_permission')
                 #Checking if the partner has a linked user
                 user = wizard_user.partner_id.user_ids[0] if wizard_user.partner_id.user_ids else None
                 # update partner email, if a new one was introduced
@@ -40,7 +41,7 @@ class fondodaWizard(models.TransientModel):
                         user_portal = user
                     wizard_user.write({'user_id': user_portal.id})
                     if not wizard_user.user_id.active or group_portal not in wizard_user.user_id.groups_id:
-                        wizard_user.user_id.write({'active': True, 'groups_id': [(6,0,[group_portal.id])]})
+                        wizard_user.user_id.write({'active': True, 'groups_id': [(6,0,[group_portal.id,group_colab.id])]})
                         # prepare for the signup process
                         wizard_user.user_id.partner_id.signup_prepare()
                     wizard_user.with_context(active_test=True)._send_email()

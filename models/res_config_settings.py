@@ -8,19 +8,18 @@ _logger = logging.getLogger(__name__)
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    
-    reglamento = fields.Many2one('fondoda.document')
-    def get_values(self):
+    fda_reglamento = fields.Many2one('fondoda.document','Reglamento')
+
+
+    def get_values(self): 
         res = super(ResConfigSettings, self).get_values()
         res.update(
-            reglamento = (self.env['ir.config_parameter'].sudo().get_param('fondoda.reglamento'))
+            fda_reglamento =  int(self.env['ir.config_parameter'].sudo().get_param('fondoda.fda_reglamento'))
         )
         return res
-
     
     def set_values(self):
-        super(ResConfigSettings, self).set_values()
-        param = self.env['ir.config_parameter'].sudo()
-        reglamento = self.reglamento or False
-        param.set_param('fondoda.reglamento', reglamento)
-   
+        super (ResConfigSettings, self).set_values()
+        param = self.env['ir.config_parameter'].sudo() 
+        rule = self.fda_reglamento and self.fda_reglamento.id or False
+        param.set_param('fondoda.fda_reglamento',rule)

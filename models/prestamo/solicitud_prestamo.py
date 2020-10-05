@@ -2,7 +2,6 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError,ValidationError
 from datetime import datetime, date, time, timedelta
 import calendar
-
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -15,9 +14,9 @@ class FondodaPrestamo(models.Model):
 
     name = fields.Char('Folio',default='Nuevo')
     partner_id = fields.Many2one('res.partner','Colaborador',default=lambda self: self.env.user.partner_id)
-    prestamos_activos = fields.Boolean('¿Tienes prestamos activos?',compute="verify_prestamos" )
+    prestamos_activos = fields.Boolean('¿Tienes prestamos activos?',compute="verify_prestamos")
     cantidad = fields.Float('Cantidad solicitada',digits=(32, 2),default=1000)
-    cantidad_letra = fields.Char('Cantidad solicitada',default='Mil pesos')
+    cantidad_letra = fields.Char('Cantidad solicitada',default='Mil pesos mexicanos')
     pagos = fields.Integer('Número de pagos', default=1)
     descuento = fields.Selection([
         ('semanal', 'Semanal'),
@@ -42,7 +41,7 @@ class FondodaPrestamo(models.Model):
     total_pago = fields.Float('Total',compute='compute_total_pay',digits=(32, 2))
     tipo = fields.Selection([('ordinario', 'Ordinario'),('extra', 'Extraordinario')])
     motivo = fields.Selection([('muerte', 'Muerte de Familiar Directo'),('accidente','Accidente')])
-
+    evidencia = fields.Boolean('Evidencia entregada')
 
     def _expand_states(self, states, domain, order):
         return [key for key, val in type(self).estatus.selection]
@@ -52,22 +51,27 @@ class FondodaPrestamo(models.Model):
     def compute_total_pay(self):
         for p in self:
             pagado = 0
+            monto = 0
+            interes2 = 0
             if p.pagos_ids:
                 for pagos in p.pagos_ids:
                     pagado+=pagos.cantidad_pagada
-                    p.total_pago+=pagos.cantidad_pagar
-                p.total_pago = p.total_pago - pagado 
+                    monto+= pagos.cantidad_pagar
+                    interes2 += pagos.interes2
+                p.total_pago = monto - pagado - interes2
             else:
                 p.total_pago = p.cantidad
 
     @api.depends('pagos_ids')
     def compute_total_monto(self):
         for prestamo in self:
-            if prestamo.pago_ids:
+            if prestamo.pagos_ids:
                 pagar = 0
-                for pago in prestamo.pago_ids:
-                    pagar+= pago.cantidad_pagar
+                for pago in prestamo.pagos_ids:
+                    pagar+= pago.sum_interes_total
                 prestamo.monto = (pagar/prestamo.pagos)
+                for p in prestamo.pagos_ids:
+                    p.cantidad_pagar = prestamo.monto
             else:
                 prestamo.monto = 0
 
@@ -90,17 +94,20 @@ class FondodaPrestamo(models.Model):
         vals['name'] = self.env['ir.sequence'].next_by_code('fondoda.folio.sequence')
         res = super(FondodaPrestamo, self).create(vals)
         if res.prestamos_activos == True:
-            raise ValidationError(('Error!! No se puede crear la solicitud, debido a que tiene un prestamo activo'))
+            raise ValidationError(('Error!! No se puede crear la solicitud, debido a que tiene un préstamo activo'))
         else:
-            return res
+            alta = res.partner_id.fecha_alta+timedelta(days=90)
+            _logger.info('Alta = '+str(alta))
+            if alta < date.today():
+                return res
+            else:
+                raise ValidationError(('Debe tener al menos 3 meses que lo dieron de alta en el IMSS para poder solicitar un préstamo'))
     
     def write(self, vals):
         previo_estatus = self.estatus
         res = super(FondodaPrestamo, self).write(vals)
         if 'estatus' in vals:
-            if self.aceptar == False and self.estatus == '2':
-                raise ValidationError(('El colaborador no ha aceptado el reglamento,favor de aceptar el reglamento para continuar con el proceso'))
-            elif self.prestamos_activos == True and self.tipo == 'ordinario' and self.estatus == '2':
+            if self.prestamos_activos == True and self.tipo == 'ordinario' and self.estatus == '2':
                 raise ValidationError(('El colaborador cuenta con un préstamo activo'))
             elif previo_estatus == '3' and self.estatus == '2':
                 raise ValidationError(('No puede cambiar el estatus de una solicitud que ya ha sido pagada'))
@@ -124,17 +131,17 @@ class FondodaPrestamo(models.Model):
         self.pagar_todo()
 
     def open_wizard_terms(self):
-        information = self.env['ir.config_parameter'].sudo().get_param('fondoda.reglamento')
+        information = int(self.env['ir.config_parameter'].sudo().get_param('fondoda.fda_reglamento'))
+        view_id = self.env.ref('fondoda.document_view_form2').id
         view = {
-            'name': ('Terminos y Condiciones'),
+            'name': ('Reglamento Fondo de Ahorro'),
             'view_type': 'form',
             'view_mode': 'form',
-            'res_model': 'fondoda.terms.conditions',
+            'res_model': 'fondoda.document',
+            'views':[(view_id,'form')],
             'type': 'ir.actions.act_window',
             'target': 'new',
-            'context': {
-                'default_document': information
-            }
+            'res_id': information,
         }
         return view
     
@@ -170,21 +177,22 @@ class FondodaPrestamo(models.Model):
     def create_pagos(self):
         meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
         lista = []
-        total = self.total_pago
         capital = self.cantidad
         fecha = fields.Date.today()
         for p in range(self.pagos):
             if self.descuento == 'semanal':
                 fecha = fecha +timedelta(days=7)
             elif self.descuento =='quincena':
-                day_range = calendar.monthrange(fecha.year,fecha.month)   
+                if self.fecha.day == 14 or self.fecha.day == 29:
+                    fecha = fecha+timedelta(days=2)
+                day_range = calendar.monthrange(fecha.year,fecha.month)
                 if fecha.day < 15:
                     dias = 15 - fecha.day
                     fecha = fecha +timedelta(days=dias)
                     day_week = calendar.day_name[fecha.weekday()]
-                    if day_week == 'Saturday':
+                    if day_week == 'sábado':
                         fecha = fecha-timedelta(days=1)
-                    elif day_week == 'Sunday':
+                    elif day_week == 'domingo':
                         fecha = fecha-timedelta(days=2)
                     else:
                         pass
@@ -192,44 +200,62 @@ class FondodaPrestamo(models.Model):
                     dias = int(day_range[1]) - fecha.day
                     fecha = fecha +timedelta(days=dias)
                     day_week = calendar.day_name[fecha.weekday()]
-                    if day_week == 'Saturday':
+                    if day_week == 'sábado':
                         fecha = fecha-timedelta(days=1)
-                    elif day_week == 'Sunday':
+                    elif day_week == 'domingo':
                         fecha = fecha-timedelta(days=2)
                     else:
                         pass
             elif self.descuento=='mensual':
                 day_range: calendar.monthrange(fecha.year,fecha.month)
+                if self.fecha.day == 29:
+                    fecha = fecha+timedelta(days=2)
                 if fecha.day < int(day_range[1]):
                     dias = int(day_range[1]) - fecha.day
                     fecha = fecha +timedelta(days=dias)
                     day_week = calendar.day_name[fecha.weekday()]
-                    if day_week == 'Saturday':
+                    if day_week == 'sábado':
                         fecha = fecha-timedelta(days=1)
-                    elif day_week == 'Sunday':
+                    elif day_week == 'domingo':
                         fecha = fecha-timedelta(days=2)
                     else:
                         pass
-            
-            lista.append((0,0,{
-                'fecha_pago': fecha,
-                'num_pago': p+1,
-                'prestamo_id': self.id,
-                'cantidad_pagar': capital+capital*(1/100),
-                'day': fecha.day,
-                'month': meses[fecha.month-1],
-                'year': str(fecha.year),
-                'num_tipo': str(p+1)+'-'+self.descuento,
-                'capital': capital,
-                'interes': capital*(1/100),
-            }))
-           
+            if p == self.pagos-1:
+                lista.append((0,0,{
+                    'fecha_pago': fecha,
+                    'num_pago': p+1,
+                    'num_tipo': str(p+1)+'-'+self.descuento,
+                    'prestamo_id':self.id,
+                    'day': fecha.day,
+                    'month':meses[fecha.month-1],
+                    'saldo': capital,
+                    'interes': capital*(1/100),
+                    'capital': capital 
+                }))
+            else:
+                lista.append((0,0,{
+                    'fecha_pago': fecha,
+                    'num_pago': p+1,
+                    'num_tipo': str(p+1)+'-'+self.descuento,
+                    'prestamo_id':self.id,
+                    'day': fecha.day,
+                    'month':meses[fecha.month-1],
+                    'year': str(fecha.year),
+                    'saldo': capital,
+                    'interes': capital*(1/100),
+                    'capital':  self.cantidad/self.pagos
+                }))
             if fecha.day >15:
                 while fecha.day != 1:
                     fecha = fecha+timedelta(days=1)
-            total = total - self.monto
+            if fecha.day >1 and fecha.day<15:
+                 while fecha.day != 15:
+                    fecha = fecha+timedelta(days=1)
+            
             capital = capital - (self.cantidad/self.pagos)
-        _logger.info('Resultado = '+str(lista))
+          
+            
+           
         self.pagos_ids = lista
         
 
@@ -249,13 +275,18 @@ class FondodaPrestamo(models.Model):
     def onchange_value_cantidad(self):
         if self.cantidad < 1000:
             self.cantidad = 1000
-        
+    
     def pagar_todo(self):
         if self.pagos_ids:
+            contador = 0
             for p in self.pagos_ids:
                 if p.cantidad_pagada == 0:
-                    p.cantidad_pagada = p.cantidad_pagar
-
+                    if contador == 1:
+                        p.cantidad_pagada = p.capital
+                        p.interes2 = p.cantidad_pagar - p.capital
+                    else:
+                        p.cantidad_pagada = p.cantidad_pagar
+                        contador+=1
 
     def send_mail_aprobado(self):
         mail_search = self.env.ref('fondoda.mail_prestamo_aprobado').id
@@ -270,5 +301,5 @@ class FondodaPrestamo(models.Model):
 
     @api.onchange('cantidad')
     def validasi_form(self):
-        self.cantidad_letra = ''
-    
+        if self.cantidad != 1000:
+            self.cantidad_letra = ''

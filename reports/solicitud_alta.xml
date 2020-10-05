@@ -22,15 +22,15 @@
                 <div class="row mb32">
                   <section id="datos_generales">
                     <h3>1. Datos Generales</h3>
-                  </section>
-                <t t-set="name_complete" t-value="c.name"/>
-                <t t-if="c.father_name &amp; c.mother_name">
-                    <t t-set="name_complete" t-value="c.father_name+' '+c.mother_name+' '+c.name"/>
-                </t>
-                 <t t-elif="c.father_name &amp; not c.mother_name">
-                    <t t-set="name_complete" t-value="c.father_name+' '+c.name"/>
-                </t>
+                  </section>     
                 </div>
+                <t t-set="name_complete" t-value="c.name"/>
+                <t t-if="c.father_name">
+                    <t t-set="name_complete" t-value="c.father_name+' '+c.name"/>
+                    <t t-if="c.mother_name">
+                      <t t-set="name_complete" t-value="c.father_name+' '+c.mother_name+' '+c.name"/>
+                    </t>
+                </t>
                 <div class="row mb32">
                   <table class="table table-sm" id="table_datos_generales" 
                   style="font-size:20px;border-collapse:collapse;border: 2px solid #000;">
@@ -68,12 +68,18 @@
                   <p >En caso de fallecimiento asigno como beneficiario a (Debe ser mayor de edad):</p>
                 </div>
                 <div class="row mb32">
-                  <t t-set="name_beneficio" t-value="c.benef_firstname+' '+c.benef_fathername+' '+c.benef_mothername"/>
+                  <t t-set="name_beneficio" t-value="c.benef_firstname"/>
+                  <t t-if="c.benef_fathername">
+                    <t t-set="name_beneficio" t-value="c.benef_firstname+' '+c.benef_fathername"/>
+                    <t t-if="c.benef_mothername">
+                      <t t-set="name_beneficio" t-value="c.benef_firstname+' '+c.benef_fathername+' '+c.benef_mothername"/>
+                    </t>
+                  </t>
                   <table class="table table-sm" id="table_datos_generales" 
                     style="font-size:20px;border-collapse:collapse;border: 2px solid #000;">
                     <thead class="bg-100">
                       <tr>
-                        <th style="background-color:#f49444;border: 2px solid #000;">Parenteco</th>
+                        <th style="background-color:#f49444;border: 2px solid #000;">Parentesco</th>
                         <th style="background-color:#f49444;border: 2px solid #000;">Nombre</th>
                         <th style="background-color:#f49444;border: 2px solid #000;">Telefono de contacto</th>
                       </tr>

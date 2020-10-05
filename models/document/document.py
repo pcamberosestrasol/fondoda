@@ -14,3 +14,5 @@ class FondoDocument(models.Model):
     archivo = fields.Binary('Documento')
 
 
+    def cancelar(self):
+        return {'type': 'ir.actions.act_window_close'}

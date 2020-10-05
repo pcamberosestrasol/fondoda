@@ -3,6 +3,6 @@ access_fondoda_prestamo,access.fondoda.prestamo,model_fondoda_prestamo,global_pe
 access_fondoda_prestamo_colab,access.fondoda.prestamo,model_fondoda_prestamo,colab_permission,1,1,1,0
 
 access_fondoda_pagos,access.fondoda.pagos,model_fondoda_pagos,global_permission,1,1,1,1
-access_fondoda_pagos_colab,access.fondoda.pagos,model_fondoda_pagos,colab_permission,1,1,1,1
+access_fondoda_pagos_colab,access.fondoda.pagos,model_fondoda_pagos,colab_permission,1,1,0,0
 
-accesss_fondoda_document,access.fondoda.document,model_fondoda_document,global_permission,1,1,1,1
+accesss_fondoda_document,access.fondoda.document,model_fondoda_document,base.group_user,1,1,1,1
