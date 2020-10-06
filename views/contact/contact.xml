@@ -12,11 +12,12 @@
                   string="Enviar Alta" 
                   class="oe_stat_button" 
                   icon="fa-envelope" 
-                  groups="fondoda.global_permission"/>
+                  groups="fondoda.global_permission"
+                  attrs="{'invisible':[('is_company', '=', True)]}"/>
             </div>
             <xpath expr="//field[@name='name']" position="after">
-                  <field name="father_name" required="1" placeholder="Apellido Paterno"/>
-                  <field name="mother_name" placeholder="Apellido Materno"/>
+                  <field name="father_name"  placeholder="Apellido Paterno" attrs="{'invisible':[('is_company', '=', True)],'required':[('is_company','=',False)]}"/>
+                  <field name="mother_name" placeholder="Apellido Materno" attrs="{'invisible':[('is_company', '=', True)]}"/>
             </xpath>
             <xpath expr="//field[@name='company_type']" position="attributes">
                   <attribute name="invisible">1</attribute>
@@ -34,17 +35,17 @@
                   <field name="function" invisible="1" />
             </xpath>
             <xpath expr="//field[@name='type']" position="after">
-                  <field name="num_colab"  />
-                  <field name="payroll" required="1" />
-                  <field name="is_colaborator" invisible="1"/>
+                  <field name="num_colab"  attrs="{'invisible':[('is_company', '=', True)],'required':[('is_company','=',False)]}"/>
+                  <field name="payroll" attrs="{'invisible':[('is_company', '=', True)],'required':[('is_company','=',False)]}"/>
+                  <field name="is_colaborator" invisible="1" />
                   <field name="active" invisible="1"/>
             </xpath>
             <xpath expr="//div[@class='o_address_format']" position="after">
-                  <field name="doc" widget="pdf_viewer" style="max-height:50px;"/>
+                  <field name="doc" widget="pdf_viewer" style="max-height:50px;" attrs="{'invisible':[('is_company', '=', True)]}"/>
             </xpath>
             <xpath expr="//field[@name='function']" position="after">
-                  <field name="date"/>
-                  <field name="fecha_alta"/>
+                  <field name="date" />
+                  <field name="fecha_alta" attrs="{'invisible':[('is_company', '=', True)]}"/>
             </xpath>
 
             <xpath expr="//field[@name='lang']" position="attributes">
@@ -70,16 +71,16 @@
             </xpath>
 
             <xpath expr="//notebook" position="replace">
-                  <notebook>
+                  <notebook attrs="{'invisible':[('is_company', '=', True)]}">
                         <page name="infoben" string="Información del Beneficiario"> 
                               <group>
                                     <group>
-                                          <field name="benef_firstname" string="Nombre" required="1"/>
-                                          <field name="benef_fathername" string="Apellido paterno" required="1"/>
+                                          <field name="benef_firstname" string="Nombre" attrs="{'invisible':[('is_company', '=', True)],'required':[('is_company','=',False)]}"/>
+                                          <field name="benef_fathername" string="Apellido paterno" attrs="{'invisible':[('is_company', '=', True)],'required':[('is_company','=',False)]}"/>
                                           <field name="benef_mothername" string="Apellido materno" />
-                                          <field name="benef_relation" string="Parentesco" required="1"/>
-                                          <field name="benef_birth" string="Fecha de cumpleaños" required="1"/>
-                                          <field name="benef_phone" string="Número telefónico" required="1"/>
+                                          <field name="benef_relation" string="Parentesco" attrs="{'invisible':[('is_company', '=', True)],'required':[('is_company','=',False)]}"/>
+                                          <field name="benef_birth" string="Fecha de cumpleaños" attrs="{'invisible':[('is_company', '=', True)],'required':[('is_company','=',False)]}"/>
+                                          <field name="benef_phone" string="Número telefónico" attrs="{'invisible':[('is_company', '=', True)],'required':[('is_company','=',False)]}"/>
                                           <field name="prestamos_id" invisible="1"/>
                                     </group>
                               </group>
@@ -130,7 +131,9 @@
       <record id="contacts.action_contacts_view_tree" model="ir.actions.act_window.view">
             <field name="sequence">0</field>
       </record>
-
+      <record id="contacts.action_contacts" model="ir.actions.act_window">
+            <field name="context">{'default_is_company': False}</field>
+      </record>
   </data>
 </odoo>
  

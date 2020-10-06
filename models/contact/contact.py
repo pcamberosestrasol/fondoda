@@ -139,7 +139,7 @@ class FondoContact(models.Model):
     @api.model
     def create(self, vals):
         res = super(FondoContact, self).create(vals)
-        colab = self.env['res.partner'].search([('num_colab','=',vals['num_colab'])])
+        colab = self.env['res.partner'].search([('num_colab','=',vals['num_colab']),('is_company','=',False)])
         if len(colab) > 1:
             raise ValidationError(('El número de colaborador que intenta agregar ya existe'))
         else:

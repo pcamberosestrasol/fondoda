@@ -88,7 +88,7 @@
                         <group>
                             <group>
                                  <field name="tipo" invisible="1"/>
-                                <field name="fecha" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" force_save="1" readonly="1"/>
+                                <field name="fecha" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
                                 <field name="prestamos_activos" attrs="{'invisible':[('tipo','=','extra')]}" readonly="1"/>
                                 <field name="motivo" attrs="{'invisible':[('tipo', '=', 'ordinario')],'readonly':[('estatus', 'in', ['2','3'])]}"/>    
                                 <field name="cantidad" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}"/>
@@ -102,7 +102,7 @@
                                 <field name="descuento" />
                                 <field name="partner_id" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
                                 <field name="interes" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
-                                <field name="estatus" />
+                                <field name="estatus" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
                                 <field name="evidencia" attrs="{'invisible':[('tipo', '=', 'ordinario')]}"/>
                             </group>
                         </group>
@@ -177,7 +177,7 @@
         </record>
 
         <record id="action_prestamo_extra_window" model="ir.actions.act_window">
-            <field name="name">Solicitud de Préstamo</field>
+            <field name="name">Solicitud de Préstamo Extraordinario</field>
             <field name="res_model">fondoda.prestamo</field>
             <field name="view_mode">tree,form,kanban</field>
             <field name="context">{'default_tipo':'extra'}</field>

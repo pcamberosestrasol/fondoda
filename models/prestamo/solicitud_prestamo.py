@@ -16,7 +16,7 @@ class FondodaPrestamo(models.Model):
     partner_id = fields.Many2one('res.partner','Colaborador',default=lambda self: self.env.user.partner_id)
     prestamos_activos = fields.Boolean('¿Tienes prestamos activos?',compute="verify_prestamos")
     cantidad = fields.Float('Cantidad solicitada',digits=(32, 2),default=1000)
-    cantidad_letra = fields.Char('Cantidad solicitada',default='Mil pesos mexicanos')
+    cantidad_letra = fields.Char('Cantidad solicitada (Letra)',default='Mil pesos mexicanos')
     pagos = fields.Integer('Número de pagos', default=1)
     descuento = fields.Selection([
         ('semanal', 'Semanal'),
@@ -24,7 +24,7 @@ class FondodaPrestamo(models.Model):
         ('mensual','Mensual')],
         'Tipo descuento',related='partner_id.payroll',)
     monto = fields.Float('Monto de los descuentos',compute='compute_total_monto',digits=(32, 2))
-    interes = fields.Float('Interés(%)',default=12.00,digits=(32, 2))
+    interes = fields.Float('Interés Anual (%)',default=12.00,digits=(32, 2))
     estatus = fields.Selection([
         ('1', 'Pendiente'),
         ('2', 'Activo'),

@@ -75,7 +75,13 @@
                                 <div class="col-1"/>
                             </div>
                             <div class="row mb16 ">
-                                <t t-set="name_complete" t-value="p.partner_id.name+' '+p.partner_id.father_name+' '+p.partner_id.mother_name"/>
+                                <t t-set="name_complete" t-value="p.partner_id.name"/>
+                                <t t-if="p.partner_id.father_name">
+                                    <t t-set="name_complete" t-value="p.partner_id.name+' '+p.partner_id.father_name"/>
+                                    <t t-if="p.partner_id.mother_name">
+                                        <t t-set="name_complete" t-value="p.partner_id.name+' '+p.partner_id.father_name+' '+p.partner_id.mother_name"/>
+                                    </t>
+                                </t>
                                 <t t-set="state_and_city" t-value="p.partner_id.city+','+p.partner_id.state_id.name"/>
                                 <div class="col-1"/>
                                 <div class="col-6" style="font-size:15px;border: 1px solid black;">
