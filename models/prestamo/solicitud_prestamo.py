@@ -14,7 +14,7 @@ class FondodaPrestamo(models.Model):
 
     name = fields.Char('Folio',default='Nuevo')
     partner_id = fields.Many2one('res.partner','Colaborador',default=lambda self: self.env.user.partner_id)
-    prestamos_activos = fields.Boolean('¿Tienes prestamos activos?',compute="verify_prestamos")
+    prestamos_activos = fields.Boolean('¿Tienes prestamos activos?',compute="verify_prestamos",store=True)
     cantidad = fields.Float('Cantidad solicitada',digits=(32, 2),default=1000)
     cantidad_letra = fields.Char('Cantidad solicitada (Letra)',default='Mil pesos mexicanos')
     pagos = fields.Integer('Número de pagos', default=1)
@@ -76,7 +76,7 @@ class FondodaPrestamo(models.Model):
                 prestamo.monto = 0
 
 
-    @api.depends('partner_id','estatus')
+    @api.depends('partner_id','estatus','name','cantidad_letra','cantidad','pagos')
     def verify_prestamos(self):
         for p in self:
             if p.partner_id and p.partner_id.prestamos_id:
@@ -93,7 +93,8 @@ class FondodaPrestamo(models.Model):
     def create(self, vals):
         vals['name'] = self.env['ir.sequence'].next_by_code('fondoda.folio.sequence')
         res = super(FondodaPrestamo, self).create(vals)
-        if res.prestamos_activos == True:
+        prestamos = self.env['fondoda.prestamo'].search([('partner_id','=',vals['partner_id']),('estatus','=','2')])
+        if prestamos:
             raise ValidationError(('Error!! No se puede crear la solicitud, debido a que tiene un préstamo activo'))
         else:
             alta = res.partner_id.fecha_alta+timedelta(days=90)
