@@ -5,6 +5,7 @@
         <record model="res.groups" id="global_permission">
             <field name="name">Super Usuario</field>
             <field name="comment">super usuario</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
 
         <record model="res.groups" id="colab_permission">
