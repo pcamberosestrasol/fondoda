@@ -76,7 +76,7 @@ class FondodaPrestamo(models.Model):
                 prestamo.monto = 0
 
 
-    @api.depends('partner_id','estatus','name','cantidad_letra','cantidad','pagos')
+    @api.depends('partner_id','estatus')
     def verify_prestamos(self):
         for p in self:
             if p.partner_id and p.partner_id.prestamos_id:
@@ -88,13 +88,12 @@ class FondodaPrestamo(models.Model):
             else:
                 p.prestamos_activos = False
 
-
     @api.model
     def create(self, vals):
         vals['name'] = self.env['ir.sequence'].next_by_code('fondoda.folio.sequence')
         res = super(FondodaPrestamo, self).create(vals)
         prestamos = self.env['fondoda.prestamo'].search([('partner_id','=',vals['partner_id']),('estatus','=','2')])
-        if prestamos:
+        if prestamos and res.tipo == 'ordinario':
             raise ValidationError(('Error!! No se puede crear la solicitud, debido a que tiene un préstamo activo'))
         else:
             alta = res.partner_id.fecha_alta+timedelta(days=90)
