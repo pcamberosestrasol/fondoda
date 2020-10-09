@@ -1,57 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!--<record id="prestamo_view_kanban" model="ir.ui.view">
-            <field name="name">fondoda.prestamo.kanban</field>
-            <field name="model">fondoda.prestamo</field>
-            <field name="arch" type="xml">
-                <kanban default_group_by="estatus" class="o_kanban_small_column">
-                    <field name="name"/>
-                    <field name="partner_id"/>
-                    <field name="prestamos_activos" force_save="1" readonly="1"/>
-                    <field name="cantidad"/>
-                    <field name="cantidad_letra"/>
-                    <field name="pagos"/>
-                    <field name="descuento"/>
-                    <field name="monto"/>
-                    <field name="interes"/>
-                    <field name="estatus"/>
-                    <field name="num_colab"/>
-                    <field name="fecha"/>
-                    <templates>
-                        <t t-name="kanban-box">
-                            <div class="oe_kanban_global_click">
-                                <h4>Folio:  <field name="name"/></h4>
-                                <div class="o_kanban_record_body">
-                                    <div class="row">
-                                        <div class="col-12 text-center">
-                                            <strong>Colaborador:</strong>
-                                            <span><field name="num_colab"/></span>
-                                            -
-                                            <span><field name="partner_id"/></span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 text-center">
-                                            <strong>Cantidad:  </strong><span>$<field name="cantidad"/></span>
-                                        </div>
-                                    </div>
-                                    <div class="o_kanban_record_bottom">
-                                        <div class="oe_kanban_bottom_left">
-                                            <field name="fecha"/>
-                                        </div>
-                                        <div class="oe_kanban_bottom_right">
-                                            <field name="estatus"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </t>
-                    </templates>
-                </kanban>
-            </field>
-        </record>-->
-
         <record id="prestamo_view_form2" model="ir.ui.view">
             <field name="name">fondoda.prestamo.form2</field>
             <field name="model">fondoda.prestamo</field>
@@ -119,8 +68,7 @@
                                         <field name="capital" sum="Total" readonly="1"/>
                                         <field name="interes" sum="Total"  readonly="1"/>
                                         <field name="interes2" invisible="1"/>
-                                        <field name="sum_interes_total" readonly="1" string="Capital/Interes" sum="Total"/>
-                                        <field name="cantidad_letra" string="Cantidad a Pagar(Letra)" required="1" placeholder="Ejemplo: Mil pesos mexicanos" groups="fondoda.global_permission"/>                                        
+                                        <field name="sum_interes_total" readonly="1" string="Capital/Interes" sum="Total"/>                   
                                     </tree>
                                 </field>
                             </page>

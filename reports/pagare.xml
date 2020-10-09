@@ -4,146 +4,143 @@
     <t t-call="web.html_container">
         <t t-foreach="docs" t-as="p">
             <t t-call="web.external_layout">
-                <div class="page">
-                    <t t-foreach="p.pagos_ids" t-as="pago">
-                        <div t-attf-class="#{'container mb32' if pago_index%2==0 else 'container mb32'}" style="font-size:19px;border: 2px solid black;border-radius: 5px;">
-                            <div class="row">
-                                <div class="col-4 text-center">
-                                    <h2>Pagaré</h2>
-                                </div>
-                                <div class="col-1 text-center">
-                                    <h3>No.</h3>
-                                </div>
-                                <div class="col-1 text-center">
-                                    <h3><span t-field="pago.num_pago" /></h3>
-                                </div>
-                                <div class="col-3 text-right">
-                                    <h3>BUENO POR $</h3>
-                                </div>
-                                <div class="col-3 text-left">
-                                    <h3><span t-field="pago.cantidad_pagar" /> MXN </h3>
-                                </div>
-                                    
+                <div class="page">  
+                    <div class="container mt32 mb32" style="font-size:19px;border: 2px solid black;border-radius: 5px;">
+                        <div class="row">
+                            <div class="col-4 text-center">
+                                <h2>Pagaré</h2>
                             </div>
-                            <div class="row">
-                                <div class="col-3"/>
-                                <div class="col-8 text-right" > 
-                                    <span>En</span>
-                                    <span style="text-decoration:underline;">Guadalajara</span>
-                                    <span>a</span>
-                                    <span style="text-decoration:underline;" t-field="pago.day"/>
-                                    <span>de</span>
-                                    <span style="text-decoration:underline;" t-field="pago.month"></span>
-                                    <span>de</span>
-                                    <span style="text-decoration:underline;" t-field="pago.year"></span>
-                                </div>
-                                <div class="col-1"/>
+                            <div class="col-1 text-center">
+                                <h3>No.</h3>
                             </div>
-                            <div class="row">
-                                <div class="col-1"/>
-                                <div class="col-10" >
-                                    <p style="text-align: justify;">Debe(mos) y pagaré(mos) incondicionalmente este Pagaré a la orden de <span style="text-decoration:underline;">ESTRATEGIAS Y SOLUCIONES EN IT SA DE CV</span>
-                                        en <span style="text-decoration:underline;">Guadalajara, Jalisco</span> el <span style="text-decoration:underline;"><span t-field="pago.day"/> de <span t-field="pago.month" /> de <span t-field="pago.year" /></span>
-                                    </p>
-                                </div>
-                                <div class="col-1"/>
+                            <div class="col-1 text-center">
+                                <h3><span t-field="p.id" /></h3>
                             </div>
-                            <div class="row">
-                                <div class="col-1"/>
-                                <div class="col-10">
-                                    <p>La cantidad de:</p>
-                                </div>
-                                <div class="col-1"/>
+                            <div class="col-3 text-right">
+                                <h3>BUENO POR $</h3>
                             </div>
-                            <div class="row">
-                                <div class="col-1"/>
-                                <div class="col-10" style="border: 1px solid black;border-radius: 7px;">
-                                    <span  t-field="pago.cantidad_letra" /> MXN
-                                </div>
-                                <div class="col-1"/>
+                            <div class="col-3 text-left">
+                                <h3><span t-field="p.cantidad" /> MXN </h3>
                             </div>
-                            <div class="row">
-                                <div class="col-1"/>
-                                <div class="col-10">
-                                    <p style="text-align: justify;">
-                                        Valor recibido a mi(nuestra) entera satisfacción. Este pagaré forma parte de una serie numerada del <span t-field="pago.num_pago"/> al <span t-field="p.pagos"/> y
-                                        todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número,
-                                        además de los ya vencidos, desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará interes moratorios al 0% mensual,
-                                        pagadero en esta ciudad juntamente con el principal. 
-                                    </p>
-                                </div>
-                                <div class="col-1"/>
-                            </div>
-                            <div class="row mb16 ">
-                                <t t-set="name_complete" t-value="p.partner_id.name"/>
-                                <t t-if="p.partner_id.father_name">
-                                    <t t-set="name_complete" t-value="p.partner_id.name+' '+p.partner_id.father_name"/>
-                                    <t t-if="p.partner_id.mother_name">
-                                        <t t-set="name_complete" t-value="p.partner_id.name+' '+p.partner_id.father_name+' '+p.partner_id.mother_name"/>
-                                    </t>
-                                </t>
-                                <t t-set="state_and_city" t-value="p.partner_id.city+','+p.partner_id.state_id.name"/>
-                                <div class="col-1"/>
-                                <div class="col-6" style="font-size:15px;border: 1px solid black;">
-                                    <div class="row">
-                                        <div class="col-12 text-center">
-                                            <strongo>Nombre y datos del deudor</strongo>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-3 text-right">
-                                            <span>Nombre:</span>
-                                        </div>                                        
-                                        <div class="col-9 text-left" style="text-decoration:underline;">
-                                            <span style="" t-esc="name_complete"/>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-3 text-right">
-                                            <span>Dirección:</span>
-                                        </div>
-                                        <div class="col-9 text-left" style="text-decoration:underline;">
-                                            <span style="" t-field="p.partner_id.street"/>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-3 text-right">
-                                            <span>Teléfono:</span>
-                                        </div>
-                                        <div class="col-9 text-left" style="text-decoration:underline;">
-                                            <span t-field="p.partner_id.phone"/>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-3 text-right">
-                                            <span>Población:</span>
-                                        </div>                                        
-                                        <div class="col-9 text-left" style="text-decoration:underline;">
-                                            <span t-esc="state_and_city"/>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="row">
-                                        <div class="col-12 text-center">
-                                            <strong>Acepto(amos)</strong>
-                                        </div>
-                                    </div>
-                                    <div class="row mt64">
-                                        <div class="col-6 text-right">
-                                            <span>Firma:</span>
-                                        </div>                                        
-                                        <div class="col-6 text-left" style="border-bottom:1px solid black;">
-            
-                                        </div>
-                            
-                                    </div>
-                                </div>
-                                <div class="col-1"/>
-                            </div>
+                                
                         </div>
-                    </t>
+                        <div class="row">
+                            <div class="col-3"/>
+                            <div class="col-8 text-right" > 
+                                <span>En</span>
+                                <span style="text-decoration:underline;">Guadalajara</span>
+                                <span>a</span>
+                                <span style="text-decoration:underline;" t-field="p.day"/>
+                                <span>de</span>
+                                <span style="text-decoration:underline;" t-field="p.month"></span>
+                                <span>de</span>
+                                <span style="text-decoration:underline;" t-field="p.year"></span>
+                            </div>
+                            <div class="col-1"/>
+                        </div>
+                        <div class="row">
+                            <div class="col-1"/>
+                            <div class="col-10" >
+                                <p style="text-align: justify;">Debe(mos) y pagaré(mos) incondicionalmente este Pagaré a la orden de <span style="text-decoration:underline;">ESTRATEGIAS Y SOLUCIONES EN IT SA DE CV</span>
+                                    en <span style="text-decoration:underline;">Guadalajara, Jalisco</span> el <span style="text-decoration:underline;"><span t-field="p.day"/> de <span t-field="p.month" /> de <span t-field="p.year" /></span>
+                                </p>
+                            </div>
+                            <div class="col-1"/>
+                        </div>
+                        <div class="row">
+                            <div class="col-1"/>
+                            <div class="col-10">
+                                <p>La cantidad de:</p>
+                            </div>
+                            <div class="col-1"/>
+                        </div>
+                        <div class="row">
+                            <div class="col-1"/>
+                            <div class="col-10" style="border: 1px solid black;border-radius: 7px;">
+                                <span  t-field="p.cantidad_letra" /> MXN
+                            </div>
+                            <div class="col-1"/>
+                        </div>
+                        <div class="row">
+                            <div class="col-1"/>
+                            <div class="col-10">
+                                <p style="text-align: justify;">
+                                    Valor recibido a mi(nuestra) entera satisfacción. Este pagaré forma parte de una serie numerada del 1 al 1 y
+                                    todos estan sujetos a la condición de que, al no pagarse cualquiera de ellos a su vencimiento, serán exigibles todos los que le sigan en número,
+                                    además de los ya vencidos, desde la fecha de vencimiento de este documento hasta el día de su liquidación, causará interes moratorios al 0% mensual,
+                                    pagadero en esta ciudad juntamente con el principal. 
+                                </p>
+                            </div>
+                            <div class="col-1"/>
+                        </div>
+                        <div class="row mb16 ">
+                            <t t-set="name_complete" t-value="p.partner_id.name"/>
+                            <t t-if="p.partner_id.father_name">
+                                <t t-set="name_complete" t-value="p.partner_id.name+' '+p.partner_id.father_name"/>
+                                <t t-if="p.partner_id.mother_name">
+                                    <t t-set="name_complete" t-value="p.partner_id.name+' '+p.partner_id.father_name+' '+p.partner_id.mother_name"/>
+                                </t>
+                            </t>
+                            <t t-set="state_and_city" t-value="p.partner_id.city+','+p.partner_id.state_id.name"/>
+                            <div class="col-1"/>
+                            <div class="col-6" style="font-size:15px;border: 1px solid black;">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <strongo>Nombre y datos del deudor</strongo>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-3 text-right">
+                                        <span>Nombre:</span>
+                                    </div>                                        
+                                    <div class="col-9 text-left" style="text-decoration:underline;">
+                                        <span style="" t-esc="name_complete"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-3 text-right">
+                                        <span>Dirección:</span>
+                                    </div>
+                                    <div class="col-9 text-left" style="text-decoration:underline;">
+                                        <span style="" t-field="p.partner_id.street"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-3 text-right">
+                                        <span>Teléfono:</span>
+                                    </div>
+                                    <div class="col-9 text-left" style="text-decoration:underline;">
+                                        <span t-field="p.partner_id.phone"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-3 text-right">
+                                        <span>Población:</span>
+                                    </div>                                        
+                                    <div class="col-9 text-left" style="text-decoration:underline;">
+                                        <span t-esc="state_and_city"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <strong>Acepto(amos)</strong>
+                                    </div>
+                                </div>
+                                <div class="row mt64">
+                                    <div class="col-6 text-right">
+                                        <span>Firma:</span>
+                                    </div>                                        
+                                    <div class="col-6 text-left" style="border-bottom:1px solid black;">
+        
+                                    </div>
+                        
+                                </div>
+                            </div>
+                            <div class="col-1"/>
+                        </div>
+                    </div>
                 </div>
             </t>
         </t>

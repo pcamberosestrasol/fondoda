@@ -1,3 +1,4 @@
+from logging import disable
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError,ValidationError
 from datetime import datetime, date, time, timedelta
@@ -42,9 +43,29 @@ class FondodaPrestamo(models.Model):
     tipo = fields.Selection([('ordinario', 'Ordinario'),('extra', 'Extraordinario')])
     motivo = fields.Selection([('muerte', 'Muerte de Familiar Directo'),('accidente','Accidente')])
     evidencia = fields.Boolean('Evidencia entregada')
+    
+    day = fields.Integer('Día',compute="calculate_last_date",store=True)
+    month = fields.Char('Mes',compute="calculate_last_date",store=True)
+    year = fields.Char('Año',compute="calculate_last_date",store=True)
+
 
     def _expand_states(self, states, domain, order):
         return [key for key, val in type(self).estatus.selection]
+
+    @api.depends('fecha')
+    def calculate_last_date(self):
+        meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+        for p in self:
+            if p.fecha:
+                p.day = p.fecha.day
+                p.month = meses[p.fecha.month-1]
+                p.year = str(p.fecha.year)
+            else:
+                p.day = 0
+                p.month = False
+                p.year = False
+    
+   
 
     
     @api.depends('cantidad','pagos_ids')
@@ -175,7 +196,7 @@ class FondodaPrestamo(models.Model):
         return {'type': 'ir.actions.act_window_close'}
 
     def create_pagos(self):
-        meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+        
         lista = []
         capital = self.cantidad
         fecha = fields.Date.today()
@@ -226,8 +247,6 @@ class FondodaPrestamo(models.Model):
                     'num_pago': p+1,
                     'num_tipo': str(p+1)+'-'+self.descuento,
                     'prestamo_id':self.id,
-                    'day': fecha.day,
-                    'month':meses[fecha.month-1],
                     'saldo': capital,
                     'interes': capital*(1/100),
                     'capital': capital 
@@ -238,9 +257,6 @@ class FondodaPrestamo(models.Model):
                     'num_pago': p+1,
                     'num_tipo': str(p+1)+'-'+self.descuento,
                     'prestamo_id':self.id,
-                    'day': fecha.day,
-                    'month':meses[fecha.month-1],
-                    'year': str(fecha.year),
                     'saldo': capital,
                     'interes': capital*(1/100),
                     'capital':  self.cantidad/self.pagos
