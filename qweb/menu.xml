@@ -6,7 +6,7 @@
         <t t-jquery=".o_menu_brand" t-operation='replace'>
                <ul style="width:140px;">
       
-                     <img src="/fondoda/static/img/estrasol2.PNG" class="mt-2" style="width:100%; height:80%;"/>
+                     <img src="/fondoda/static/img/estrasol2.png" class="mt-2" style="width:100%; height:80%;"/>
                  </ul>
                <a class="o_menu_brand mr-0" role="button"/>
               
