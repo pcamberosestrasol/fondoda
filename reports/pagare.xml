@@ -7,16 +7,16 @@
                 <div class="page">  
                     <div class="container mt32 mb32" style="font-size:19px;border: 2px solid black;border-radius: 5px;">
                         <div class="row">
-                            <div class="col-4 text-center">
+                            <div class="col-3 text-center">
                                 <h2>Pagaré</h2>
                             </div>
-                            <div class="col-1 text-center">
+                            <div class="col-2 text-center">
                                 <h3>No.</h3>
                             </div>
-                            <div class="col-1 text-center">
+                            <div class="col-2 text-center">
                                 <h3><span t-field="p.id" /></h3>
                             </div>
-                            <div class="col-3 text-right">
+                            <div class="col-2 text-right">
                                 <h3>BUENO POR $</h3>
                             </div>
                             <div class="col-3 text-left">
@@ -42,7 +42,8 @@
                             <div class="col-1"/>
                             <div class="col-10" >
                                 <p style="text-align: justify;">Debe(mos) y pagaré(mos) incondicionalmente este Pagaré a la orden de <span style="text-decoration:underline;">ESTRATEGIAS Y SOLUCIONES EN IT SA DE CV</span>
-                                    en <span style="text-decoration:underline;">Guadalajara, Jalisco</span> el <span style="text-decoration:underline;"><span t-field="p.day"/> de <span t-field="p.month" /> de <span t-field="p.year" /></span>
+                                    en <span style="text-decoration:underline;">Guadalajara, Jalisco</span> el <span style="text-decoration:underline;">
+                                    <span t-field="p.pagos_ids[-1].day"/> de <span t-field="p.pagos_ids[-1].month" /> de <span t-field="p.pagos_ids[-1].year" /></span>
                                 </p>
                             </div>
                             <div class="col-1"/>

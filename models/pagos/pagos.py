@@ -1,3 +1,4 @@
+from calendar import day_abbr, month
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError,ValidationError
 
@@ -21,6 +22,9 @@ class FondodaPagos(models.Model):
     sum_interes_total = fields.Float('Capital/Interes',digits=(32, 2),compute="compute_sum_interes_total")
     saldo = fields.Float('Saldo', digits=(32, 2))
     interes2 = fields.Float('Interes', digits=(32, 2))
+    day = fields.Integer('Día')
+    month = fields.Char('Mes')
+    year = fields.Char('Year')
     
 
     @api.depends('capital','interes')

@@ -196,7 +196,7 @@ class FondodaPrestamo(models.Model):
         return {'type': 'ir.actions.act_window_close'}
 
     def create_pagos(self):
-        
+        mes = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
         lista = []
         capital = self.cantidad
         fecha = fields.Date.today()
@@ -249,7 +249,10 @@ class FondodaPrestamo(models.Model):
                     'prestamo_id':self.id,
                     'saldo': capital,
                     'interes': capital*(1/100),
-                    'capital': capital 
+                    'capital': capital,
+                    'day': fecha.day,
+                    'month': mes[fecha.month-1],
+                    'year': str(fecha.year)
                 }))
             else:
                 lista.append((0,0,{
@@ -319,3 +322,11 @@ class FondodaPrestamo(models.Model):
     def validasi_form(self):
         if self.cantidad != 1000:
             self.cantidad_letra = ''
+
+
+    def name_get(self):
+        res = []
+        for value in self:
+            name= '(ESTRA-F2)%s' % (value.name)
+            res.append((value.id,name))
+        return res
