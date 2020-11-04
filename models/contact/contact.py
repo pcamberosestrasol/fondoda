@@ -71,7 +71,7 @@ class FondoContact(models.Model):
                 }
 
     @api.onchange('phone')
-    def onchange_phone_verification(self):
+    def onchange_phone_verification_2(self):
         if self.phone:
             telefono = str(self.phone)
             telefono.replace(" ","")
