@@ -6,3 +6,5 @@ access_fondoda_pagos,access.fondoda.pagos,model_fondoda_pagos,global_permission,
 access_fondoda_pagos_colab,access.fondoda.pagos,model_fondoda_pagos,colab_permission,1,1,0,0
 
 accesss_fondoda_document,access.fondoda.document,model_fondoda_document,base.group_user,1,1,1,1
+
+access_res_partner,access.res.partner,model_res_partner,global_permission,1,1,1,1
