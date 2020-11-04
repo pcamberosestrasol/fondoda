@@ -15,9 +15,12 @@
                   groups="fondoda.global_permission"
                   attrs="{'invisible':[('is_company', '=', True)]}"/>
             </div>
+            <xpath expr="//field[@name='name']" position="attributes">
+                  <attribute name="class">ml-1 px-1</attribute>
+            </xpath>
             <xpath expr="//field[@name='name']" position="after">
-                  <field name="father_name"  placeholder="Apellido Paterno" attrs="{'invisible':[('is_company', '=', True)],'required':[('is_company','=',False)]}"/>
-                  <field name="mother_name" placeholder="Apellido Materno" attrs="{'invisible':[('is_company', '=', True)]}"/>
+                  <field name="father_name" class="ml-1 px-1"  placeholder="Apellido Paterno" attrs="{'invisible':[('is_company', '=', True)],'required':[('is_company','=',False)]}"/>
+                  <field name="mother_name" class="ml-1 px-1" placeholder="Apellido Materno" attrs="{'invisible':[('is_company', '=', True)]}"/>
             </xpath>
             <xpath expr="//field[@name='company_type']" position="attributes">
                   <attribute name="invisible">1</attribute>
