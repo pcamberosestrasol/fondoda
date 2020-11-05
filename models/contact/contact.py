@@ -1,10 +1,10 @@
-    # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from odoo import models, fields, api
-import logging
 from datetime import datetime,date,time
-_logger = logging.getLogger(__name__)
 import re
 from odoo.exceptions import UserError,ValidationError
+import logging
+_logger = logging.getLogger(__name__)
 
 class FondoContact(models.Model):
     
@@ -46,6 +46,33 @@ class FondoContact(models.Model):
                     }
                 }
 
+    @api.onchange('phone')
+    def verify_phone_number(self):
+        if self.phone:
+            telefono = str(self.phone)
+            telefono.replace(" ","")
+            _logger.info(telefono)
+            temp = list(filter(lambda numero: numero in '0123456789',telefono))
+            len_phone = len(temp)
+            caracteres = [numero for numero in str(telefono) if not numero in '+-(0123456789)']
+            _logger.info(str(caracteres))
+            if caracteres:
+                self.phone = False
+                return {'warning': {
+                    'title': "Error Teléfono",
+                    'message': "No se permite el uso de letras",
+                    }
+                }
+            if len_phone >= 10 and len_phone <= 13:
+                pass
+            else:
+                return {'warning': {
+                    'title': "Error Teléfono",
+                    'message': "Favor de introducir un numero con al menos 10 caracteres",
+                    }
+                }
+
+
     @api.onchange('benef_phone')
     def onchange_phone_verification(self):
         if self.benef_phone:
@@ -70,29 +97,7 @@ class FondoContact(models.Model):
                     }
                 }
 
-    @api.onchange('phone')
-    def onchange_phone_verification_2(self):
-        if self.phone:
-            telefono = str(self.phone)
-            telefono.replace(" ","")
-            temp=list(filter(lambda numero: numero in '0123456789',telefono) )
-            tam_telefono = len(temp)
-            caracteres = [numero for numero in str(telefono) if not numero in '+-(0123456789)']
-            if caracteres:
-                self.phone=False
-                return {'warning': {
-                    'title': "Error Teléfono",
-                    'message': "No se permite el uso de letras",
-                    }
-                }
-            if tam_telefono >= 10 and tam_telefono <= 13:
-                pass
-            else:
-                return {'warning': {
-                    'title': "Error Teléfono",
-                    'message': "Favor de introducir un numero con al menos 10 caracteres",
-                    }
-                }
+    
 
     @api.onchange('email')
     def method_validete_mail(self):
