@@ -49,13 +49,10 @@ class FondoContact(models.Model):
     @api.onchange('phone')
     def verify_phone_number(self):
         if self.phone:
-            telefono = str(self.phone)
-            telefono.replace(" ","")
-            _logger.info(telefono)
+            telefono = str(self.phone).replace(' ','')
             temp = list(filter(lambda numero: numero in '0123456789',telefono))
             len_phone = len(temp)
             caracteres = [numero for numero in str(telefono) if not numero in '+-(0123456789)']
-            _logger.info(str(caracteres))
             if caracteres:
                 self.phone = False
                 return {'warning': {
@@ -63,7 +60,7 @@ class FondoContact(models.Model):
                     'message': "No se permite el uso de letras",
                     }
                 }
-            if len_phone >= 10 and len_phone <= 13:
+            if len_phone >= 10 and len_phone <= 15:
                 pass
             else:
                 return {'warning': {
