@@ -118,8 +118,8 @@ class FondodaPrestamo(models.Model):
             raise ValidationError(('Error!! No se puede crear la solicitud, debido a que tiene un préstamo activo'))
         else:
             alta = res.partner_id.fecha_alta+timedelta(days=90)
-            _logger.info('Alta = '+str(alta))
             if alta < date.today():
+                res.send_mail_creado()
                 return res
             else:
                 raise ValidationError(('Debe tener al menos 3 meses que lo dieron de alta en el IMSS para poder solicitar un préstamo'))
@@ -306,6 +306,11 @@ class FondodaPrestamo(models.Model):
                     else:
                         p.cantidad_pagada = p.cantidad_pagar
                         contador+=1
+    
+    def send_mail_creado(self):
+        mail_search = self.env.ref('fondoda.mail_prestamo_creado').id
+        template = self.env['mail.template'].browse(mail_search)
+        template.send_mail(self.id,force_send=True)
 
     def send_mail_aprobado(self):
         mail_search = self.env.ref('fondoda.mail_prestamo_aprobado').id
