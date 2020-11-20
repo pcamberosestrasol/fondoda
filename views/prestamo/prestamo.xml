@@ -25,9 +25,10 @@
             <field name="arch" type="xml">
                 <form>
                     <header groups="fondoda.global_permission">
-                        <button name="autorizar" string="Aprobar" type="object" class="oe_highlight" attrs="{'invisible':[('estatus', '!=', '1')]}"/>
-                        <button name="rechazo_comentario" string="Rechazar" type="object" class="oe_highlight" attrs="{'invisible':[('estatus', '!=', '1')]}"/>
-                        <button name="pagado" string="Pagar" type="object" class="oe_highlight" attrs="{'invisible':[('estatus', '!=', '2')]}"/>
+                        <button name="validar" string="Validar" type="object" class="oe_highlight" attrs="{'invisible':[('estatus', '!=', '1')]}"/>
+                        <button name="autorizar" string="Aprobar" type="object" class="oe_highlight" attrs="{'invisible':[('estatus', '!=', '2')]}"/>
+                        <button name="rechazo_comentario" string="Rechazar" type="object" class="oe_highlight" attrs="{'invisible':[('estatus', 'in', ['5','4'])]}"/>
+                        <button name="pagado" string="Pagar" type="object" class="oe_highlight" attrs="{'invisible':[('estatus', '!=', '3')]}"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
@@ -36,7 +37,7 @@
                         <h2><field name="name" readonly="1"/></h2>
                         <group>
                             <group>
-                                 <field name="tipo" invisible="1"/>
+                                <field name="tipo" invisible="1"/>
                                 <field name="fecha" readonly="1" />
                                 <field name="prestamos_activos" attrs="{'invisible':[('tipo','=','extra')]}" readonly="1"/>
                                 <field name="motivo" attrs="{'invisible':[('tipo', '=', 'ordinario')],'readonly':[('estatus', 'in', ['2','3'])]}"/>    

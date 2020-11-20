@@ -28,9 +28,10 @@ class FondodaPrestamo(models.Model):
     interes = fields.Float('Interés Anual (%)',default=12.00,digits=(32, 2))
     estatus = fields.Selection([
         ('1', 'Pendiente'),
-        ('2', 'Activo'),
-        ('3', 'Pagado'),
-        ('4', 'Rechazado')],
+        ('2', 'Validado'),
+        ('3', 'Activo'),
+        ('4', 'Pagado'),
+        ('5', 'Rechazado')],
         group_expand='_expand_states', index=True,
         default='1',
         string='Estatus')
@@ -113,9 +114,13 @@ class FondodaPrestamo(models.Model):
     def create(self, vals):
         vals['name'] = self.env['ir.sequence'].next_by_code('fondoda.folio.sequence')
         res = super(FondodaPrestamo, self).create(vals)
-        prestamos = self.env['fondoda.prestamo'].search([('partner_id','=',vals['partner_id']),('estatus','=','2')])
-        if prestamos and res.tipo == 'ordinario':
-            raise ValidationError(('Error!! No se puede crear la solicitud, debido a que tiene un préstamo activo'))
+        prestamos = self.env['fondoda.prestamo'].search([
+            ('partner_id','=',vals['partner_id']),
+            ('estatus','in',['1','2','3']),('tipo','=',self.tipo)])
+        if len(prestamos)> 1 and res.tipo == 'ordinario':
+            raise ValidationError(('Error!! No se puede crear la solicitud, debido a que tienes un préstamo en proceso'))
+        elif len(prestamos)> 1 and res.tipo == 'extra':
+            raise ValidationError(('Error!! No se puede crear la solicitud, debido a que tienes un préstamo en proceso'))
         else:
             alta = res.partner_id.fecha_alta+timedelta(days=90)
             if alta < date.today():
@@ -128,7 +133,7 @@ class FondodaPrestamo(models.Model):
         previo_estatus = self.estatus
         res = super(FondodaPrestamo, self).write(vals)
         if 'estatus' in vals:
-            if self.prestamos_activos == True and self.tipo == 'ordinario' and self.estatus == '2':
+            if self.prestamos_activos == True and self.tipo == 'ordinario' and self.estatus == '3':
                 raise ValidationError(('El colaborador cuenta con un préstamo activo'))
             elif previo_estatus == '3' and self.estatus == '2':
                 raise ValidationError(('No puede cambiar el estatus de una solicitud que ya ha sido pagada'))
@@ -138,18 +143,22 @@ class FondodaPrestamo(models.Model):
             return res
     
 
-    def autorizar(self):
+    def validar(self):
         if self.pagos > 0:
             self.estatus = '2'
             self.create_pagos()
-            self.send_mail_aprobado()
         else:
             raise ValidationError(('No se puede aprobar, no cuenta con algún número de pagos'))
+
+    def autorizar(self):
+        self.estatus = '3'
+        self.send_mail_aprobado()
         
     
     def pagado(self):
-        self.estatus = '3'
         self.pagar_todo()
+        if self.pagar_todo:
+            self.estatus = '4'
 
     def open_wizard_terms(self):
         information = int(self.env['ir.config_parameter'].sudo().get_param('fondoda.fda_reglamento'))
@@ -187,7 +196,7 @@ class FondodaPrestamo(models.Model):
 
     
     def guardar_cambios(self):
-        self.estatus = '4'
+        self.estatus = '5'
         self.send_mail_rechazado()
         return {'type': 'ir.actions.act_window_close'}
          
@@ -297,15 +306,18 @@ class FondodaPrestamo(models.Model):
     
     def pagar_todo(self):
         if self.pagos_ids:
-            contador = 0
             for p in self.pagos_ids:
-                if p.cantidad_pagada == 0:
-                    if contador == 1:
-                        p.cantidad_pagada = p.capital
-                        p.interes2 = p.cantidad_pagar - p.capital
-                    else:
-                        p.cantidad_pagada = p.cantidad_pagar
-                        contador+=1
+                if p.cantidad_pagada >= p.capital and p.cantidad_pagada < p.cantidad_pagar:
+                    p.interes2 = p.cantidad_pagar - p.capital
+                elif p.cantidad_pagada == p.cantidad_pagar:
+                    p.interes2 = 0
+                elif p.cantidad_pagada == 0:
+                    raise ValidationError(('Error!! Favor de llenar todos los campos de pago'))
+                elif p.cantidad_pagada < p.capital or p.cantidad_pagada > p.cantidad_pagar:
+                    raise ValidationError(('Error!! Favor de verificar la cantidad del pago '+str(p.num_tipo)))
+                else:
+                    pass
+                
     
     def send_mail_creado(self):
         mail_search = self.env.ref('fondoda.mail_prestamo_creado').id
