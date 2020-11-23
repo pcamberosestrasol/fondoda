@@ -28,7 +28,7 @@ class FondodaPrestamo(models.Model):
     interes = fields.Float('Interés Anual (%)',default=12.00,digits=(32, 2))
     estatus = fields.Selection([
         ('1', 'Pendiente'),
-        ('2', 'Validado'),
+        ('2', 'Visto Bueno Tesorería'),
         ('3', 'Activo'),
         ('4', 'Pagado'),
         ('5', 'Rechazado')],
@@ -116,10 +116,13 @@ class FondodaPrestamo(models.Model):
         res = super(FondodaPrestamo, self).create(vals)
         prestamos = self.env['fondoda.prestamo'].search([
             ('partner_id','=',vals['partner_id']),
-            ('estatus','in',['1','2','3']),('tipo','=',self.tipo)])
-        if len(prestamos)> 1 and res.tipo == 'ordinario':
+            ('estatus','in',['1','2','3'])])
+        prestamos2 = self.env['fondoda.prestamo'].search([
+            ('partner_id','=',vals['partner_id']),
+            ('estatus','in',['1','2','3']),('tipo','=','extra')])    
+        if len(prestamos)> 1:
             raise ValidationError(('Error!! No se puede crear la solicitud, debido a que tienes un préstamo en proceso'))
-        elif len(prestamos)> 1 and res.tipo == 'extra':
+        elif len(prestamos2)> 1:
             raise ValidationError(('Error!! No se puede crear la solicitud, debido a que tienes un préstamo en proceso'))
         else:
             alta = res.partner_id.fecha_alta+timedelta(days=90)
@@ -147,6 +150,7 @@ class FondodaPrestamo(models.Model):
         if self.pagos > 0:
             self.estatus = '2'
             self.create_pagos()
+            self.send_mail_validado()
         else:
             raise ValidationError(('No se puede aprobar, no cuenta con algún número de pagos'))
 
@@ -321,6 +325,11 @@ class FondodaPrestamo(models.Model):
     
     def send_mail_creado(self):
         mail_search = self.env.ref('fondoda.mail_prestamo_creado').id
+        template = self.env['mail.template'].browse(mail_search)
+        template.send_mail(self.id,force_send=True)
+
+    def send_mail_validado(self):
+        mail_search = self.env.ref('fondoda.mail_prestamo_listo').id
         template = self.env['mail.template'].browse(mail_search)
         template.send_mail(self.id,force_send=True)
 

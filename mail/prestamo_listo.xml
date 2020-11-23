@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <data>
+        <record id="mail_prestamo_listo" model="mail.template">
+            <field name="name">Préstamo Validado</field>
+            <field name="model_id" ref="fondoda.model_fondoda_prestamo"/>
+            <field name="subject">Préstamo ${object.name}</field>
+            <field name="email_from">${(object.user_id.email_formatted}</field>
+            <field name="email_to">ajasso@estrasol.com.mx</field>
+            <field name="body_html" type="html">
+                <p>El préstamo <strong>${object.name}</strong> ya ha sido validado, por tesoreria</p>
+                <p>Favor de aprobar préstamo a la brevedad</p>
+            </field>
+        </record>
+     </data>
+</odoo>

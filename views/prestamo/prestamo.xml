@@ -52,7 +52,7 @@
                                 <field name="descuento" />
                                 <field name="partner_id" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
                                 <field name="interes" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
-                                <field name="estatus" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
+                                <field name="estatus" force_save="1" readonly="1"/>
                                 <field name="evidencia" attrs="{'invisible':[('tipo', '=', 'ordinario')]}"/>
                             </group>
                         </group>
@@ -102,9 +102,10 @@
                 <search>
                     <field name="name" string="Folio"/>
                     <filter string="Pendiente" name="pendiente" domain="[('estatus','=','1')]"/>
-                    <filter string="Activo" name="activo" domain="[('estatus','=','2')]"/>
-                    <filter string="Pagado" name="pagadp" domain="[('estatus','=','3')]"/>
-                    <filter string="Rechazado" name="rechazado" domain="[('estatus','=','4')]"/>
+                    <filter string="Visto Bueno" name="visto_bueno" domain="[('estatus','=','2')]"/>
+                    <filter string="Activo" name="activo" domain="[('estatus','=','3')]"/>
+                    <filter string="Pagado" name="pagado" domain="[('estatus','=','4')]"/>
+                    <filter string="Rechazado" name="rechazado" domain="[('estatus','=','5')]"/>
                     <group expand="0" name="group_by" string="Group By">
                         <filter name="group_estatus" string="Estatus" context="{'group_by':'estatus'}"/>
                     </group>

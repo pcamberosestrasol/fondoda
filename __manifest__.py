@@ -40,6 +40,7 @@
         'mail/prestamo_aprobado.xml',
         'mail/prestamo_rechazado.xml',
         'mail/prestamo_creado.xml',
+        'mail/prestamo_listo.xml',
         #sequence
         'data/prestamo_folio.xml',
         #wizard
