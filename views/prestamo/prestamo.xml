@@ -42,7 +42,7 @@
                                 <field name="prestamos_activos" attrs="{'invisible':[('tipo','=','extra')]}" readonly="1"/>
                                 <field name="motivo" attrs="{'invisible':[('tipo', '=', 'ordinario')],'readonly':[('estatus', 'in', ['2','3'])]}"/>    
                                 <field name="cantidad" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}"/>
-                                <field name="cantidad_letra" required="1" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" placeholder="Ejemplo: Mil pesos mexicanos"/>
+                                <field name="cantidad_letra" required="1" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" placeholder="Ejemplo: Dos mil"/>
                                 <field name="pagos" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}"/>
                                 <field name="monto" force_save="1" readonly="1"/>
                                 <field name="total_pago"/>
@@ -52,7 +52,7 @@
                                 <field name="descuento" />
                                 <field name="partner_id" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
                                 <field name="interes" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
-                                <field name="estatus" force_save="1" readonly="1"/>
+                                <field name="estatus" />
                                 <field name="evidencia" attrs="{'invisible':[('tipo', '=', 'ordinario')]}"/>
                             </group>
                         </group>

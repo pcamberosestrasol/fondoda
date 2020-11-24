@@ -58,7 +58,7 @@
                         <div class="row">
                             <div class="col-1"/>
                             <div class="col-10" style="border: 1px solid black;border-radius: 7px;">
-                                <span  t-field="p.cantidad_letra" /> MXN
+                                <span  t-field="p.cantidad_letra" /> pesos 00/100 M.N.
                             </div>
                             <div class="col-1"/>
                         </div>

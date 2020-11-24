@@ -17,7 +17,7 @@ class FondodaPrestamo(models.Model):
     partner_id = fields.Many2one('res.partner','Colaborador',default=lambda self: self.env.user.partner_id)
     prestamos_activos = fields.Boolean('¿Tienes prestamos activos?',compute="verify_prestamos",store=True)
     cantidad = fields.Float('Cantidad solicitada',digits=(32, 2),default=1000)
-    cantidad_letra = fields.Char('Cantidad solicitada (Letra)',default='Mil pesos mexicanos')
+    cantidad_letra = fields.Char('Cantidad solicitada (Letra)',default='Mil')
     pagos = fields.Integer('Número de pagos', default=1)
     descuento = fields.Selection([
         ('semanal', 'Semanal'),
@@ -308,13 +308,13 @@ class FondodaPrestamo(models.Model):
     def pagar_todo(self):
         if self.pagos_ids:
             for p in self.pagos_ids:
-                if p.cantidad_pagada >= p.capital and p.cantidad_pagada < p.cantidad_pagar:
+                if p.cantidad_pagada == p.capital:
                     p.interes2 = p.cantidad_pagar - p.capital
                 elif p.cantidad_pagada == p.cantidad_pagar:
                     p.interes2 = 0
                 elif p.cantidad_pagada == 0:
                     raise ValidationError(('Error!! Favor de llenar todos los campos de pago'))
-                elif p.cantidad_pagada < p.capital or p.cantidad_pagada > p.cantidad_pagar:
+                elif p.cantidad_pagada < p.capital or p.cantidad_pagada > p.cantidad_pagar or p.cantidad_pagada > p.capital or p.cantidad.pagada < p.cantidad_pagar:
                     raise ValidationError(('Error!! Favor de verificar la cantidad del pago '+str(p.num_tipo)))
                 else:
                     pass
