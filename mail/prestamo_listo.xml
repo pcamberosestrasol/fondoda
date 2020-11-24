@@ -6,9 +6,9 @@
             <field name="model_id" ref="fondoda.model_fondoda_prestamo"/>
             <field name="subject">Préstamo ${object.name}</field>
             <field name="email_from">${(object.user_id.email_formatted}</field>
-            <field name="email_to">ajasso@estrasol.com.mx</field>
+            <field name="email_to">avillalvazo@estrasol.com.mx</field>
             <field name="body_html" type="html">
-                <p>El préstamo <strong>${object.name}</strong> ya ha sido validado, por tesoreria</p>
+                <p>El préstamo <strong>${object.name}</strong> ya ha sido validado por tesorería,</p>
                 <p>Favor de aprobar préstamo a la brevedad</p>
             </field>
         </record>

@@ -133,13 +133,10 @@ class FondodaPrestamo(models.Model):
                 raise ValidationError(('Debe tener al menos 3 meses que lo dieron de alta en el IMSS para poder solicitar un préstamo'))
     
     def write(self, vals):
-        previo_estatus = self.estatus
         res = super(FondodaPrestamo, self).write(vals)
         if 'estatus' in vals:
             if self.prestamos_activos == True and self.tipo == 'ordinario' and self.estatus == '3':
                 raise ValidationError(('El colaborador cuenta con un préstamo activo'))
-            elif previo_estatus == '3' and self.estatus == '2':
-                raise ValidationError(('No puede cambiar el estatus de una solicitud que ya ha sido pagada'))
             else:
                 return res
         else:

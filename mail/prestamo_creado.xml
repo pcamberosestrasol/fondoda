@@ -6,7 +6,7 @@
             <field name="model_id" ref="fondoda.model_fondoda_prestamo"/>
             <field name="subject">Préstamo ${object.name} solicitado</field>
             <field name="email_from">${object.partner_id.email}</field>
-            <field name="email_to">ajasso@estrasol.com.mx</field>
+            <field name="email_to">cmacedo@estrasol.com.mx</field>
             <field name="body_html" type="html">
                 <p>El colaborador: ${object.partner_id.name} ${object.partner_id.father_name} ${object.partner_id.mother_name} </p>
                 <p>Solicito un préstamo de tipo <strong>${object.tipo}</strong> con folio: <strong>${object.name}</strong></p>
