@@ -52,7 +52,7 @@
                                 <field name="descuento" />
                                 <field name="partner_id" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
                                 <field name="interes" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
-                                <field name="estatus" />
+                                <field name="estatus" force_save="1" readonly="1"/>
                                 <field name="evidencia" attrs="{'invisible':[('tipo', '=', 'ordinario')]}"/>
                             </group>
                         </group>
