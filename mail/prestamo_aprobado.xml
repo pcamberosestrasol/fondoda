@@ -10,7 +10,8 @@
             <field name="body_html" type="html">
                 <p>Estimado(a) ${object.partner_id.name} ${object.partner_id.father_name} ${object.partner_id.mother_name}</p>
                 <p>Mediante este medio se le informa que el préstamo ${object.name} ha sido Aprobado</p>
-                <p>Por lo tanto se le hara un descuento cada ${object.descuento} el monto de $ ${object.monto} </p>
+                <p>Por lo tanto se le haran un descuentos cada ${object.descuento}, para consultar el monto de los descuentos
+                    verificar en el préstamo solcitado la cantidad a descontar dentro de la columna Capital/interes</p>
                 <p>
                     Sin más por el momento
                     <br/><br/>

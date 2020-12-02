@@ -67,8 +67,6 @@ class FondodaPrestamo(models.Model):
                 p.year = False
     
    
-
-    
     @api.depends('cantidad','pagos_ids')
     def compute_total_pay(self):
         for p in self:
@@ -78,7 +76,7 @@ class FondodaPrestamo(models.Model):
             if p.pagos_ids:
                 for pagos in p.pagos_ids:
                     pagado+=pagos.cantidad_pagada
-                    monto+= pagos.cantidad_pagar
+                    monto+= pagos.sum_interes_total
                     interes2 += pagos.interes2
                 p.total_pago = monto - pagado - interes2
             else:
@@ -210,7 +208,9 @@ class FondodaPrestamo(models.Model):
         lista = []
         capital = self.cantidad
         fecha = fields.Date.today()
+        
         for p in range(self.pagos):
+            dias = 0
             if self.descuento == 'semanal':
                 fecha = fecha +timedelta(days=7)
             elif self.descuento =='quincena':
@@ -220,6 +220,7 @@ class FondodaPrestamo(models.Model):
                 if fecha.day < 15:
                     dias = 15 - fecha.day
                     fecha = fecha +timedelta(days=dias)
+                    dias+=1
                     day_week = calendar.day_name[fecha.weekday()]
                     if day_week == 'sábado':
                         fecha = fecha-timedelta(days=1)
@@ -258,11 +259,12 @@ class FondodaPrestamo(models.Model):
                     'num_tipo': str(p+1)+'-'+self.descuento,
                     'prestamo_id':self.id,
                     'saldo': capital,
-                    'interes': capital*(1/100),
+                    'interes': capital*0.5,
                     'capital': capital,
                     'day': fecha.day,
                     'month': mes[fecha.month-1],
-                    'year': str(fecha.year)
+                    'year': str(fecha.year),
+                    'dias': dias
                 }))
             else:
                 lista.append((0,0,{
@@ -271,8 +273,9 @@ class FondodaPrestamo(models.Model):
                     'num_tipo': str(p+1)+'-'+self.descuento,
                     'prestamo_id':self.id,
                     'saldo': capital,
-                    'interes': capital*(1/100),
-                    'capital':  self.cantidad/self.pagos
+                    'interes': capital*0.5,
+                    'capital':  self.cantidad/self.pagos,
+                    'dias': dias
                 }))
             if fecha.day >15:
                 while fecha.day != 1:
@@ -281,10 +284,7 @@ class FondodaPrestamo(models.Model):
                  while fecha.day != 15:
                     fecha = fecha+timedelta(days=1)
             
-            capital = capital - (self.cantidad/self.pagos)
-          
-            
-           
+            capital = capital - (self.cantidad/self.pagos)           
         self.pagos_ids = lista
         
 
@@ -309,11 +309,11 @@ class FondodaPrestamo(models.Model):
         if self.pagos_ids:
             for p in self.pagos_ids:
                 if p.cantidad_pagada == p.capital:
-                    p.interes2 = p.cantidad_pagar - p.capital
+                    p.interes2 = p.interes
                 elif p.cantidad_pagada == p.cantidad_pagar:
                     p.interes2 = 0
                 elif p.cantidad_pagada == 0:
-                    raise ValidationError(('Error!! Favor de llenar todos los campos de pago'))
+                    raise ValidationError(('Error!! En '+str(p.num_tipo)+' la cantidad pagada igual a cero, favor porner la cantidad correspondiente'))
                 elif p.cantidad_pagada < p.capital or p.cantidad_pagada > p.cantidad_pagar or p.cantidad_pagada > p.capital or p.cantidad.pagada < p.cantidad_pagar:
                     raise ValidationError(('Error!! Favor de verificar la cantidad del pago '+str(p.num_tipo)))
                 else:

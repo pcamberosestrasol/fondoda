@@ -10,12 +10,8 @@ class FondodaPagos(models.Model):
     fecha_pago = fields.Date('Fecha')
     num_pago = fields.Integer('Número de pago')
     prestamo_id = fields.Many2one('fondoda.prestamo','Pestramo')
-    cantidad_pagar = fields.Float('Descuento', digits=(32, 2))
+
     numero = fields.Char('Número')
-    
-    
-    
-    
     capital = fields.Float('Capital', digits=(32, 2))
     interes = fields.Float('Interes', digits=(32, 2))
     num_tipo = fields.Char('Número de pago')
@@ -25,6 +21,7 @@ class FondodaPagos(models.Model):
     day = fields.Integer('Día')
     month = fields.Char('Mes')
     year = fields.Char('Year')
+    dias = fields.Integer('Días')
     
 
     @api.depends('capital','interes')
