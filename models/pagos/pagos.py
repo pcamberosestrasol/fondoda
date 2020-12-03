@@ -15,7 +15,7 @@ class FondodaPagos(models.Model):
     capital = fields.Float('Capital', digits=(32, 2))
     interes = fields.Float('Interes', digits=(32, 2))
     num_tipo = fields.Char('Número de pago')
-    sum_interes_total = fields.Float('Capital/Interes',digits=(32, 2),compute="compute_sum_interes_total")
+    sum_interes_total = fields.Float('Capital/Interes',digits=(32, 2),compute="compute_sum_interes_total",store=True,)
     saldo = fields.Float('Saldo', digits=(32, 2))
     interes2 = fields.Float('Interes', digits=(32, 2))
     day = fields.Integer('Día')

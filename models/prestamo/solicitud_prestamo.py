@@ -304,11 +304,12 @@ class FondodaPrestamo(models.Model):
     
     def pagar_todo(self):
         if self.pagos_ids and self.total_pago > 0:
-            for p in self.pagos_ids:               
+            for p in self.pagos_ids:
+                _logger.info('Cantidad pagada = '+str(p.cantidad_pagada)+' Cantidad a pagar = '+str(p.sum_interes_total))
                 if p.cantidad_pagada == p.capital:
                     p.interes2 = p.interes
                 elif p.cantidad_pagada == p.sum_interes_total:
-                    p.interes2 = 0
+                    pass
                 elif p.cantidad_pagada == 0:
                     raise ValidationError(('Error!! En '+str(p.num_tipo)+' la cantidad pagada igual a cero, favor porner la cantidad correspondiente'))
                 elif p.cantidad_pagada < p.capital or p.cantidad_pagada >p.sum_interes_total or p.cantidad_pagada > p.capital or p.cantidad.pagada < p.sum_interes_total:
