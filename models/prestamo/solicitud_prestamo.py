@@ -24,7 +24,7 @@ class FondodaPrestamo(models.Model):
         ('quincena', 'Quincenal'),
         ('mensual','Mensual')],
         'Tipo descuento',related='partner_id.payroll',)
-    monto = fields.Float('Monto de los descuentos',compute='compute_total_monto',digits=(32, 2))
+    monto = fields.Float('Capital Mensual',compute='compute_total_monto',digits=(32, 2))
     interes = fields.Float('Interés Anual (%)',default=12.00,digits=(32, 2))
     estatus = fields.Selection([
         ('1', 'Pendiente'),
@@ -85,13 +85,9 @@ class FondodaPrestamo(models.Model):
     @api.depends('pagos_ids')
     def compute_total_monto(self):
         for prestamo in self:
-            if prestamo.pagos_ids:
-                pagar = 0
-                for pago in prestamo.pagos_ids:
-                    pagar+= pago.sum_interes_total
-                prestamo.monto = (pagar/prestamo.pagos)
-                for p in prestamo.pagos_ids:
-                    p.cantidad_pagar = prestamo.monto
+            if prestamo.pagos > 0:
+                prestamo.monto = prestamo.cantidad/prestamo.pagos
+        
             else:
                 prestamo.monto = 0
 
@@ -220,7 +216,8 @@ class FondodaPrestamo(models.Model):
                 if fecha.day < 15:
                     dias = 15 - fecha.day
                     fecha = fecha +timedelta(days=dias)
-                    dias+=1
+                    if dias == 14:
+                        dias=dias+1
                     day_week = calendar.day_name[fecha.weekday()]
                     if day_week == 'sábado':
                         fecha = fecha-timedelta(days=1)
@@ -259,7 +256,7 @@ class FondodaPrestamo(models.Model):
                     'num_tipo': str(p+1)+'-'+self.descuento,
                     'prestamo_id':self.id,
                     'saldo': capital,
-                    'interes': capital*0.5,
+                    'interes': capital*((self.interes/100)/365*dias),
                     'capital': capital,
                     'day': fecha.day,
                     'month': mes[fecha.month-1],
@@ -273,7 +270,7 @@ class FondodaPrestamo(models.Model):
                     'num_tipo': str(p+1)+'-'+self.descuento,
                     'prestamo_id':self.id,
                     'saldo': capital,
-                    'interes': capital*0.5,
+                    'interes': capital*((self.interes/100)/365*dias),
                     'capital':  self.cantidad/self.pagos,
                     'dias': dias
                 }))
@@ -306,15 +303,15 @@ class FondodaPrestamo(models.Model):
             self.cantidad = 1000
     
     def pagar_todo(self):
-        if self.pagos_ids:
-            for p in self.pagos_ids:
+        if self.pagos_ids and self.total_pago > 0:
+            for p in self.pagos_ids:               
                 if p.cantidad_pagada == p.capital:
                     p.interes2 = p.interes
-                elif p.cantidad_pagada == p.cantidad_pagar:
+                elif p.cantidad_pagada == p.sum_interes_total:
                     p.interes2 = 0
                 elif p.cantidad_pagada == 0:
                     raise ValidationError(('Error!! En '+str(p.num_tipo)+' la cantidad pagada igual a cero, favor porner la cantidad correspondiente'))
-                elif p.cantidad_pagada < p.capital or p.cantidad_pagada > p.cantidad_pagar or p.cantidad_pagada > p.capital or p.cantidad.pagada < p.cantidad_pagar:
+                elif p.cantidad_pagada < p.capital or p.cantidad_pagada >p.sum_interes_total or p.cantidad_pagada > p.capital or p.cantidad.pagada < p.sum_interes_total:
                     raise ValidationError(('Error!! Favor de verificar la cantidad del pago '+str(p.num_tipo)))
                 else:
                     pass

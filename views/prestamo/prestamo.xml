@@ -52,7 +52,7 @@
                                 <field name="descuento" />
                                 <field name="partner_id" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
                                 <field name="interes" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}" />
-                                <field name="estatus" />
+                                <field name="estatus" force_save="1" readonly="1"/>
                                 <field name="evidencia" attrs="{'invisible':[('tipo', '=', 'ordinario')]}"/>
                                 <field name="comentario" readonly="1" attrs="{'invisible':[('estatus', '!=', ['5'])]}"/>
                             </group>
@@ -60,12 +60,12 @@
                         <notebook>
                             <page string="Pagos">
                                 <field name="pagos_ids" class="text-center">
-                                    <tree editable="bottom" create="false">
+                                    <tree editable="bottom" class="text-center" create="false">
                                         <field name="prestamo_id" invisible="1"/>
                                         <field name="num_tipo"  readonly="1"/>
                                         <field name="fecha_pago" readonly="1"/>
                                         <field name="cantidad_pagada" groups="fondoda.global_permission"/>
-                                        <field name="dias" force_save="1" readonly="1"  groups="fondoda.global_permission"/>
+                                        <field name="dias" readonly="1"  sum="Total"/>
                                         <field name="saldo" readonly="1"/>
                                         <field name="capital" sum="Total" readonly="1"/>
                                         <field name="interes" sum="Total"  readonly="1"/>
