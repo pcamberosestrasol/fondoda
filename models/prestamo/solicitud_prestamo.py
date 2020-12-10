@@ -24,7 +24,7 @@ class FondodaPrestamo(models.Model):
         ('quincena', 'Quincenal'),
         ('mensual','Mensual')],
         'Tipo descuento',related='partner_id.payroll',)
-    monto = fields.Float('Capital Mensual',compute='compute_total_monto',digits=(32, 2))
+    monto = fields.Float('Abono a Capital',compute='compute_total_monto',digits=(32, 2))
     interes = fields.Float('Interés Anual (%)',default=12.00,digits=(32, 2))
     estatus = fields.Selection([
         ('1', 'Pendiente'),
@@ -36,7 +36,7 @@ class FondodaPrestamo(models.Model):
         default='1',
         string='Estatus')
     num_colab = fields.Char(related='partner_id.num_colab',string='Número empleado')
-    fecha = fields.Date('Fecha',default=fields.Date.today())
+    fecha = fields.Date('Fecha',default=date.today())
 
     comentario = fields.Text('Comentario')
     pagos_ids = fields.One2many('fondoda.pagos','prestamo_id',string='Pagos')
@@ -82,12 +82,11 @@ class FondodaPrestamo(models.Model):
             else:
                 p.total_pago = p.cantidad
 
-    @api.depends('pagos_ids')
+    @api.depends('cantidad','pagos')
     def compute_total_monto(self):
         for prestamo in self:
             if prestamo.pagos > 0:
                 prestamo.monto = prestamo.cantidad/prestamo.pagos
-        
             else:
                 prestamo.monto = 0
 
@@ -203,7 +202,7 @@ class FondodaPrestamo(models.Model):
         mes = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
         lista = []
         capital = self.cantidad
-        fecha = fields.Date.today()
+        fecha = date.today()
         
         for p in range(self.pagos):
             dias = 0
@@ -285,18 +284,35 @@ class FondodaPrestamo(models.Model):
         self.pagos_ids = lista
         
 
-    @api.onchange('pagos','descuento')
+    @api.onchange('pagos')
     def onchange_value_rango(self):
-        if self.descuento == 'semanal':
-            if self.pagos > 52:
-                self.pagos = 52
-        if self.descuento == 'quincena':
-            if self.pagos > 24:
-                self.pagos = 24
-        if self.descuento == 'mensual':
-            if self.pagos > 12:
-                self.pagos = 12
-    
+        fecha = date.today()
+        for p in range(self.pagos):
+            
+            day_range = calendar.monthrange(fecha.year,fecha.month)
+            if fecha.day < 15:
+                dias = 15 - fecha.day
+                fecha = fecha +timedelta(days=dias)
+                if dias == 14:
+                    dias=dias+1
+            elif fecha.day >=15 and fecha.day < int(day_range[1]):
+                dias = int(day_range[1]) - fecha.day
+                fecha = fecha +timedelta(days=dias)
+            _logger.info('Fecha = '+str(fecha))
+            if fecha.day == 31 and fecha.month == 7:
+                self.pagos = p
+                return {'warning': {
+                    'title': "Error",
+                    'message': "El número de pagos, sobrepasa la fecha de corte,"+
+                        "la cantidad máxima de pagos que puede solicitar es de "+str(p)+" pagos",
+                    }
+                }
+            if fecha.day >15:
+                while fecha.day != 1:
+                    fecha = fecha+timedelta(days=1)
+            if fecha.day >1 and fecha.day<15:
+                 while fecha.day != 15:
+                    fecha = fecha+timedelta(days=1)
     @api.onchange('cantidad')
     def onchange_value_cantidad(self):
         if self.cantidad < 1000:
