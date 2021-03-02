@@ -288,7 +288,6 @@ class FondodaPrestamo(models.Model):
     def onchange_value_rango(self):
         fecha = date.today()
         for p in range(self.pagos):
-            
             day_range = calendar.monthrange(fecha.year,fecha.month)
             if fecha.day < 15:
                 dias = 15 - fecha.day
@@ -298,13 +297,14 @@ class FondodaPrestamo(models.Model):
             elif fecha.day >=15 and fecha.day < int(day_range[1]):
                 dias = int(day_range[1]) - fecha.day
                 fecha = fecha +timedelta(days=dias)
-            _logger.info('Fecha = '+str(fecha))
-            if fecha.day == 31 and fecha.month == 7:
-                self.pagos = p
+
+            if fecha.day == 31 and fecha.month == 7 and self.pagos != p+1:
+                
+                self.pagos = p+1
                 return {'warning': {
                     'title': "Error",
                     'message': "El número de pagos, sobrepasa la fecha de corte,"+
-                        "la cantidad máxima de pagos que puede solicitar es de "+str(p)+" pagos",
+                        "la cantidad máxima de pagos que puede solicitar es de "+str(p+1)+" pagos",
                     }
                 }
             if fecha.day >15:
@@ -313,6 +313,7 @@ class FondodaPrestamo(models.Model):
             if fecha.day >1 and fecha.day<15:
                  while fecha.day != 15:
                     fecha = fecha+timedelta(days=1)
+
     @api.onchange('cantidad')
     def onchange_value_cantidad(self):
         if self.cantidad < 1000:
