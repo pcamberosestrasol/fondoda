@@ -69,7 +69,7 @@
                                         <field name="saldo" readonly="1"/>
                                         <field name="capital" sum="Total" readonly="1"/>
                                         <field name="interes" sum="Total"  readonly="1"/>
-                                        <field name="interes2" invisible="1"/>
+                                        <field name="interes2" groups="fondoda.global_permission" string="Interes sin cobrar"/>
                                         <field name="sum_interes_total" readonly="1" string="Capital/Interes" sum="Total"/>                   
                                     </tree>
                                 </field>
