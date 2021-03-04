@@ -34,6 +34,7 @@
                         <div class="oe_button_box" name="button_box">
                             <button name="open_wizard_terms" type="object" string="Reglamento de FdA" class="oe_stat_button" icon="fa-file-text"/>
                         </div>
+                        <h4 style="color:red;" class="text-center" attrs="{'invisible':[('estatus', '!=', '1')]}">Al guardar la información actual se solicitará el préstamo</h4>
                         <h2><field name="name" readonly="1"/></h2>
                         <group>
                             <group>
