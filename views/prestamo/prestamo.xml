@@ -39,7 +39,7 @@
                         <group>
                             <group>
                                 <field name="tipo" invisible="1"/>
-                                <field name="fecha" readonly="1" />
+                                <field name="fecha" readonly="1"  force_save="1"/>
                                 <field name="prestamos_activos" attrs="{'invisible':[('tipo','=','extra')]}" readonly="1"/>
                                 <field name="motivo" attrs="{'invisible':[('tipo', '=', 'ordinario')],'readonly':[('estatus', 'in', ['2','3'])]}"/>    
                                 <field name="cantidad" attrs="{'readonly':[('estatus', 'in', ['2','3'])]}"/>

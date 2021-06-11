@@ -2,6 +2,7 @@ from logging import disable
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError,ValidationError
 from datetime import datetime, date, time, timedelta
+import pytz
 import calendar
 import logging
 _logger = logging.getLogger(__name__)
@@ -12,6 +13,11 @@ class FondodaPrestamo(models.Model):
     _name = 'fondoda.prestamo'
     _rec_name = 'name'
     _inherit = ['mail.thread','mail.activity.mixin']
+    
+    def _default_time_compute_tz(self):
+        today = fields.datetime.now() 
+        date_convert = today.astimezone(pytz.timezone("America/Mexico_City")).date()
+        return date_convert
 
     name = fields.Char('Folio',default='Nuevo')
     partner_id = fields.Many2one('res.partner','Colaborador',default=lambda self: self.env.user.partner_id)
@@ -36,7 +42,7 @@ class FondodaPrestamo(models.Model):
         default='1',
         string='Estatus')
     num_colab = fields.Char(related='partner_id.num_colab',string='Número empleado')
-    fecha = fields.Date('Fecha',default=date.today())
+    fecha = fields.Date('Fecha',default=_default_time_compute_tz)
 
     comentario = fields.Text('Comentario')
     pagos_ids = fields.One2many('fondoda.pagos','prestamo_id',string='Pagos')
